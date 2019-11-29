@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="375" height="667" viewBox="0 0 375 667">
+  <defs>
+    <clipPath id="clip-signup">
+      <rect width="375" height="667"/>
+    </clipPath>
+  </defs>
+  <g id="signup" clip-path="url(#clip-signup)">
+    <rect width="375" height="667" fill="#23374d"/>
+    <path id="Path_1" data-name="Path 1" d="M385.5,0,771,564H0Z" transform="matrix(0.996, -0.087, 0.087, 0.996, -429.111, 187.672)" fill="#da2d2d"/>
+    <text id="PhotoFilters" transform="translate(78 190)" fill="#fff" font-size="40" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="0" y="0">PhotoFilters</tspan></text>
+    <text id="Create_new_account." data-name="Create new account." transform="translate(122 214)" fill="#fff" font-size="15" font-family="Roboto-Regular, Roboto"><tspan x="0" y="0">Create new account.</tspan></text>
+    <line id="Line_1" data-name="Line 1" x2="245" transform="translate(70.5 333.5)" fill="none" stroke="#fff" stroke-width="2"/>
+    <line id="Line_2" data-name="Line 2" x2="245" transform="translate(70.5 394.5)" fill="none" stroke="#fff" stroke-width="2"/>
+    <line id="Line_3" data-name="Line 3" x2="245" transform="translate(70.5 447.5)" fill="none" stroke="#fff" stroke-width="2"/>
+    <line id="Line_4" data-name="Line 4" x2="245" transform="translate(70.5 497.5)" fill="none" stroke="#fff" stroke-width="2"/>
+    <path id="Icon_awesome-user-alt" data-name="Icon awesome-user-alt" d="M10.543,13.454a7.412,7.412,0,0,0,7-7c0-3.751-3.607-6-7-6a5.7,5.7,0,0,0-6,6C4.543,10.2,7.15,13.454,10.543,13.454Zm6,2h-3c-.948.481-1.89,0-3,0s-2.048.481-3,0h-2a6.183,6.183,0,0,0-6,6h0a3.878,3.878,0,0,0,3,3h17c1.131,0,2-1.75,2-3h0C21.543,18.119,19.561,15.454,16.543,15.454Z" transform="translate(80.457 363.546)" fill="#fff"/>
+    <g id="Icon_feather-user" data-name="Icon feather-user" transform="translate(77 300.5)">
+      <path id="Path_2" data-name="Path 2" d="M23.5,28.678v-2a3.726,3.726,0,0,0-4-4h-9a3.726,3.726,0,0,0-4,4v2" transform="translate(0 -4.678)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+      <path id="Path_3" data-name="Path 3" d="M21.059,9c0,2.453-2.547,4-5,4a3.726,3.726,0,0,1-4-4,3.726,3.726,0,0,1,4-4C18.512,5,21.059,6.547,21.059,9Z" transform="translate(-1.559)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+    </g>
+    <path id="Icon_zocial-email" data-name="Icon zocial-email" d="M.072,16.018v-11c0-.013-.038.227,0,0l6,5-6,6C.022,15.841.072,16.094.072,16.018Zm1-12c.088-.038-.126,0,0,0h17a8.817,8.817,0,0,1,1,0l-7,6h0l-2,2-2-2h-1Zm0,13,6-6,3,2,2-2,7,6a8.816,8.816,0,0,1-1,0h-17C.971,17.018,1.173,17.056,1.072,17.018Zm12-7,7-5c.038.114,0-.126,0,0v11c0,.114.038-.139,0,0Z" transform="translate(81.928 421.982)" fill="#fff"/>
+    <path id="Icon_awesome-key" data-name="Icon awesome-key" d="M17.228,6.24a5.979,5.979,0,0,1-6,6,4.86,4.86,0,0,1-1,0l-1,1c-.156.176.235,0,0,0h-2v1c0,.454.454,1,0,1h-2v1a1.159,1.159,0,0,1-1,1h-3a1.159,1.159,0,0,1-1-1v-2c0-.218-.154-.846,0-1l6-5c-.2-.595-1-1.34-1-2a6,6,0,0,1,12,0Zm-6-2a2.317,2.317,0,0,0,2,2,2.317,2.317,0,0,0,2-2c0-.908-1.092-1-2-1S11.228,3.332,11.228,4.24Z" transform="translate(81.772 472.76)" fill="#fff"/>
+    <text id="Already_have_an_account_" data-name="Already have an account?" transform="translate(89 656)" fill="#fff" font-size="15" font-family="Candara"><tspan x="0" y="0">Already have an account?</tspan></text>
+  </g>
+</svg>
