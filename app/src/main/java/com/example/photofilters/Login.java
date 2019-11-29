@@ -80,7 +80,8 @@ public class Login extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(Login.this, "Email or Password Incorrect!",
+                            Toast.LENGTH_LONG).show();
                 }
             }
         });
