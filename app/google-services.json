@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "131177681656",
+    "firebase_url": "https://photofiltersapp.firebaseio.com",
+    "project_id": "photofiltersapp",
+    "storage_bucket": "photofiltersapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:131177681656:android:3ef88a8441b0d941b6a10d",
+        "android_client_info": {
+          "package_name": "com.example.photofilters"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "131177681656-nl6gko83im39js469dqdv9imvv5k503g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.photofilters",
+            "certificate_hash": "0307517990b0b9a3d8a749b76b06fcdb9bf11187"
+          }
+        },
+        {
+          "client_id": "131177681656-ko6vf08pfrdf1ffrbjs2jsdibvfaetq2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNEfuB0JVzoB7aYBHuT8cOs16rIMqWnDM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "131177681656-ko6vf08pfrdf1ffrbjs2jsdibvfaetq2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
