@@ -33,7 +33,6 @@ public class Reg extends AppCompatActivity {
     ImageButton register;
     TextView loginhere;
     EditText name;
-    EditText username;
     EditText email;
     EditText password;
 
@@ -57,7 +56,6 @@ public class Reg extends AppCompatActivity {
         });
 
         name = findViewById(R.id.name);
-        username = findViewById(R.id.username);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         register =  findViewById(R.id.regbtn);
@@ -76,7 +74,6 @@ public class Reg extends AppCompatActivity {
     private void saveUserData()
     {
         final String names = name.getText().toString().trim();
-        final String usernames = username.getText().toString().trim();
         final String emails = email.getText().toString().trim();
         final String passwords = password.getText().toString().trim();
 
@@ -91,11 +88,9 @@ public class Reg extends AppCompatActivity {
 
                             User user = new User(
                                     names,
-                                    usernames,
                                     emails,
                                     passwords
                             );
-
 
                             FirebaseDatabase.getInstance().getReference("users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -130,10 +125,6 @@ public class Reg extends AppCompatActivity {
     private void validate(){
         if(name.length()==0){
             name.setError("Enter name");
-        }
-        else if(username.length()==0){
-            username.setError("Enter username");
-
         }
         else if(!EmailValidator.getInstance().validate(email.getText().toString().trim())){
             email.setError("Invalid email address");
