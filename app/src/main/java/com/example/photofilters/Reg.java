@@ -145,5 +145,5 @@ public class Reg extends AppCompatActivity {
             saveUserData();
         }
     }
-    
+
 }
