@@ -103,8 +103,10 @@ public class Reg extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
-                                        Toast.makeText(Reg.this, "Registeration Successful, Go to Login",
+                                        Toast.makeText(Reg.this, "Registeration Successful",
                                                 Toast.LENGTH_LONG).show();
+                                        Intent intent = new Intent(Reg.this, Login.class);
+                                        startActivity(intent);
                                     }
                                     else{
                                         Toast.makeText(Reg.this,"Signup Failed!",Toast.LENGTH_LONG).show();
@@ -143,8 +145,5 @@ public class Reg extends AppCompatActivity {
             saveUserData();
         }
     }
-
-    private void checkUsername(){
-
-    }
+    
 }

@@ -3,37 +3,37 @@ package com.example.photofilters;
 public class User {
 
 
-    String userName;
-    String userUsername;
-    String userEmail;
-    String userPassword;
+    String name;
+    String username;
+    String email;
+    String password;
 
     public User(){
 
     }
 
-    public User(String userName,
-                String userUsername, String userEmail, String userPassword) {
+    public User(String name,
+                String username, String email, String password) {
 
-        this.userName = userName;
-        this.userUsername = userUsername;
-        this.userEmail = userEmail;
-        this.userPassword = userPassword;
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getname() {
+        return name;
     }
 
-    public String getUserUsername() {
-        return userUsername;
+    public String getusername() {
+        return name;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getemail() {
+        return email;
     }
 
-    public String getUserPassword() {
-        return userPassword;
+    public String getpassword() {
+        return password;
     }
 }
