@@ -24,6 +24,7 @@ public class Login extends AppCompatActivity {
 
     ImageButton login;
     TextView registerhere;
+    TextView forgotpass;
 
     EditText email;
     EditText password;
@@ -44,6 +45,16 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), Reg.class);
+                startActivity(intent);
+            }
+        });
+
+        forgotpass = findViewById(R.id.forgotpass);
+
+        forgotpass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Login.this, ForgotPass.class);
                 startActivity(intent);
             }
         });
