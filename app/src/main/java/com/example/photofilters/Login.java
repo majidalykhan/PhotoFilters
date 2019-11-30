@@ -30,7 +30,7 @@ public class Login extends AppCompatActivity {
 
     ProgressBar pb;
 
-    FirebaseAuth mAuth;
+    FirebaseAuth firebaseAuth;
 
 
     @Override
@@ -54,7 +54,7 @@ public class Login extends AppCompatActivity {
         login =  findViewById(R.id.loginbtn);
         pb = findViewById(R.id.progressBar2);
 
-        mAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
 
         login.setOnClickListener(new View.OnClickListener() {
@@ -69,15 +69,22 @@ public class Login extends AppCompatActivity {
     private void userLogin(){
 
         pb.setVisibility(View.VISIBLE);
-        mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+        firebaseAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 pb.setVisibility(View.GONE);
                 if(task.isSuccessful()){
-                    Intent intent = new Intent (Login.this, Test.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    if(firebaseAuth.getCurrentUser().isEmailVerified()){
+                        Intent intent = new Intent (Login.this, Home.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                    else{
+                        Toast.makeText(Login.this, "Please verify your email address",
+                                Toast.LENGTH_LONG).show();
+                    }
+
                 }
                 else{
                     Toast.makeText(Login.this, "Email or Password Incorrect!",

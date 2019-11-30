@@ -66,6 +66,7 @@ public class Reg extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 validate();
             }
         });
@@ -98,10 +99,24 @@ public class Reg extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
-                                        Toast.makeText(Reg.this, "Registeration Successful",
-                                                Toast.LENGTH_LONG).show();
-                                        Intent intent = new Intent(Reg.this, Login.class);
-                                        startActivity(intent);
+                                        firebaseAuth.getCurrentUser().sendEmailVerification()
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful()){
+                                                    Toast.makeText(Reg.this, "Registeration Successful, Please " +
+                                                                    "check your email for verification.",
+                                                            Toast.LENGTH_LONG).show();
+                                                    Intent intent = new Intent(Reg.this, Login.class);
+                                                    startActivity(intent);
+                                                }
+                                                else{
+                                                    Toast.makeText(Reg.this, task.getException().getMessage(),
+                                                            Toast.LENGTH_LONG).show();
+                                                }
+
+                                            }
+                                        });
                                     }
                                     else{
                                         Toast.makeText(Reg.this,"Signup Failed!",Toast.LENGTH_LONG).show();
