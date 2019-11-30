@@ -1,6 +1,7 @@
 package com.example.photofilters;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -20,8 +21,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 
 public class Reg extends AppCompatActivity {
 
@@ -63,7 +68,7 @@ public class Reg extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveUserData();
+                validate();
             }
         });
     }
@@ -117,6 +122,29 @@ public class Reg extends AppCompatActivity {
                         }
                     }
                 });
+
+    }
+
+    private void validate(){
+        if(name.length()==0){
+            name.setError("Enter name");
+        }
+        else if(username.length()==0){
+            username.setError("Enter username");
+
+        }
+        else if(email.length()==0){
+            email.setError("Enter email");
+        }
+        else if(password.length()==0){
+            password.setError("Enter password");
+        }
+        else{
+            saveUserData();
+        }
+    }
+
+    private void checkUsername(){
 
     }
 }

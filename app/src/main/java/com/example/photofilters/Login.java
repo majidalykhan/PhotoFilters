@@ -60,7 +60,7 @@ public class Login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userLogin();
+                validate();
             }
         });
 
@@ -85,6 +85,20 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void validate(){
+        if(email.length()==0)
+        {
+            email.setError("Enter email address");
+        }
+        else if(password.length()==0)
+        {
+            password.setError("Enter password");
+        }
+        else{
+            userLogin();
+        }
     }
 
 }
