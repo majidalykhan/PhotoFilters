@@ -39,9 +39,14 @@ public class ForgotPass extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 validate();
-                pb.setVisibility(View.VISIBLE);
-                firebaseAuth.sendPasswordResetEmail(userEmail.getText().toString())
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+            }
+        });
+    }
+
+    private void forgotPassword(){
+        pb.setVisibility(View.VISIBLE);
+        firebaseAuth.sendPasswordResetEmail(userEmail.getText().toString())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         pb.setVisibility(View.GONE);
@@ -55,9 +60,6 @@ public class ForgotPass extends AppCompatActivity {
                         }
                     }
                 });
-            }
-        });
-
     }
 
     private void validate(){
@@ -65,7 +67,7 @@ public class ForgotPass extends AppCompatActivity {
             userEmail.setError("Invalid email address");
         }
         else{
-            return;
+            forgotPassword();
         }
     }
 }
