@@ -135,11 +135,14 @@ public class Reg extends AppCompatActivity {
             username.setError("Enter username");
 
         }
-        else if(email.length()==0){
-            email.setError("Enter email");
+        else if(!EmailValidator.getInstance().validate(email.getText().toString().trim())){
+            email.setError("Invalid email address");
         }
         else if(password.length()==0){
             password.setError("Enter password");
+        }
+        else if(password.length() < 6){
+            password.setError("Password should be greater than 6 characters");
         }
         else{
             saveUserData();

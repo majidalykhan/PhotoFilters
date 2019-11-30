@@ -88,11 +88,10 @@ public class Login extends AppCompatActivity {
     }
 
     private void validate(){
-        if(email.length()==0)
-        {
-            email.setError("Enter email address");
+        if(!EmailValidator.getInstance().validate(email.getText().toString().trim())){
+            email.setError("Invalid email address");
         }
-        else if(password.length()==0)
+        else if(password.length()==0 )
         {
             password.setError("Enter password");
         }
@@ -100,5 +99,4 @@ public class Login extends AppCompatActivity {
             userLogin();
         }
     }
-
 }
