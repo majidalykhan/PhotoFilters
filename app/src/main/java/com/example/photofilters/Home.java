@@ -41,6 +41,7 @@ public class Home extends AppCompatActivity {
 
     TextView user;
     TextView capturetext;
+    TextView gallerybtntext;
     ImageButton logout;
     ImageButton capture;
     ImageButton gallery;
@@ -58,9 +59,9 @@ public class Home extends AppCompatActivity {
 
         //user = findViewById(R.id.user);
         logout = findViewById(R.id.logoutbtn);
-        capturetext = findViewById(R.id.capturetext);
         capture = findViewById(R.id.capture);
         gallery = findViewById(R.id.gallerybtn);
+        gallerybtntext = findViewById(R.id.gallerybtntext);
 
         //Firebase instance
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -91,10 +92,14 @@ public class Home extends AppCompatActivity {
         capture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
                 mCamera.takePicture(null, null, mPicture);
+            }
+        });
+
+        gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gallery();
             }
         });
 
@@ -121,7 +126,7 @@ public class Home extends AppCompatActivity {
         // using Environment.getExternalStorageState() before doing this.
 
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "MyCameraApp");
+                Environment.DIRECTORY_PICTURES), "PhotoFilters");
         // This location works best if you want the created images to be shared
         // between applications and persist after your app has been uninstalled.
 
@@ -196,12 +201,9 @@ public class Home extends AppCompatActivity {
         }
     };
 
-
-
-
-
-
-
-
-
+    private void gallery(){
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(
+                "content://media/internal/images/media"));
+        startActivity(intent);
+    }
 }

@@ -2,12 +2,15 @@ package com.example.photofilters;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.hardware.Camera;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -32,6 +35,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         Camera.Parameters parameters = mCamera.getParameters();
         parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
         parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+
+
         if(this.getResources().getConfiguration().orientation!= Configuration.ORIENTATION_LANDSCAPE)
         {
             parameters.set("orientation","potrait");
