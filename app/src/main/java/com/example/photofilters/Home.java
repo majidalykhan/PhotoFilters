@@ -3,8 +3,10 @@ package com.example.photofilters;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +20,14 @@ public class Home extends AppCompatActivity {
 
 
     TextView user;
+    TextView capturetext;
     ImageButton logout;
+    ImageButton capture;
+    ImageButton gallery;
+
+    Camera camera;
+    FrameLayout framerLayout;
+    ShowCamera showCamera;
 
 
     @Override
@@ -26,14 +35,22 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        user = findViewById(R.id.user);
+        //user = findViewById(R.id.user);
         logout = findViewById(R.id.logoutbtn);
+        capturetext = findViewById(R.id.capturetext);
+        capture = findViewById(R.id.capture);
+        gallery = findViewById(R.id.gallerybtn);
 
+        framerLayout = findViewById(R.id.framelayout);
+
+        //Firebase instance
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
-        user.setText(firebaseUser.getEmail());
+        //show which user is logged in
+        //user.setText(firebaseUser.getEmail());
 
+        //Email Verification
         if(firebaseUser!=null && firebaseUser.isEmailVerified()){
            // Toast.makeText(Home.this, "Welcome", Toast.LENGTH_LONG).show();
             Toasty.success(Home.this,"Welcome",
@@ -51,5 +68,10 @@ public class Home extends AppCompatActivity {
 
             }
         });
+
+        //Open Camera
+        camera = Camera.open();
+        showCamera = new ShowCamera(this,camera);
+        framerLayout.addView(showCamera);
     }
 }
