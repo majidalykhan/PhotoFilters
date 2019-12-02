@@ -20,6 +20,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import es.dmoral.toasty.Toasty;
+
 public class Login extends AppCompatActivity {
 
     ImageButton login;
@@ -92,14 +94,15 @@ public class Login extends AppCompatActivity {
                         startActivity(intent);
                     }
                     else{
-                        Toast.makeText(Login.this, "Please verify your email address",
-                                Toast.LENGTH_LONG).show();
+                        //Toast.makeText(Login.this, "Please verify your email address", Toast.LENGTH_LONG).show();
+                        Toasty.info(Login.this,"Please verify your email address",Toast.LENGTH_SHORT).show();
+
                     }
 
                 }
                 else{
-                    Toast.makeText(Login.this, "Email or Password Incorrect!",
-                            Toast.LENGTH_LONG).show();
+                    //Toast.makeText(Login.this, "Email or Password Incorrect!",Toast.LENGTH_LONG).show();
+                    Toasty.error(Login.this,"Email or Password Incorrect!",Toast.LENGTH_SHORT).show();
                 }
             }
         });

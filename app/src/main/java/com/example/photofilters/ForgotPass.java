@@ -15,6 +15,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+import es.dmoral.toasty.Toasty;
+
 public class ForgotPass extends AppCompatActivity {
 
     EditText userEmail;
@@ -51,12 +53,13 @@ public class ForgotPass extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         pb.setVisibility(View.GONE);
                         if(task.isSuccessful()){
-                            Toast.makeText(ForgotPass.this,"Password sent to your email",Toast.LENGTH_LONG).show();
+                           //Toast.makeText(ForgotPass.this,"Password sent to your email",Toast.LENGTH_LONG).show();
+                            Toasty.info(ForgotPass.this,"Password sent to your email", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(ForgotPass.this, Login.class);
                             startActivity(intent);
                         }
                         else{
-                            Toast.makeText(ForgotPass.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                            Toasty.error(ForgotPass.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

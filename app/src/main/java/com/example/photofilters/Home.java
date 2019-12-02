@@ -12,6 +12,8 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import es.dmoral.toasty.Toasty;
+
 public class Home extends AppCompatActivity {
 
 
@@ -30,11 +32,12 @@ public class Home extends AppCompatActivity {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
-        user.setText(firebaseUser.getDisplayName());
+        user.setText(firebaseUser.getEmail());
 
         if(firebaseUser!=null && firebaseUser.isEmailVerified()){
-            Toast.makeText(Home.this, "Welcome",
-                    Toast.LENGTH_LONG).show();
+           // Toast.makeText(Home.this, "Welcome", Toast.LENGTH_LONG).show();
+            Toasty.success(Home.this,"Welcome",
+                    Toast.LENGTH_SHORT).show();
         }
 
         logout.setOnClickListener(new View.OnClickListener() {

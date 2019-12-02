@@ -28,6 +28,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 
+import es.dmoral.toasty.Toasty;
+
 public class Reg extends AppCompatActivity {
 
     ImageButton register;
@@ -104,14 +106,16 @@ public class Reg extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if(task.isSuccessful()){
-                                                    Toast.makeText(Reg.this, "Registeration Successful, Please " +
+                                                   /* Toast.makeText(Reg.this, "Registeration Successful, Please " +
                                                                     "check your email for verification.",
-                                                            Toast.LENGTH_LONG).show();
+                                                            Toast.LENGTH_LONG).show(); */
+                                                    Toasty.success(Reg.this,"Registeration Successful, Please check your email for verification.",
+                                                            Toast.LENGTH_SHORT).show();
                                                     Intent intent = new Intent(Reg.this, Login.class);
                                                     startActivity(intent);
                                                 }
                                                 else{
-                                                    Toast.makeText(Reg.this, task.getException().getMessage(),
+                                                    Toasty.error(Reg.this, task.getException().getMessage(),
                                                             Toast.LENGTH_LONG).show();
                                                 }
 
@@ -128,8 +132,7 @@ public class Reg extends AppCompatActivity {
 
                         }
                         else{
-                            Toast.makeText(Reg.this, task.getException()
-                                    .getMessage(),Toast.LENGTH_LONG).show();
+                            Toasty.error(Reg.this, task.getException().getMessage(),Toast.LENGTH_LONG).show();
 
                         }
                     }
