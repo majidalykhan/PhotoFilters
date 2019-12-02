@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -74,4 +75,5 @@ public class Home extends AppCompatActivity {
         showCamera = new ShowCamera(this,camera);
         framerLayout.addView(showCamera);
     }
+
 }

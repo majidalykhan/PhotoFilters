@@ -3,10 +3,12 @@ package com.example.photofilters;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.hardware.Camera;
+import android.media.CamcorderProfile;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.io.IOException;
+import java.util.List;
 
 public class ShowCamera extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -27,12 +29,23 @@ public class ShowCamera extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        camera.stopPreview();
+        camera.release();
 
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Camera.Parameters parameters = camera.getParameters();
+
+        List<Camera.Size> sizes = parameters.getSupportedPictureSizes();
+        Camera.Size mSize = null;
+
+        for(Camera.Size size : sizes)
+        {
+            mSize = size;
+        }
+
 
         //Change Camera Orientation
         if(this.getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE)
@@ -48,6 +61,8 @@ public class ShowCamera extends SurfaceView implements SurfaceHolder.Callback {
             parameters.setRotation(0);
         }
 
+
+        parameters.setPictureSize(mSize.width, mSize.height);
         camera.setParameters(parameters);
         try{
         camera.setPreviewDisplay(holder);
