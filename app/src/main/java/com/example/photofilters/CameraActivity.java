@@ -9,6 +9,7 @@ public class CameraActivity extends Home {
     private SurfaceView preview;
 
 
+
     @Override
     protected void onPause() {
         super.onPause();
