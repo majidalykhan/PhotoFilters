@@ -73,8 +73,8 @@ public class Home extends AppCompatActivity {
         //Email Verification
         if(firebaseUser!=null && firebaseUser.isEmailVerified()){
            // Toast.makeText(Home.this, "Welcome", Toast.LENGTH_LONG).show();
-            Toasty.success(Home.this,"Welcome",
-                    Toast.LENGTH_SHORT).show();
+           // Toasty.success(Home.this,"Welcome",
+                  //  Toast.LENGTH_SHORT).show();
         }
 
         logout.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +93,11 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mCamera.takePicture(null, null, mPicture);
+
+                Intent intent = new Intent (Home.this, Home.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
         });
 
