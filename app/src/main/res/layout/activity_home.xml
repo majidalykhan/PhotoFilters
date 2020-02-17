@@ -9,11 +9,17 @@
 
     <FrameLayout
         android:id="@+id/framelayout"
-        android:layout_width="405dp"
-        android:layout_height="730dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <fragment
+            android:name="com.example.photofilters.FaceArFragment"
+            android:id="@+id/face_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </FrameLayout>
 
