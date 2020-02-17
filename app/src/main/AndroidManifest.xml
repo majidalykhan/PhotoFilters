@@ -17,14 +17,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ForgotPass"></activity>
-        <activity android:name=".Home" />
-        <activity android:name=".Test" />
-        <activity android:name=".Login">
+        <activity android:name=".Home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".Test" />
+        <activity android:name=".Login">
+
         </activity>
         <activity android:name=".Reg" />
     </application>

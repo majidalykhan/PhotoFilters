@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Surface;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -38,6 +39,7 @@ public class Home extends AppCompatActivity {
     public static final String TAG = "PhotoFilters";
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
+    int currentCameraId = 0;
 
     TextView user;
     TextView capturetext;
@@ -104,7 +106,9 @@ public class Home extends AppCompatActivity {
         gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gallery();
+                //gallery();
+                CheckCamera();
+
             }
         });
 
@@ -117,6 +121,85 @@ public class Home extends AppCompatActivity {
         FrameLayout preview = (FrameLayout) findViewById(R.id.framelayout);
         preview.addView(mPreview);
 
+    }
+
+    private void CheckCamera(){
+
+
+        if(currentCameraId == Camera.CameraInfo.CAMERA_FACING_BACK){
+            switchToFront();
+        }
+
+        else if (currentCameraId == Camera.CameraInfo.CAMERA_FACING_FRONT){
+            switchToBack();
+        }
+
+    }
+
+    private void switchToFront() {
+        mCamera.stopPreview();
+        mCamera.release();
+
+        currentCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;
+
+        mCamera = Camera.open(currentCameraId);
+        Camera.CameraInfo info = new Camera.CameraInfo();
+        Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_FRONT, info);
+        int rotation = this.getWindowManager().getDefaultDisplay().getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0: degrees = 0; break; //Natural orientation
+            case Surface.ROTATION_90: degrees = 90; break; //Landscape left
+            case Surface.ROTATION_180: degrees = 180; break;//Upside down
+            case Surface.ROTATION_270: degrees = 270; break;//Landscape right
+        }
+        int rotate = (info.orientation - degrees + 360) % 360;
+
+        //STEP #2: Set the 'rotation' parameter
+        Camera.Parameters params = mCamera.getParameters();
+        params.setRotation(rotate);
+        try {
+            mCamera.setPreviewDisplay(mPreview.getHolder());
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        mCamera.setParameters(params);
+        mCamera.setDisplayOrientation(90);
+        mCamera.startPreview();
+    }
+
+    private void switchToBack() {
+        mCamera.stopPreview();
+        mCamera.release();
+
+        currentCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
+
+        mCamera = Camera.open(currentCameraId);
+        Camera.CameraInfo info = new Camera.CameraInfo();
+        Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_BACK, info);
+        int rotation = this.getWindowManager().getDefaultDisplay().getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0: degrees = 0; break; //Natural orientation
+            case Surface.ROTATION_90: degrees = 90; break; //Landscape left
+            case Surface.ROTATION_180: degrees = 180; break;//Upside down
+            case Surface.ROTATION_270: degrees = 270; break;//Landscape right
+        }
+        int rotate = (info.orientation - degrees + 360) % 360;
+
+        //STEP #2: Set the 'rotation' parameter
+        Camera.Parameters params = mCamera.getParameters();
+        params.setRotation(rotate);
+        try {
+            mCamera.setPreviewDisplay(mPreview.getHolder());
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        mCamera.setParameters(params);
+        mCamera.setDisplayOrientation(90);
+        mCamera.startPreview();
     }
 
     /** Create a file Uri for saving an image or video */
@@ -211,4 +294,5 @@ public class Home extends AppCompatActivity {
                 "content://media/internal/images/media"));
         startActivity(intent);
     }
+
 }

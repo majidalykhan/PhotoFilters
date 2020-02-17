@@ -5,9 +5,9 @@ import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.util.Log;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
