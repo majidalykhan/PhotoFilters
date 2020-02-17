@@ -9,14 +9,26 @@
 
     <FrameLayout
         android:id="@+id/framelayout"
-        android:layout_width="413dp"
+        android:layout_width="405dp"
         android:layout_height="730dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
     </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/camSwitch"
+        android:layout_width="46dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="16dp"
+        android:background="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.953"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_switch_camera_button"
+        tools:ignore="VectorDrawableCompat" />
 
     <ImageButton
         android:id="@+id/logoutbtn"
