@@ -141,7 +141,13 @@ public class Home extends AppCompatActivity {
             }
         });
 
+        CameraPreview();
 
+        Arcore();
+
+    }
+
+    private void CameraPreview(){
         // Create an instance of Camera
         mCamera = getCameraInstance();
 
@@ -149,9 +155,6 @@ public class Home extends AppCompatActivity {
         mPreview = new CameraPreview(this, mCamera);
         preview = (FrameLayout) findViewById(R.id.framelayout);
         preview.addView(mPreview);
-
-        Arcore();
-
     }
 
     private void Arcore(){
