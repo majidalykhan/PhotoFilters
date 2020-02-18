@@ -46,21 +46,8 @@
         app:layout_constraintStart_toEndOf="@+id/capture"
         app:layout_constraintTop_toTopOf="@+id/capture"
         app:layout_constraintVertical_bias="0.571"
-        app:srcCompat="@drawable/ic_loginbtn"
+        app:srcCompat="@drawable/ic_logout"
         tools:ignore="VectorDrawableCompat" />
-
-    <TextView
-        android:id="@+id/logintext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Logout"
-        android:textColor="#ffffff"
-        app:layout_constraintBottom_toBottomOf="@+id/logoutbtn"
-        app:layout_constraintEnd_toEndOf="@+id/logoutbtn"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="@+id/logoutbtn"
-        app:layout_constraintTop_toTopOf="@+id/logoutbtn"
-        app:layout_constraintVertical_bias="0.437" />
 
     <!--
     <TextView
@@ -83,7 +70,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.975"
+        app:layout_constraintVertical_bias="0.965"
         app:srcCompat="@drawable/ic_capturebtn"
         tools:ignore="VectorDrawableCompat" />
 
@@ -97,20 +84,8 @@
         app:layout_constraintEnd_toStartOf="@+id/capture"
         app:layout_constraintTop_toTopOf="@+id/capture"
         app:layout_constraintVertical_bias="0.571"
-        app:srcCompat="@drawable/ic_loginbtn"
+        app:srcCompat="@drawable/ic_gallery"
         tools:ignore="VectorDrawableCompat" />
 
-    <TextView
-        android:id="@+id/gallerybtntext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Gallery"
-        android:textColor="#ffffff"
-        app:layout_constraintBottom_toBottomOf="@+id/gallerybtn"
-        app:layout_constraintEnd_toEndOf="@+id/gallerybtn"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="@+id/gallerybtn"
-        app:layout_constraintTop_toTopOf="@+id/gallerybtn"
-        app:layout_constraintVertical_bias="0.437" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -250,18 +250,8 @@ public class Home extends AppCompatActivity {
         Camera.CameraInfo info = new Camera.CameraInfo();
         Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_FRONT, info);
         int rotation = this.getWindowManager().getDefaultDisplay().getRotation();
-        int degrees = 0;
-        switch (rotation) {
-            case Surface.ROTATION_0: degrees = 0; break; //Natural orientation
-            case Surface.ROTATION_90: degrees = 90; break; //Landscape left
-            case Surface.ROTATION_180: degrees = 180; break;//Upside down
-            case Surface.ROTATION_270: degrees = 270; break;//Landscape right
-        }
-        int rotate = (info.orientation - degrees + 360) % 360;
-
         //STEP #2: Set the 'rotation' parameter
         Camera.Parameters params = mCamera.getParameters();
-        params.setRotation(rotate);
         try {
             mCamera.setPreviewDisplay(mPreview.getHolder());
         } catch (IOException e) {
