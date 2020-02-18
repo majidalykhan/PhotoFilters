@@ -51,7 +51,7 @@ import java.util.Date;
 
 public class Home extends AppCompatActivity {
 
-    private static final String TAG = Home.class.getSimpleName();
+
     //public static final String TAG = "PhotoFilters";
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
@@ -67,17 +67,13 @@ public class Home extends AppCompatActivity {
 
     private Camera mCamera;
     private CameraPreview mPreview;
-
     FrameLayout preview;
 
+    private static final String TAG = Home.class.getSimpleName();
     private static final double MIN_OPENGL_VERSION = 3.0;
-
-
     private FaceArFragment arFragment;
     private Texture faceMeshTexture;
-
     private ModelRenderable faceRegionsRenderable;
-
     private final HashMap<AugmentedFace, AugmentedFaceNode> faceNodeMap = new HashMap<>();
 
 
@@ -151,7 +147,7 @@ public class Home extends AppCompatActivity {
 
         // Create our Preview view and set it as the content of our activity.
         mPreview = new CameraPreview(this, mCamera);
-        FrameLayout preview = (FrameLayout) findViewById(R.id.framelayout);
+        preview = (FrameLayout) findViewById(R.id.framelayout);
         preview.addView(mPreview);
 
         Arcore();
@@ -165,7 +161,6 @@ public class Home extends AppCompatActivity {
             return;
         }
 
-        setContentView(R.layout.activity_home);
         arFragment = (FaceArFragment) getSupportFragmentManager().findFragmentById(R.id.face_fragment);
 
         // Load the face regions renderable.
