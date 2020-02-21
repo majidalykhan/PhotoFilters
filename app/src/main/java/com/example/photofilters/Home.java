@@ -136,7 +136,7 @@ public class Home extends AppCompatActivity {
         camSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CheckCamera();
+                CamSwitch();
 
             }
         });
@@ -227,7 +227,7 @@ public class Home extends AppCompatActivity {
                 });
     }
 
-    private void CheckCamera(){
+    private void CamSwitch(){
 
 
         if(currentCameraId == Camera.CameraInfo.CAMERA_FACING_BACK){
@@ -333,7 +333,6 @@ public class Home extends AppCompatActivity {
         }
         return mediaFile;
     }
-
 
 
     //Check if device has camera
