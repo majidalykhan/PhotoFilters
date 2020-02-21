@@ -37,6 +37,19 @@
         tools:ignore="VectorDrawableCompat" />
 
     <ImageButton
+        android:id="@+id/artistic"
+        android:layout_width="44dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="76dp"
+        android:background="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.97"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_artistic"
+        tools:ignore="VectorDrawableCompat" />
+
+    <ImageButton
         android:id="@+id/logoutbtn"
         android:layout_width="125dp"
         android:layout_height="46dp"

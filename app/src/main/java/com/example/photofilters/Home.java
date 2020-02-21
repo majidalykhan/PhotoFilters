@@ -66,6 +66,7 @@ public class Home extends AppCompatActivity {
     ImageButton capture;
     ImageButton gallery;
     ImageButton camSwitch;
+    ImageButton artistic;
 
     private Camera mCamera;
     private CameraPreview mPreview;
@@ -90,6 +91,8 @@ public class Home extends AppCompatActivity {
         gallery = findViewById(R.id.gallerybtn);
         gallerybtntext = findViewById(R.id.gallerybtntext);
         camSwitch = findViewById(R.id.camSwitch);
+        artistic = findViewById(R.id.artistic);
+
 
         //Firebase instance
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -140,6 +143,16 @@ public class Home extends AppCompatActivity {
             public void onClick(View v) {
                 CamSwitch();
 
+            }
+        });
+
+        artistic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (Home.this, ArtisticStyle.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
         });
 
