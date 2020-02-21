@@ -1,0 +1,75 @@
+{
+  animations: [
+    {
+      path: 'sampledata/models/mine.fbx',
+    },
+  ],
+  materials: [
+    {
+      name: 'Material_51',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: '231',
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'Color',
+      'TexCoord',
+      'Orientation',
+      'BoneIndices',
+      'BoneWeights',
+    ],
+    collision: {},
+    file: 'sampledata/models/mine.fbx',
+    name: 'mine',
+    recenter: 'root',
+    scale: 9.7535190000000007,
+  },
+  samplers: [
+    {
+      file: 'sampledata/models\\mine.fbm\\231.png',
+      name: '231',
+      pipeline_name: 'mine.fbm\\231.png',
+    },
+    {
+      file: 'sampledata/models\\mine.fbm\\235.png',
+      name: '235',
+      pipeline_name: 'mine.fbm\\235.png',
+    },
+  ],
+  version: '0.54:2',
+}

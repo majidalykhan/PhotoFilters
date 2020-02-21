@@ -71,3 +71,9 @@ sceneform.asset('sampledata/models/red.fbx',
         'default',
         'sampledata/models/red.sfa',
         'src/main/res/raw/red')
+
+
+sceneform.asset('sampledata/models/mine.fbx',
+        'default',
+        'sampledata/models/mine.sfa',
+        'src/main/res/raw/mine')
