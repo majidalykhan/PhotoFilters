@@ -57,6 +57,8 @@ public class Home extends AppCompatActivity {
     public static final int MEDIA_TYPE_VIDEO = 2;
     int currentCameraId = 0;
 
+    private static final int REQUEST_GALLERY = 100;
+
     TextView user;
     TextView capturetext;
     TextView gallerybtntext;
@@ -383,9 +385,11 @@ public class Home extends AppCompatActivity {
     };
 
     private void gallery(){
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(
-                "content://media/internal/images/media"));
-        startActivity(intent);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_GALLERY);
+        }
     }
 
     public static boolean checkIsSupportedDeviceOrFinish(final Activity activity) {
