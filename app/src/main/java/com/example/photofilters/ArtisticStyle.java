@@ -40,6 +40,7 @@ import com.deeparteffects.sdk.android.model.Result;
 import com.deeparteffects.sdk.android.model.Styles;
 import com.deeparteffects.sdk.android.model.UploadRequest;
 import com.deeparteffects.sdk.android.model.UploadResponse;
+import com.google.android.gms.tasks.OnCompleteListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -132,7 +133,8 @@ public class ArtisticStyle extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //galleryAddPic(selectedImage);
+                galleryAddPic();
+                Toast.makeText(ArtisticStyle.this, "Picture Saved", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -276,7 +278,10 @@ public class ArtisticStyle extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void galleryAddPic(Bitmap image) {
+    private void galleryAddPic() {
+        selectedImage.buildDrawingCache();
+        Bitmap bm=selectedImage.getDrawingCache();
+
         File pictureFile = getOutputMediaFile();
         if (pictureFile == null) {
             Log.d(TAG,
@@ -285,7 +290,7 @@ public class ArtisticStyle extends AppCompatActivity {
         }
         try {
             FileOutputStream fos = new FileOutputStream(pictureFile);
-            image.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.close();
         } catch (FileNotFoundException e) {
             Log.d(TAG, "File not found: " + e.getMessage());
