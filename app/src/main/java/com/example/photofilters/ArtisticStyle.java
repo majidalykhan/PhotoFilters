@@ -2,6 +2,9 @@ package com.example.photofilters;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Application;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.os.Bundle;
 
 import android.app.Activity;
@@ -11,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +23,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -37,9 +42,13 @@ import com.deeparteffects.sdk.android.model.UploadRequest;
 import com.deeparteffects.sdk.android.model.UploadResponse;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -63,6 +72,8 @@ public class ArtisticStyle extends AppCompatActivity {
     private ImageView mImageView;
     private ImageView selectedImage;
     private ProgressBar mProgressbarView;
+    private ImageButton btnSave;
+    private TextView saveText;
     private boolean isProcessing = false;
 
     private RecyclerView recyclerView;
@@ -94,10 +105,18 @@ public class ArtisticStyle extends AppCompatActivity {
         selectedImage = (ImageView) findViewById(R.id.selectedImage);
         mImageView = (ImageView) findViewById(R.id.imageView);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+
+        btnSave = (ImageButton) findViewById(R.id.btnSave);
+        saveText = (TextView) findViewById(R.id.saveText);
+
+        ImageButton btnGallery = (ImageButton) findViewById(R.id.btnGallery);
+
+
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        Button btnGallery = (Button) findViewById(R.id.btnGallery);
+
+
         btnGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,6 +127,15 @@ public class ArtisticStyle extends AppCompatActivity {
                 }
             }
         });
+
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //galleryAddPic(selectedImage);
+            }
+        });
+
 
         loadingStyles();
     }
@@ -129,6 +157,8 @@ public class ArtisticStyle extends AppCompatActivity {
                                         Log.d(TAG, String.format("Style with ID %s clicked.", styleId));
                                         isProcessing = true;
                                         mProgressbarView.setVisibility(View.VISIBLE);
+                                        btnSave.setVisibility(View.GONE);
+                                        saveText.setVisibility(View.GONE);
                                         uploadImage(styleId);
                                     } else {
                                         Toast.makeText(mActivity, "Please choose a picture first",
@@ -167,11 +197,14 @@ public class ArtisticStyle extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Glide.with(mActivity).load(result.getUrl()).centerCrop()
+                            Glide.with(mActivity).load(result.getUrl()).fitCenter()
                                     .transition(new DrawableTransitionOptions().crossFade()).into(selectedImage);
                             mProgressbarView.setVisibility(View.GONE);
                             selectedImage.setVisibility(View.VISIBLE);
+                            btnSave.setVisibility(View.VISIBLE);
+                            saveText.setVisibility(View.VISIBLE);
                             mStatusText.setText("");
+
                         }
                     });
                     isProcessing = false;
@@ -242,4 +275,49 @@ public class ArtisticStyle extends AppCompatActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    private void galleryAddPic(Bitmap image) {
+        File pictureFile = getOutputMediaFile();
+        if (pictureFile == null) {
+            Log.d(TAG,
+                    "Error creating media file, check storage permissions: ");// e.getMessage());
+            return;
+        }
+        try {
+            FileOutputStream fos = new FileOutputStream(pictureFile);
+            image.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.close();
+        } catch (FileNotFoundException e) {
+            Log.d(TAG, "File not found: " + e.getMessage());
+        } catch (IOException e) {
+            Log.d(TAG, "Error accessing file: " + e.getMessage());
+        }
+
+    }
+
+    private  File getOutputMediaFile(){
+        // To be safe, you should check that the SDCard is mounted
+        // using Environment.getExternalStorageState() before doing this.
+        File mediaStorageDir = new File(Environment.getExternalStorageDirectory()
+                + "/Pictures/PhotoFilters/"
+                + getApplicationContext().getPackageName()
+                + "/Files");
+
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+                return null;
+            }
+        }
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
+        File mediaFile;
+        String mImageName="MI_"+ timeStamp +".jpg";
+        mediaFile = new File(mediaStorageDir.getPath() + File.separator + mImageName);
+        return mediaFile;
+    }
+
 }
