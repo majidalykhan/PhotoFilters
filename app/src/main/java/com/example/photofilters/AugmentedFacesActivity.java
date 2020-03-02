@@ -72,7 +72,7 @@ public class AugmentedFacesActivity extends AppCompatActivity {
     // Load the face regions renderable.
     // This is a skinned model that renders 3D objects mapped to the regions of the augmented face.
     ModelRenderable.builder()
-        .setSource(this, R.raw.fox_face)
+        .setSource(this, R.raw.mine)
         .build()
         .thenAccept(
             modelRenderable -> {

@@ -59,9 +59,9 @@ public class ArtisticStyle extends AppCompatActivity {
 
     private static final String TAG = ArtisticStyle.class.getSimpleName();
 
-    private static final String API_KEY = "msPl8rF0uc7BQmquu3hL52FSr6KfXR2l4jeYZJ5n";
-    private static final String ACCESS_KEY = "AKIA3XE3HF7S6ER5W5HM";
-    private static final String SECRET_KEY = "BvdvwHNrMTa/rqtfXgmA9svssVVl60kxMoCuOVwS";
+    private String API_KEY = getString(R.string.api_key); //Your key here
+    private String ACCESS_KEY = getString(R.string.access_key); //Your key here
+    private String SECRET_KEY = getString(R.string.secret_key); //Your key here
 
     private static final int REQUEST_GALLERY = 100;
     private static final int CHECK_RESULT_INTERVAL_IN_MS = 2500;
