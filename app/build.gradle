@@ -39,10 +39,10 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:29.2.1'
     implementation 'com.android.support:support-v4:29.2.1'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
 
 
     // Provides ARCore Session and related resources.
@@ -67,13 +67,8 @@ sceneform.asset('sampledata/models/fox_face.fbx',
         'sampledata/models/fox_face.sfa',
         'src/main/res/raw/fox_face')
 
-sceneform.asset('sampledata/models/red.fbx',
-        'default',
-        'sampledata/models/red.sfa',
-        'src/main/res/raw/red')
 
-
-sceneform.asset('sampledata/models/mine.fbx',
+sceneform.asset('sampledata/models/glasses.fbx',
         'default',
-        'sampledata/models/mine.sfa',
-        'src/main/res/raw/mine')
+        'sampledata/models/glasses.sfa',
+        'src/main/res/raw/glasses')

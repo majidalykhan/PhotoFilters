@@ -22,6 +22,9 @@ import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.util.Log;
 import android.widget.Toast;
 
@@ -67,6 +70,8 @@ public class Home extends AppCompatActivity {
     ImageButton gallery;
     ImageButton camSwitch;
     ImageButton artistic;
+    ImageButton settings;
+    ImageButton profile;
 
     private Camera mCamera;
     private CameraPreview mPreview;
@@ -78,6 +83,8 @@ public class Home extends AppCompatActivity {
     private Texture faceMeshTexture;
     private ModelRenderable faceRegionsRenderable;
     private final HashMap<AugmentedFace, AugmentedFaceNode> faceNodeMap = new HashMap<>();
+
+    FragmentManager fragmentmanager;
 
 
     @Override
@@ -92,6 +99,8 @@ public class Home extends AppCompatActivity {
         gallerybtntext = findViewById(R.id.gallerybtntext);
         camSwitch = findViewById(R.id.camSwitch);
         artistic = findViewById(R.id.artistic);
+        settings = findViewById(R.id.settings);
+        profile = findViewById(R.id.profile);
 
 
         //Firebase instance
@@ -156,6 +165,30 @@ public class Home extends AppCompatActivity {
             }
         });
 
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentmanager = getSupportFragmentManager();
+                Settings createFrag = new Settings();
+                FragmentTransaction trans = fragmentmanager.beginTransaction();
+                trans.replace(R.id.activity_home, createFrag);
+                trans.addToBackStack(null);
+                trans.commit();
+            }
+        });
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentmanager = getSupportFragmentManager();
+                Profile createFrag = new Profile();
+                FragmentTransaction trans = fragmentmanager.beginTransaction();
+                trans.replace(R.id.activity_home, createFrag);
+                trans.addToBackStack(null);
+                trans.commit();
+            }
+        });
+
         CameraPreview();
 
         Arcore();
@@ -184,7 +217,7 @@ public class Home extends AppCompatActivity {
         // Load the face regions renderable.
         // This is a skinned model that renders 3D objects mapped to the regions of the augmented face.
         ModelRenderable.builder()
-                .setSource(this, R.raw.mine)
+                .setSource(this, R.raw.glasses)
                 .build()
                 .thenAccept(
                         modelRenderable -> {
@@ -195,7 +228,7 @@ public class Home extends AppCompatActivity {
 
         // Load the face mesh texture.
         Texture.builder()
-                .setSource(this, R.drawable.fox_face_mesh_texture)
+                .setSource(this, R.drawable.sample)
                 .build()
                 .thenAccept(texture -> faceMeshTexture = texture);
 

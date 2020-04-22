@@ -1,23 +1,23 @@
 {
   animations: [
     {
-      path: 'sampledata/models/red.fbx',
+      path: 'sampledata/models/glasses.fbx',
     },
   ],
   materials: [
     {
-      name: 'Material_50',
+      name: 'body',
       parameters: [
         {
           baseColor: [
-            1,
-            1,
-            1,
+            0.98101300000000002,
+            0.67214600000000002,
+            0,
             1,
           ],
         },
         {
-          baseColorMap: '144',
+          baseColorMap: null,
         },
         {
           normalMap: null,
@@ -47,29 +47,15 @@
   model: {
     attributes: [
       'Position',
-      'Color',
       'TexCoord',
       'Orientation',
       'BoneIndices',
       'BoneWeights',
     ],
     collision: {},
-    file: 'sampledata/models/red.fbx',
-    name: 'red',
+    file: 'sampledata/models/glasses.fbx',
+    name: 'glasses',
     recenter: 'root',
-    scale: 9.7656240000000007,
   },
-  samplers: [
-    {
-      file: 'sampledata/models\\red.fbm\\144.png',
-      name: '144',
-      pipeline_name: 'red.fbm\\144.png',
-    },
-    {
-      file: 'sampledata/models\\red.fbm\\148.png',
-      name: '148',
-      pipeline_name: 'red.fbm\\148.png',
-    },
-  ],
   version: '0.54:2',
 }
