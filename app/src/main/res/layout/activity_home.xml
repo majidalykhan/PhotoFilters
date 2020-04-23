@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="#000000"
     android:id="@+id/activity_home"
     tools:context=".Home">
 
@@ -22,8 +22,8 @@
         <fragment
             android:id="@+id/face_fragment"
             android:name="com.example.photofilters.FaceArFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_width="352dp"
+            android:layout_height="115dp" />
 
     </FrameLayout>
 

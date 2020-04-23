@@ -5,14 +5,19 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- Needed only if your app targets Android 5.0 (API level 21) or higher. -->
     <uses-feature android:name="android.hardware.location.gps" />
-
-    <!-- Indicates that app requires ARCore ("AR Required"). Ensures the app is
+    <!--
+ Indicates that app requires ARCore ("AR Required"). Ensures the app is
          visible only in the Google Play Store on devices that support ARCore.
-         For "AR Optional" apps remove this line. -->
+         For "AR Optional" apps remove this line.
+    -->
     <uses-feature android:name="android.hardware.camera.ar" />
 
     <application
@@ -22,14 +27,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ArtisticStyle">
-
-        </activity>
+        <activity android:name=".Dashboard"
+            android:noHistory="true"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".ArtisticStyle"></activity>
         <activity android:name=".ForgotPass" />
-        <activity android:name=".Home">
-
-        </activity>
-        <activity android:name=".AugmentedFacesActivity"></activity>
+        <activity android:name=".Home"></activity>
+        <activity android:name=".AugmentedFacesActivity" />
         <activity android:name=".Test" />
         <activity android:name=".Login">
             <intent-filter>
@@ -43,6 +49,12 @@
         <meta-data
             android:name="com.google.ar.core"
             android:value="required" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+
+        <uses-library android:name ="org.apache.http.legacy" android:required ="false"/>
 
     </application>
 

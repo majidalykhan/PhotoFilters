@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -19,6 +20,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import es.dmoral.toasty.Toasty;
 
@@ -31,10 +37,13 @@ public class Login extends AppCompatActivity {
     EditText email;
     EditText password;
 
+    private String prefEmail,prefPass;
+
     ProgressBar pb;
 
     FirebaseAuth firebaseAuth;
 
+    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +51,11 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         registerhere = (TextView) findViewById(R.id.registerhere);
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
 
         registerhere.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +103,7 @@ public class Login extends AppCompatActivity {
                 pb.setVisibility(View.GONE);
                 if(task.isSuccessful()){
                     if(firebaseAuth.getCurrentUser().isEmailVerified()){
-                        Intent intent = new Intent (Login.this, Home.class);
+                        Intent intent = new Intent (Login.this, Dashboard.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }
@@ -120,4 +134,6 @@ public class Login extends AppCompatActivity {
             userLogin();
         }
     }
+
+
 }

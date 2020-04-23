@@ -59,9 +59,9 @@ public class ArtisticStyle extends AppCompatActivity {
 
     private static final String TAG = ArtisticStyle.class.getSimpleName();
 
-    private String API_KEY = getString(R.string.api_key); //Your key here
-    private String ACCESS_KEY = getString(R.string.access_key); //Your key here
-    private String SECRET_KEY = getString(R.string.secret_key); //Your key here
+    private String API_KEY = "reH1y2wICx9m6AZVdXGeg2nPECCLDyWeac3GPTMv"; //Your key here
+    private String ACCESS_KEY = "AKIA3XE3HF7SRUFGBWWP"; //Your key here
+    private String SECRET_KEY = "TJWgmGqI2VW+wlig7X7zC01iK5ErjGr/2fi/uZkR"; //Your key here
 
     private static final int REQUEST_GALLERY = 100;
     private static final int CHECK_RESULT_INTERVAL_IN_MS = 2500;
@@ -72,6 +72,7 @@ public class ArtisticStyle extends AppCompatActivity {
     private TextView mStatusText;
     private ImageView mImageView;
     private ImageView selectedImage;
+    private ImageView invisibleImage;
     private ProgressBar mProgressbarView;
     private ImageButton btnSave;
     private TextView saveText;
@@ -106,6 +107,7 @@ public class ArtisticStyle extends AppCompatActivity {
         selectedImage = (ImageView) findViewById(R.id.selectedImage);
         mImageView = (ImageView) findViewById(R.id.imageView);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        invisibleImage= (ImageView) findViewById(R.id.invisibleImage);
 
         btnSave = (ImageButton) findViewById(R.id.btnSave);
         saveText = (TextView) findViewById(R.id.saveText);
@@ -118,7 +120,7 @@ public class ArtisticStyle extends AppCompatActivity {
 
 
 
-        btnGallery.setOnClickListener(new View.OnClickListener() {
+        selectedImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -264,6 +266,7 @@ public class ArtisticStyle extends AppCompatActivity {
                         final Uri imageUri = data.getData();
                         final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                         final Bitmap selected = BitmapFactory.decodeStream(imageStream);
+                        invisibleImage.setVisibility(View.GONE);
                         selectedImage.setImageBitmap(mImageBitmap);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();

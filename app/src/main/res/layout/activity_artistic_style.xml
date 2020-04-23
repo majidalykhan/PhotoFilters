@@ -11,20 +11,6 @@
 
 
     <ImageButton
-        android:id="@+id/btnGallery"
-        android:layout_width="134dp"
-        android:layout_height="31dp"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/ic_loginbtn"
-        android:padding="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.061"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.977" />
-
-    <ImageButton
         android:id="@+id/btnSave"
         android:layout_width="134dp"
         android:layout_height="31dp"
@@ -40,25 +26,12 @@
         app:layout_constraintVertical_bias="0.977" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Choose Picture"
-        android:textColor="#ffffff"
-        app:layout_constraintBottom_toBottomOf="@+id/btnGallery"
-        app:layout_constraintEnd_toEndOf="@+id/btnGallery"
-        app:layout_constraintHorizontal_bias="0.509"
-        app:layout_constraintStart_toStartOf="@+id/btnGallery"
-        app:layout_constraintTop_toTopOf="@+id/btnGallery"
-        app:layout_constraintVertical_bias="0.437">
-
-    </TextView>
-
-    <TextView
         android:id="@+id/saveText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Save Picture"
         android:textColor="#ffffff"
+        android:textSize="15dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/btnSave"
         app:layout_constraintEnd_toEndOf="@+id/btnSave"
@@ -76,10 +49,11 @@
         android:layout_toRightOf="@id/btnGallery"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.955"
+        app:layout_constraintHorizontal_bias="0.741"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.988" />
+        app:layout_constraintVertical_bias="0.989" />
+
 
     <TextView
         android:id="@+id/statusText"
@@ -87,22 +61,38 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/btnGallery"
         android:layout_alignBottom="@+id/btnGallery"
-        android:layout_marginStart="24dp"
         android:layout_toEndOf="@+id/progressBar"
         android:padding="5dp"
         android:text="Status hint"
+        android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/progressBar"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/btnGallery"
+        app:layout_constraintHorizontal_bias="0.629"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.977" />
+        app:layout_constraintVertical_bias="0.975" />
+
+
+    <TextView
+        android:id="@+id/aaa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/progressBar"
+        android:padding="5dp"
+        android:text="(Tap to choose)"
+        android:textSize="15dp"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/selectedImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/selectedImage"
+        app:layout_constraintTop_toBottomOf="@+id/selectedImage"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="70dp"
         android:layout_height="0dp"
-        android:layout_below="@id/btnGallery"
         android:layout_centerHorizontal="true"
         android:adjustViewBounds="true"
         android:padding="15dp"
@@ -118,7 +108,6 @@
         android:id="@+id/selectedImage"
         android:layout_width="345dp"
         android:layout_height="362dp"
-        android:layout_below="@+id/btnGallery"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -130,10 +119,26 @@
 
     </ImageView>
 
+    <ImageView
+        android:id="@+id/invisibleImage"
+        android:layout_width="345dp"
+        android:layout_height="362dp"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:background="@drawable/ic_photo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.363"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.084">
+
+    </ImageView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="311dp"
-        android:layout_height="137dp"
+        android:layout_width="314dp"
+        android:layout_height="197dp"
         android:layout_below="@+id/imageView"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
