@@ -1,7 +1,7 @@
 {
   animations: [
     {
-      path: 'sampledata/models/glasses.fbx',
+      path: 'sampledata/models/yellow_glasses.fbx',
     },
   ],
   materials: [
@@ -53,8 +53,8 @@
       'BoneWeights',
     ],
     collision: {},
-    file: 'sampledata/models/glasses.fbx',
-    name: 'glasses',
+    file: 'sampledata/models/yellow_glasses.fbx',
+    name: 'yellow_glasses',
     recenter: 'root',
   },
   version: '0.54:2',

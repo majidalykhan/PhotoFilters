@@ -32,7 +32,9 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".ArtisticStyle"></activity>
+        <activity android:name=".ArtisticStyle">
+
+        </activity>
         <activity android:name=".ForgotPass" />
         <activity android:name=".Home"></activity>
         <activity android:name=".AugmentedFacesActivity" />

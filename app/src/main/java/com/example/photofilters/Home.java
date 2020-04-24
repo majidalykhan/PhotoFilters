@@ -62,16 +62,8 @@ public class Home extends AppCompatActivity {
 
     private static final int REQUEST_GALLERY = 100;
 
-    TextView user;
-    TextView capturetext;
-    TextView gallerybtntext;
-    ImageButton logout;
     ImageButton capture;
-    ImageButton gallery;
     ImageButton camSwitch;
-    ImageButton artistic;
-    ImageButton settings;
-    ImageButton profile;
 
     private Camera mCamera;
     private CameraPreview mPreview;
@@ -92,16 +84,8 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        //user = findViewById(R.id.user);
-        logout = findViewById(R.id.logoutbtn);
         capture = findViewById(R.id.capture);
-        gallery = findViewById(R.id.gallerybtn);
-        gallerybtntext = findViewById(R.id.gallerybtntext);
         camSwitch = findViewById(R.id.camSwitch);
-        artistic = findViewById(R.id.artistic);
-        settings = findViewById(R.id.settings);
-        profile = findViewById(R.id.profile);
-
 
         //Firebase instance
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -117,16 +101,6 @@ public class Home extends AppCompatActivity {
                   //  Toast.LENGTH_SHORT).show();
         }
 
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(Home.this, Login.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
 
         capture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,52 +114,12 @@ public class Home extends AppCompatActivity {
             }
         });
 
-        gallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gallery();
-            }
-        });
 
         camSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CamSwitch();
 
-            }
-        });
-
-        artistic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent (Home.this, ArtisticStyle.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fragmentmanager = getSupportFragmentManager();
-                Settings createFrag = new Settings();
-                FragmentTransaction trans = fragmentmanager.beginTransaction();
-                trans.replace(R.id.activity_home, createFrag);
-                trans.addToBackStack(null);
-                trans.commit();
-            }
-        });
-
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fragmentmanager = getSupportFragmentManager();
-                Profile createFrag = new Profile();
-                FragmentTransaction trans = fragmentmanager.beginTransaction();
-                trans.replace(R.id.activity_home, createFrag);
-                trans.addToBackStack(null);
-                trans.commit();
             }
         });
 
@@ -217,7 +151,7 @@ public class Home extends AppCompatActivity {
         // Load the face regions renderable.
         // This is a skinned model that renders 3D objects mapped to the regions of the augmented face.
         ModelRenderable.builder()
-                .setSource(this, R.raw.glasses)
+                .setSource(this, R.raw.yellow_glasses)
                 .build()
                 .thenAccept(
                         modelRenderable -> {
@@ -457,6 +391,15 @@ public class Home extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(Home.this, Dashboard.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+        finish();
     }
 
 }
