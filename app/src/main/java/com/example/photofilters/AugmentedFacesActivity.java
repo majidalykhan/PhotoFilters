@@ -1,27 +1,18 @@
-/*
- * Copyright 2019 Google LLC. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.example.photofilters;
 
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.ar.core.ArCoreApk;
 import com.google.ar.core.AugmentedFace;
@@ -34,10 +25,12 @@ import com.google.ar.sceneform.rendering.Renderable;
 import com.google.ar.sceneform.rendering.Texture;
 import com.google.ar.sceneform.ux.AugmentedFaceNode;
 
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 /**
  * This is an example activity that uses the Sceneform UX package to make common Augmented Faces
@@ -48,10 +41,25 @@ public class AugmentedFacesActivity extends AppCompatActivity {
 
   private static final double MIN_OPENGL_VERSION = 3.0;
 
+  private FrameLayout frameLayout;
+
   private FaceArFragment arFragment;
 
   private ModelRenderable faceRegionsRenderable;
   private Texture faceMeshTexture;
+
+
+  private final int [][] MASKS = new int[][]{
+          {R.raw.fox_face}, {R.raw.vendetta}, {R.raw.gladiator}, {R.raw.yellow_glasses},
+  };
+
+  private static int mMask = 0;
+  private int mMaskLoaded = 0;
+  private volatile boolean isMaskChanged = false;
+
+
+
+  ImageButton back, next;
 
   private final HashMap<AugmentedFace, AugmentedFaceNode> faceNodeMap = new HashMap<>();
 
@@ -69,23 +77,41 @@ public class AugmentedFacesActivity extends AppCompatActivity {
     setContentView(R.layout.activity_face_mesh);
     arFragment = (FaceArFragment) getSupportFragmentManager().findFragmentById(R.id.face_fragment);
 
-    // Load the face regions renderable.
-    // This is a skinned model that renders 3D objects mapped to the regions of the augmented face.
-    ModelRenderable.builder()
-        .setSource(this, R.raw.yellow_glasses)
-        .build()
-        .thenAccept(
-            modelRenderable -> {
-              faceRegionsRenderable = modelRenderable;
-              modelRenderable.setShadowCaster(false);
-              modelRenderable.setShadowReceiver(false);
-            });
+    back = findViewById(R.id.back);
+    next = findViewById(R.id.next);
 
-    // Load the face mesh texture.
-    Texture.builder()
-        .setSource(this, R.drawable.sample)
-        .build()
-        .thenAccept(texture -> faceMeshTexture = texture);
+    changeFilter(0);
+
+    next.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+
+        mMask = (mMask+1) % MASKS.length;
+        isMaskChanged = true;
+
+        changeFilter(mMask);
+
+        Toast.makeText(AugmentedFacesActivity.this, "Next Pressed", Toast.LENGTH_LONG).show();
+      }
+    });
+
+    back.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+
+        --mMask;
+        if (mMask < 0) mMask = MASKS.length - 1;
+        isMaskChanged = true;
+
+        changeFilter(mMask);
+
+
+        Toast.makeText(AugmentedFacesActivity.this, "Back Pressed", Toast.LENGTH_LONG).show();
+
+      }
+    });
+
+
 
     ArSceneView sceneView = arFragment.getArSceneView();
 
@@ -159,4 +185,41 @@ public class AugmentedFacesActivity extends AppCompatActivity {
     }
     return true;
   }
+
+  private void changeFilter(int maskNumber){
+
+
+    int [] mask = MASKS[maskNumber];
+
+    InputStream stream = getApplicationContext().getResources().openRawResource(mask[0]);
+
+    ModelRenderable.builder()
+            .setSource(this, mask[0])
+            .build()
+            .thenAccept(
+                    modelRenderable -> {
+                      faceRegionsRenderable = modelRenderable;
+                      modelRenderable.setShadowCaster(false);
+                      modelRenderable.setShadowReceiver(false);
+                    });
+
+    // Load the face mesh texture.
+    Texture.builder()
+            .setSource(this, R.drawable.sample)
+            .build()
+            .thenAccept(texture -> faceMeshTexture = texture);
+
+  }
+
+
+  @Override
+  public void onBackPressed() {
+    super.onBackPressed();
+    Intent i = new Intent(AugmentedFacesActivity.this, Dashboard.class);
+    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    startActivity(i);
+    finish();
+  }
+
+
 }

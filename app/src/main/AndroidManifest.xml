@@ -29,22 +29,20 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Dashboard"
             android:noHistory="true"></activity>
-        <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait"></activity>
         <activity android:name=".ArtisticStyle">
 
         </activity>
         <activity android:name=".ForgotPass" />
         <activity android:name=".Home"></activity>
-        <activity android:name=".AugmentedFacesActivity" />
-        <activity android:name=".Test" />
-        <activity android:name=".Login">
+        <activity android:name=".AugmentedFacesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".Login">
+
         </activity>
         <activity android:name=".Reg" />
 

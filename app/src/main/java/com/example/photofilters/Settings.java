@@ -43,7 +43,6 @@ public class Settings extends Fragment {
     private EditText email;
     private EditText password;
 
-    ImageButton goHome;
 
     ImageButton update;
 
@@ -96,8 +95,6 @@ public class Settings extends Fragment {
 
         update = view.findViewById(R.id.savebtn);
 
-        goHome = view.findViewById(R.id.goHome);
-
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -107,18 +104,6 @@ public class Settings extends Fragment {
             @Override
             public void onClick(View v) {
                 validate();
-            }
-        });
-
-
-        goHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getContext(), Home.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(i);
             }
         });
 

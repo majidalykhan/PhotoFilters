@@ -62,7 +62,7 @@ public class Dashboard extends AppCompatActivity {
         augmented.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Dashboard.this, Home.class);
+                Intent i = new Intent(Dashboard.this, AugmentedFacesActivity.class);
                 startActivity(i);
 
             }

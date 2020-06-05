@@ -71,3 +71,13 @@ sceneform.asset('sampledata/models/yellow_glasses.fbx',
         'default',
         'sampledata/models/yellow_glasses.sfa',
         'src/main/res/raw/yellow_glasses')
+
+sceneform.asset('sampledata/models/gladiator.fbx',
+        'default',
+        'sampledata/models/gladiator.sfa',
+        'src/main/res/raw/gladiator')
+
+sceneform.asset('sampledata/models/vendetta.fbx',
+        'default',
+        'sampledata/models/vendetta.sfa',
+        'src/main/res/raw/vendetta')

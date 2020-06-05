@@ -2,6 +2,7 @@ package com.example.photofilters;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -44,6 +45,7 @@ public class Login extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
 
     DatabaseReference databaseReference;
+    private ConstraintLayout constraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +136,5 @@ public class Login extends AppCompatActivity {
             userLogin();
         }
     }
-
 
 }

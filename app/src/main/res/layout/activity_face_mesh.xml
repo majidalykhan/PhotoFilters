@@ -2,96 +2,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#000000"
+    android:id="@+id/augmentedfaces_layout"
     tools:context=".AugmentedFacesActivity">
 
-  <fragment android:name="com.example.photofilters.FaceArFragment"
+  <fragment
       android:id="@+id/face_fragment"
+      android:name="com.example.photofilters.FaceArFragment"
       android:layout_width="match_parent"
       android:layout_height="match_parent" />
 
-  <androidx.constraintlayout.widget.ConstraintLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent">
+  <ImageButton
+      android:id="@+id/next"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="350dp"
+      android:layout_gravity="end"
+      android:layout_marginRight="10dp"
+      android:background="@drawable/ic_next"></ImageButton>
 
-    <ImageButton
-        android:id="@+id/camSwitch"
-        android:layout_width="36dp"
-        android:layout_height="29dp"
-        android:layout_marginTop="16dp"
-        android:background="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.953"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_switch_camera_button"
-        tools:ignore="VectorDrawableCompat" />
+  <ImageButton
+      android:id="@+id/back"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="350dp"
+      android:layout_gravity="start"
+      android:layout_marginLeft="10dp"
+      android:background="@drawable/ic_back"></ImageButton>
 
-    <ImageButton
-        android:id="@+id/logoutbtn"
-        android:layout_width="125dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="28dp"
-        android:background="@null"
-        app:layout_constraintBottom_toBottomOf="@+id/capture"
-        app:layout_constraintStart_toEndOf="@+id/capture"
-        app:layout_constraintTop_toTopOf="@+id/capture"
-        app:layout_constraintVertical_bias="0.571"
-        app:srcCompat="@drawable/ic_loginbtn"
-        tools:ignore="VectorDrawableCompat" />
-
-    <TextView
-        android:id="@+id/logintext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Logout"
-        android:textColor="#ffffff"
-        app:layout_constraintBottom_toBottomOf="@+id/logoutbtn"
-        app:layout_constraintEnd_toEndOf="@+id/logoutbtn"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="@+id/logoutbtn"
-        app:layout_constraintTop_toTopOf="@+id/logoutbtn"
-        app:layout_constraintVertical_bias="0.437" />
-
-    <ImageButton
-        android:id="@+id/capture"
-        android:layout_width="73dp"
-        android:layout_height="67dp"
-        android:background="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.975"
-        app:srcCompat="@drawable/ic_capturebtn"
-        tools:ignore="VectorDrawableCompat" />
-
-    <ImageButton
-        android:id="@+id/gallerybtn"
-        android:layout_width="125dp"
-        android:layout_height="46dp"
-        android:layout_marginEnd="28dp"
-        android:background="@null"
-        app:layout_constraintBottom_toBottomOf="@+id/capture"
-        app:layout_constraintEnd_toStartOf="@+id/capture"
-        app:layout_constraintTop_toTopOf="@+id/capture"
-        app:layout_constraintVertical_bias="0.571"
-        app:srcCompat="@drawable/ic_loginbtn"
-        tools:ignore="VectorDrawableCompat" />
-
-    <TextView
-        android:id="@+id/gallerybtntext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Gallery"
-        android:textColor="#ffffff"
-        app:layout_constraintBottom_toBottomOf="@+id/gallerybtn"
-        app:layout_constraintEnd_toEndOf="@+id/gallerybtn"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="@+id/gallerybtn"
-        app:layout_constraintTop_toTopOf="@+id/gallerybtn"
-        app:layout_constraintVertical_bias="0.437" />
-
-  </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
