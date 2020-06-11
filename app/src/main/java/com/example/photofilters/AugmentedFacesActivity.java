@@ -100,21 +100,55 @@ public class AugmentedFacesActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-  /*  if (!checkIsSupportedDeviceOrFinish(this)) {
+    if (!checkIsSupportedDeviceOrFinish(this)) {
       return;
-    } */
+    }
 
-    setContentView(R.layout.activity_face_mesh);
-    arFragment = (FaceArFragment) getSupportFragmentManager().findFragmentById(R.id.face_fragment);
+    setContentView(R.layout.activity_home);
+    arFragment = (FaceArFragment) getSupportFragmentManager().findFragmentById(R.id.face_face_fragment);
 
     back = findViewById(R.id.back);
     next = findViewById(R.id.next);
 
     recommend = findViewById(R.id.recommend);
 
-    userInterest();
+    arscene();
 
     changeFilter(0);
+
+    //userInterest();
+
+    listeners();
+
+
+
+
+
+  }
+
+  public static boolean checkIsSupportedDeviceOrFinish(final Activity activity) {
+    if (ArCoreApk.getInstance().checkAvailability(activity)
+        == ArCoreApk.Availability.UNSUPPORTED_DEVICE_NOT_CAPABLE) {
+      Log.e(TAG, "Augmented Faces requires ARCore.");
+      Toast.makeText(activity, "Augmented Faces requires ARCore", Toast.LENGTH_LONG).show();
+      activity.finish();
+      return false;
+    }
+    String openGlVersionString =
+        ((ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE))
+            .getDeviceConfigurationInfo()
+            .getGlEsVersion();
+    if (Double.parseDouble(openGlVersionString) < MIN_OPENGL_VERSION) {
+      Log.e(TAG, "Sceneform requires OpenGL ES 3.0 later");
+      Toast.makeText(activity, "Sceneform requires OpenGL ES 3.0 or later", Toast.LENGTH_LONG)
+          .show();
+      activity.finish();
+      return false;
+    }
+    return true;
+  }
+
+  private void listeners(){
 
     next.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -182,6 +216,9 @@ public class AugmentedFacesActivity extends AppCompatActivity {
       }
     });
 
+  }
+
+  private void arscene() {
 
 
     ArSceneView sceneView = arFragment.getArSceneView();
@@ -193,68 +230,39 @@ public class AugmentedFacesActivity extends AppCompatActivity {
     Scene scene = sceneView.getScene();
 
     scene.addOnUpdateListener(
-        (FrameTime frameTime) -> {
-          if (faceRegionsRenderable == null || faceMeshTexture == null) {
-            return;
-          }
+            (FrameTime frameTime) -> {
+              if (faceRegionsRenderable == null || faceMeshTexture == null) {
+                return;
+              }
 
-          Collection<AugmentedFace> faceList =
-              sceneView.getSession().getAllTrackables(AugmentedFace.class);
+              Collection<AugmentedFace> faceList =
+                      sceneView.getSession().getAllTrackables(AugmentedFace.class);
 
-          // Make new AugmentedFaceNodes for any new faces.
-          for (AugmentedFace face : faceList) {
-            if (!faceNodeMap.containsKey(face)) {
-              AugmentedFaceNode faceNode = new AugmentedFaceNode(face);
-              faceNode.setParent(scene);
-              faceNode.setFaceRegionsRenderable(faceRegionsRenderable);
-              faceNode.setFaceMeshTexture(faceMeshTexture);
-              faceNodeMap.put(face, faceNode);
-            }
-          }
+              // Make new AugmentedFaceNodes for any new faces.
+              for (AugmentedFace face : faceList) {
+                if (!faceNodeMap.containsKey(face)) {
+                  AugmentedFaceNode faceNode = new AugmentedFaceNode(face);
+                  faceNode.setParent(scene);
+                  faceNode.setFaceRegionsRenderable(faceRegionsRenderable);
+                  faceNode.setFaceMeshTexture(faceMeshTexture);
+                  faceNodeMap.put(face, faceNode);
+                }
+              }
 
-          // Remove any AugmentedFaceNodes associated with an AugmentedFace that stopped tracking.
-          Iterator<Map.Entry<AugmentedFace, AugmentedFaceNode>> iter =
-              faceNodeMap.entrySet().iterator();
-          while (iter.hasNext()) {
-            Map.Entry<AugmentedFace, AugmentedFaceNode> entry = iter.next();
-            AugmentedFace face = entry.getKey();
-            if (face.getTrackingState() == TrackingState.STOPPED) {
-              AugmentedFaceNode faceNode = entry.getValue();
-              faceNode.setParent(null);
-              iter.remove();
-            }
-          }
-        });
-  }
+              // Remove any AugmentedFaceNodes associated with an AugmentedFace that stopped tracking.
+              Iterator<Map.Entry<AugmentedFace, AugmentedFaceNode>> iter =
+                      faceNodeMap.entrySet().iterator();
+              while (iter.hasNext()) {
+                Map.Entry<AugmentedFace, AugmentedFaceNode> entry = iter.next();
+                AugmentedFace face = entry.getKey();
+                if (face.getTrackingState() == TrackingState.STOPPED) {
+                  AugmentedFaceNode faceNode = entry.getValue();
+                  faceNode.setParent(null);
+                  iter.remove();
+                }
+              }
+            });
 
-  /**
-   * Returns false and displays an error message if Sceneform can not run, true if Sceneform can run
-   * on this device.
-   *
-   * <p>Sceneform requires Android N on the device as well as OpenGL 3.0 capabilities.
-   *
-   * <p>Finishes the activity if Sceneform can not run
-   */
-  public static boolean checkIsSupportedDeviceOrFinish(final Activity activity) {
-    if (ArCoreApk.getInstance().checkAvailability(activity)
-        == ArCoreApk.Availability.UNSUPPORTED_DEVICE_NOT_CAPABLE) {
-      Log.e(TAG, "Augmented Faces requires ARCore.");
-      Toast.makeText(activity, "Augmented Faces requires ARCore", Toast.LENGTH_LONG).show();
-      activity.finish();
-      return false;
-    }
-    String openGlVersionString =
-        ((ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE))
-            .getDeviceConfigurationInfo()
-            .getGlEsVersion();
-    if (Double.parseDouble(openGlVersionString) < MIN_OPENGL_VERSION) {
-      Log.e(TAG, "Sceneform requires OpenGL ES 3.0 later");
-      Toast.makeText(activity, "Sceneform requires OpenGL ES 3.0 or later", Toast.LENGTH_LONG)
-          .show();
-      activity.finish();
-      return false;
-    }
-    return true;
   }
 
   private void changeFilter(int maskNumber){
@@ -325,9 +333,6 @@ public class AugmentedFacesActivity extends AppCompatActivity {
     AlertDialog dialog = alert.create();
     dialog.show();
   }
-
-
-
 
   @Override
   public void onBackPressed() {
