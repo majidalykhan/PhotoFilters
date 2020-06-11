@@ -30,5 +30,16 @@
       android:layout_marginLeft="10dp"
       android:background="@drawable/ic_back"></ImageButton>
 
+  <Button
+      android:id="@+id/recommend"
+      android:layout_width="180dp"
+      android:layout_height="35dp"
+      android:layout_gravity="start"
+      android:text="Recommend Filter"
+      android:textColor="@color/colorPrimary"
+      android:layout_marginLeft="110dp"
+      android:layout_marginTop="600dp"
+      android:background="@drawable/ic_whitebtn"></Button>
+
 
 </FrameLayout>

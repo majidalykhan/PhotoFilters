@@ -1,18 +1,31 @@
 package com.example.photofilters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.ar.core.ArCoreApk;
 import com.google.ar.core.AugmentedFace;
@@ -26,10 +39,14 @@ import com.google.ar.sceneform.rendering.Texture;
 import com.google.ar.sceneform.ux.AugmentedFaceNode;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 
 /**
@@ -47,6 +64,10 @@ public class AugmentedFacesActivity extends AppCompatActivity {
 
   private ModelRenderable faceRegionsRenderable;
   private Texture faceMeshTexture;
+
+  private Button recommend;
+
+  private String SpinnerselectedItem;
 
 
   private final int [][] MASKS = new int[][]{
@@ -79,15 +100,19 @@ public class AugmentedFacesActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    if (!checkIsSupportedDeviceOrFinish(this)) {
+  /*  if (!checkIsSupportedDeviceOrFinish(this)) {
       return;
-    }
+    } */
 
     setContentView(R.layout.activity_face_mesh);
     arFragment = (FaceArFragment) getSupportFragmentManager().findFragmentById(R.id.face_fragment);
 
     back = findViewById(R.id.back);
     next = findViewById(R.id.next);
+
+    recommend = findViewById(R.id.recommend);
+
+    userInterest();
 
     changeFilter(0);
 
@@ -116,6 +141,43 @@ public class AugmentedFacesActivity extends AppCompatActivity {
 
 
         Toast.makeText(AugmentedFacesActivity.this, "Back Pressed", Toast.LENGTH_LONG).show();
+
+      }
+    });
+
+
+    recommend.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        String[] selectInterest = { "Beard", "Cap", "Face", "Glasses", "Hairstyle", "Hat", "Helmet", "Moustache"};
+        if(SpinnerselectedItem == "Beard"){
+          Toast.makeText(getApplication().getBaseContext(), "Beard Selected", Toast.LENGTH_SHORT).show();
+        }
+        else if(SpinnerselectedItem == "Cap"){
+          Toast.makeText(getApplication().getBaseContext(), "Cap Selected", Toast.LENGTH_SHORT).show();
+        }
+        else if(SpinnerselectedItem == "Face"){
+          Toast.makeText(getApplication().getBaseContext(), "Cap Selected", Toast.LENGTH_SHORT).show();
+        }
+        else if(SpinnerselectedItem == "Glasses"){
+          Toast.makeText(getApplication().getBaseContext(), "Cap Selected", Toast.LENGTH_SHORT).show();
+        }
+        else if(SpinnerselectedItem == "Hairstyle"){
+          Toast.makeText(getApplication().getBaseContext(), "Cap Selected", Toast.LENGTH_SHORT).show();
+        }
+        else if(SpinnerselectedItem == "Hat"){
+          Toast.makeText(getApplication().getBaseContext(), "Cap Selected", Toast.LENGTH_SHORT).show();
+        }
+        else if(SpinnerselectedItem == "Helmet"){
+          Toast.makeText(getApplication().getBaseContext(), "Cap Selected", Toast.LENGTH_SHORT).show();
+        }
+        else if(SpinnerselectedItem == "Moustache"){
+          Toast.makeText(getApplication().getBaseContext(), "Cap Selected", Toast.LENGTH_SHORT).show();
+        }
+        else {
+          Toast.makeText(getApplication().getBaseContext(), "Select interest first", Toast.LENGTH_SHORT).show();
+          userInterest();
+        }
 
       }
     });
@@ -219,6 +281,52 @@ public class AugmentedFacesActivity extends AppCompatActivity {
             .thenAccept(texture -> faceMeshTexture = texture);
 
   }
+
+  private void userInterest(){
+
+    String[] selectInterest = { "Beard", "Cap", "Face", "Glasses", "Hairstyle", "Hat", "Helmet", "Moustache"};
+
+    LayoutInflater inflater = getLayoutInflater();
+    View alertLayout = inflater.inflate(R.layout.spinner_layout, null);
+    final Spinner spSex = (Spinner) alertLayout.findViewById(R.id.spinner);
+
+    final List<String> interestList = new ArrayList<>(Arrays.asList(selectInterest));
+
+    // Initializing an ArrayAdapter
+    @SuppressLint({"NewApi", "LocalSuppress"}) final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
+            Objects.requireNonNull(this),R.layout.support_simple_spinner_dropdown_item,interestList);
+
+    spinnerArrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+    spSex.setAdapter(spinnerArrayAdapter);
+
+
+    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+    alert.setTitle("Choose type of filter you are interested in");
+    alert.setView(alertLayout);
+    alert.setCancelable(false);
+    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        Toast.makeText(getApplication().getBaseContext(), "Recommendations will not be available", Toast.LENGTH_SHORT).show();
+
+      }
+    });
+
+    alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+
+        SpinnerselectedItem = String.valueOf(spSex.getSelectedItem());
+
+        Toast.makeText(getBaseContext(), SpinnerselectedItem, Toast.LENGTH_SHORT).show();
+
+      }
+    });
+    AlertDialog dialog = alert.create();
+    dialog.show();
+  }
+
+
 
 
   @Override
