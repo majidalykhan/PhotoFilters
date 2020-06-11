@@ -104,8 +104,8 @@ public class AugmentedFacesActivity extends AppCompatActivity {
       return;
     }
 
-    setContentView(R.layout.activity_home);
-    arFragment = (FaceArFragment) getSupportFragmentManager().findFragmentById(R.id.face_face_fragment);
+    setContentView(R.layout.activity_face_mesh);
+    arFragment = (FaceArFragment) getSupportFragmentManager().findFragmentById(R.id.face_fragment);
 
     back = findViewById(R.id.back);
     next = findViewById(R.id.next);
@@ -119,10 +119,6 @@ public class AugmentedFacesActivity extends AppCompatActivity {
     //userInterest();
 
     listeners();
-
-
-
-
 
   }
 
