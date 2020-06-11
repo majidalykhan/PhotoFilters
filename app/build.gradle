@@ -72,12 +72,114 @@ sceneform.asset('sampledata/models/yellow_glasses.fbx',
         'sampledata/models/yellow_glasses.sfa',
         'src/main/res/raw/yellow_glasses')
 
-sceneform.asset('sampledata/models/gladiator.fbx',
-        'default',
-        'sampledata/models/gladiator.sfa',
-        'src/main/res/raw/gladiator')
 
-sceneform.asset('sampledata/models/vendetta.fbx',
+sceneform.asset('sampledata/models/beard1.fbx',
         'default',
-        'sampledata/models/vendetta.sfa',
-        'src/main/res/raw/vendetta')
+        'sampledata/models/beard1.sfa',
+        'src/main/res/raw/beard1')
+
+sceneform.asset('sampledata/models/beard2.fbx',
+        'default',
+        'sampledata/models/beard2.sfa',
+        'src/main/res/raw/beard2')
+
+sceneform.asset('sampledata/models/cap1.fbx',
+        'default',
+        'sampledata/models/cap1.sfa',
+        'src/main/res/raw/cap1')
+
+sceneform.asset('sampledata/models/cap3.fbx',
+        'default',
+        'sampledata/models/cap3.sfa',
+        'src/main/res/raw/cap3')
+
+sceneform.asset('sampledata/models/facemask1.fbx',
+        'default',
+        'sampledata/models/facemask1.sfa',
+        'src/main/res/raw/facemask1')
+
+sceneform.asset('sampledata/models/facemask2.fbx',
+        'default',
+        'sampledata/models/facemask2.sfa',
+        'src/main/res/raw/facemask2')
+
+sceneform.asset('sampledata/models/facemask3.fbx',
+        'default',
+        'sampledata/models/facemask3.sfa',
+        'src/main/res/raw/facemask3')
+
+sceneform.asset('sampledata/models/facemask4.fbx',
+        'default',
+        'sampledata/models/facemask4.sfa',
+        'src/main/res/raw/facemask4')
+
+sceneform.asset('sampledata/models/facemask5.fbx',
+        'default',
+        'sampledata/models/facemask5.sfa',
+        'src/main/res/raw/facemask5')
+
+sceneform.asset('sampledata/models/glasses1.fbx',
+        'default',
+        'sampledata/models/glasses1.sfa',
+        'src/main/res/raw/glasses1')
+
+
+sceneform.asset('sampledata/models/glasses3.fbx',
+        'default',
+        'sampledata/models/glasses3.sfa',
+        'src/main/res/raw/glasses3')
+
+sceneform.asset('sampledata/models/hairstyle1.fbx',
+        'default',
+        'sampledata/models/hairstyle1.sfa',
+        'src/main/res/raw/hairstyle1')
+
+sceneform.asset('sampledata/models/hairstyle2.fbx',
+        'default',
+        'sampledata/models/hairstyle2.sfa',
+        'src/main/res/raw/hairstyle2')
+
+sceneform.asset('sampledata/models/hairstyle3.fbx',
+        'default',
+        'sampledata/models/hairstyle3.sfa',
+        'src/main/res/raw/hairstyle3')
+
+sceneform.asset('sampledata/models/hairstyle4.fbx',
+        'default',
+        'sampledata/models/hairstyle4.sfa',
+        'src/main/res/raw/hairstyle4')
+
+sceneform.asset('sampledata/models/hat1.fbx',
+        'default',
+        'sampledata/models/hat1.sfa',
+        'src/main/res/raw/hat1')
+
+sceneform.asset('sampledata/models/hat2.fbx',
+        'default',
+        'sampledata/models/hat2.sfa',
+        'src/main/res/raw/hat2')
+
+sceneform.asset('sampledata/models/helmet1.fbx',
+        'default',
+        'sampledata/models/helmet1.sfa',
+        'src/main/res/raw/helmet1')
+
+sceneform.asset('sampledata/models/helmet2.fbx',
+        'default',
+        'sampledata/models/helmet2.sfa',
+        'src/main/res/raw/helmet2')
+
+sceneform.asset('sampledata/models/helmet3.fbx',
+        'default',
+        'sampledata/models/helmet3.sfa',
+        'src/main/res/raw/helmet3')
+
+sceneform.asset('sampledata/models/moustache1.fbx',
+        'default',
+        'sampledata/models/moustache1.sfa',
+        'src/main/res/raw/moustache1')
+
+sceneform.asset('sampledata/models/moustache2.fbx',
+        'default',
+        'sampledata/models/moustache2.sfa',
+        'src/main/res/raw/moustache2')

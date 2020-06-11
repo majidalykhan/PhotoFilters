@@ -50,7 +50,16 @@ public class AugmentedFacesActivity extends AppCompatActivity {
 
 
   private final int [][] MASKS = new int[][]{
-          {R.raw.fox_face}, {R.raw.vendetta}, {R.raw.gladiator}, {R.raw.yellow_glasses},
+          {R.raw.fox_face},
+          {R.raw.beard1}, {R.raw.beard2},
+          {R.raw.cap1}, {R.raw.cap3},
+          {R.raw.facemask1}, {R.raw.facemask2}, {R.raw.facemask3}, {R.raw.facemask4}, {R.raw.facemask5},
+          {R.raw.glasses1}, {R.raw.yellow_glasses},
+          {R.raw.hairstyle1}, {R.raw.hairstyle2}, {R.raw.hairstyle4},
+          {R.raw.hat1}, {R.raw.hat2},
+          {R.raw.helmet1}, {R.raw.helmet2}, {R.raw.helmet3},
+          {R.raw.moustache1}, {R.raw.moustache2},
+          //glasses3, hairstyle3,
   };
 
   private static int mMask = 0;

@@ -1,0 +1,111 @@
+{
+  animations: [
+    {
+      clips: [
+        {
+          name: 'Armature|Armature|Take 001|BaseLayer',
+        },
+      ],
+      path: 'sampledata/models/beard2.fbx',
+    },
+  ],
+  materials: [
+    {
+      name: 'Material.002',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: 'beard_v20',
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+    {
+      name: 'Material.001',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: 'beard_v20',
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+      'BoneIndices',
+      'BoneWeights',
+    ],
+    collision: {},
+    file: 'sampledata/models/beard2.fbx',
+    name: 'beard2',
+    recenter: 'root',
+  },
+  samplers: [
+    {
+      file: 'F:\\Bahria\\FYP\\Google Sceneform\\Free Mask\\Beard\\beard_assets\\beard_v20.png',
+      name: 'beard_v20',
+      pipeline_name: 'F:\\Bahria\\FYP\\Google Sceneform\\Free Mask\\Beard\\beard_assets\\beard_v20.png',
+    },
+  ],
+  version: '0.54:2',
+}

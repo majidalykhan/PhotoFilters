@@ -1,0 +1,149 @@
+{
+  animations: [
+    {
+      path: 'sampledata/models/facemask2.fbx',
+    },
+  ],
+  materials: [
+    {
+      name: 'Material.004',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: 'screw_d2',
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+    {
+      name: 'Material.003',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: 'screw_d2',
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+    {
+      name: 'Material.001',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: 'hair_d7',
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+      'BoneIndices',
+      'BoneWeights',
+    ],
+    collision: {},
+    file: 'sampledata/models/facemask2.fbx',
+    name: 'facemask2',
+    recenter: 'root',
+  },
+  samplers: [
+    {
+      file: 'F:\\Bahria\\FYP\\Google Sceneform\\Free Mask\\Frankenstein\\frankenstein_assets\\screw_d2.png',
+      name: 'screw_d2',
+      pipeline_name: 'F:\\Bahria\\FYP\\Google Sceneform\\Free Mask\\Frankenstein\\frankenstein_assets\\screw_d2.png',
+    },
+    {
+      file: 'F:\\Bahria\\FYP\\Google Sceneform\\Free Mask\\Frankenstein\\frankenstein_assets\\hair_d7.png',
+      name: 'hair_d7',
+      pipeline_name: 'F:\\Bahria\\FYP\\Google Sceneform\\Free Mask\\Frankenstein\\frankenstein_assets\\hair_d7.png',
+    },
+  ],
+  version: '0.54:2',
+}

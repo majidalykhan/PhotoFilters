@@ -1,22 +1,91 @@
 {
+  animations: [
+    {
+      clips: [
+        {
+          name: 'Take 001',
+          runtime_name: 'fox_face',
+        },
+      ],
+      path: 'sampledata/models/fox_face.fbx',
+    },
+  ],
   materials: [
     {
       name: 'nose',
       parameters: [
         {
-          texture: 'nose_fur',
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: null,
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
         },
       ],
-      source: 'sampledata/models/fox_face_material.mat',
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
     },
     {
       name: 'earMAT',
       parameters: [
         {
-          texture: 'ear_fur',
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: null,
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
         },
       ],
-      source: 'sampledata/models/fox_face_material.mat',
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
     },
   ],
   model: {
@@ -30,18 +99,7 @@
     collision: {},
     file: 'sampledata/models/fox_face.fbx',
     name: 'fox_face',
+    recenter: 'root',
   },
-  samplers: [
-    {
-      file: 'sampledata/models/ear_fur.png',
-      name: 'ear_fur',
-      pipeline_name: 'ear_fur.png',
-    },
-    {
-      file: 'sampledata/models/nose_fur.png',
-      name: 'nose_fur',
-      pipeline_name: '..\\fox\\nose_fur.png',
-    },
-  ],
   version: '0.54:2',
 }
