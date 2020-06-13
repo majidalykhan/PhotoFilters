@@ -47,6 +47,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 import java.util.concurrent.Callable;
 
 /**
@@ -83,6 +84,38 @@ public class AugmentedFacesActivity extends AppCompatActivity {
           //glasses3, hairstyle3,
   };
 
+    private final int [][] BEARDS = new int[][]{
+            {R.raw.beard1}, {R.raw.beard2},
+    };
+
+    private final int [][] CAPS = new int[][]{
+            {R.raw.cap1}, {R.raw.cap3},
+    };
+
+    private final int [][] FACES = new int[][]{
+            {R.raw.facemask1}, {R.raw.facemask2}, {R.raw.facemask3}, {R.raw.facemask4}, {R.raw.facemask5},
+    };
+
+    private final int [][] GLASSES = new int[][]{
+            {R.raw.yellow_glasses}, {R.raw.glasses1},
+    };
+
+    private final int [][] HAIRSTYLES = new int[][]{
+            {R.raw.hairstyle1}, {R.raw.hairstyle2}, {R.raw.hairstyle4},
+    };
+
+    private final int [][] HATS = new int[][]{
+            {R.raw.hat1}, {R.raw.hat2},
+    };
+
+    private final int [][] HELMETS = new int[][]{
+            {R.raw.helmet1}, {R.raw.helmet2}, {R.raw.helmet3},
+    };
+
+    private final int [][] MOUSTACHES = new int[][]{
+            {R.raw.moustache1}, {R.raw.moustache2},
+    };
+
   private static int mMask = 0;
   private int mMaskLoaded = 0;
   private volatile boolean isMaskChanged = false;
@@ -116,7 +149,7 @@ public class AugmentedFacesActivity extends AppCompatActivity {
 
     changeFilter(0);
 
-    //userInterest();
+    userInterest();
 
     listeners();
 
@@ -179,29 +212,70 @@ public class AugmentedFacesActivity extends AppCompatActivity {
     recommend.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        String[] selectInterest = { "Beard", "Cap", "Face", "Glasses", "Hairstyle", "Hat", "Helmet", "Moustache"};
+
         if(SpinnerselectedItem == "Beard"){
+
+            Random rand = new Random();
+
+            recommendFilterBeard(rand.nextInt());
+
+
           Toast.makeText(getApplication().getBaseContext(), "Beard Selected", Toast.LENGTH_SHORT).show();
         }
         else if(SpinnerselectedItem == "Cap"){
+
+            Random rand = new Random();
+
+            recommendFilterCap(rand.nextInt());
+
           Toast.makeText(getApplication().getBaseContext(), "Cap Selected", Toast.LENGTH_SHORT).show();
         }
         else if(SpinnerselectedItem == "Face"){
+
+            Random rand = new Random();
+
+            recommendFilterFace(rand.nextInt());
+
           Toast.makeText(getApplication().getBaseContext(), "Cap Selected", Toast.LENGTH_SHORT).show();
         }
         else if(SpinnerselectedItem == "Glasses"){
+
+            Random rand = new Random();
+
+            recommendFilterGlasses(rand.nextInt());
+
           Toast.makeText(getApplication().getBaseContext(), "Cap Selected", Toast.LENGTH_SHORT).show();
         }
         else if(SpinnerselectedItem == "Hairstyle"){
+
+            Random rand = new Random();
+
+            recommendFilterHairstyle(rand.nextInt());
+
           Toast.makeText(getApplication().getBaseContext(), "Cap Selected", Toast.LENGTH_SHORT).show();
         }
         else if(SpinnerselectedItem == "Hat"){
+
+            Random rand = new Random();
+
+            recommendFilterHat(rand.nextInt());
+
           Toast.makeText(getApplication().getBaseContext(), "Cap Selected", Toast.LENGTH_SHORT).show();
         }
         else if(SpinnerselectedItem == "Helmet"){
+
+            Random rand = new Random();
+
+            recommendFilterHelmet(rand.nextInt());
+
           Toast.makeText(getApplication().getBaseContext(), "Cap Selected", Toast.LENGTH_SHORT).show();
         }
         else if(SpinnerselectedItem == "Moustache"){
+
+            Random rand = new Random();
+
+            recommendFilterMoustache(rand.nextInt());
+
           Toast.makeText(getApplication().getBaseContext(), "Cap Selected", Toast.LENGTH_SHORT).show();
         }
         else {
@@ -278,6 +352,217 @@ public class AugmentedFacesActivity extends AppCompatActivity {
                       modelRenderable.setShadowReceiver(false);
                     });
 
+      ModelRenderable.builder()
+              .setSource(this, mask[1])
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, mask[2])
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, mask[3])
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, mask[4])
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, mask[5])
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, mask[6])
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, mask[7])
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+
+      ModelRenderable.builder()
+              .setSource(this, mask[8])
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, mask[9])
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, mask[10])
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, mask[11])
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, mask[12])
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, mask[13])
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, mask[14])
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, mask[15])
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, mask[16])
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, mask[17])
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, mask[18])
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, mask[19])
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, mask[20])
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, mask[21])
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
     // Load the face mesh texture.
     Texture.builder()
             .setSource(this, R.drawable.sample)
@@ -329,6 +614,210 @@ public class AugmentedFacesActivity extends AppCompatActivity {
     AlertDialog dialog = alert.create();
     dialog.show();
   }
+
+
+    private void recommendFilterBeard(int maskNumber)
+    {
+       // int mask = new Random().nextInt(BEARDS[maskNumber].length);
+
+        int [] mask = BEARDS[maskNumber];
+
+        //InputStream stream = getApplicationContext().getResources().openRawResource(mask[0]);
+
+        ModelRenderable.builder()
+                .setSource(this, mask[0])
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            faceRegionsRenderable = modelRenderable;
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+        // Load the face mesh texture.
+        Texture.builder()
+                .setSource(this, R.drawable.sample)
+                .build()
+                .thenAccept(texture -> faceMeshTexture = texture);
+
+
+    }
+
+    private void recommendFilterCap(int maskNumber)
+    {
+        int mask = new Random().nextInt(CAPS[maskNumber].length);
+
+        //InputStream stream = getApplicationContext().getResources().openRawResource(mask[0]);
+
+        ModelRenderable.builder()
+                .setSource(this, mask)
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            faceRegionsRenderable = modelRenderable;
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+        // Load the face mesh texture.
+        Texture.builder()
+                .setSource(this, R.drawable.sample)
+                .build()
+                .thenAccept(texture -> faceMeshTexture = texture);
+
+
+    }
+
+    private void recommendFilterFace(int maskNumber)
+    {
+        int mask = new Random().nextInt(FACES[maskNumber].length);
+
+        //InputStream stream = getApplicationContext().getResources().openRawResource(mask[0]);
+
+        ModelRenderable.builder()
+                .setSource(this, mask)
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            faceRegionsRenderable = modelRenderable;
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+        // Load the face mesh texture.
+        Texture.builder()
+                .setSource(this, R.drawable.sample)
+                .build()
+                .thenAccept(texture -> faceMeshTexture = texture);
+
+
+    }
+
+    private void recommendFilterGlasses(int maskNumber)
+    {
+        int mask = new Random().nextInt(GLASSES[maskNumber].length);
+
+        //InputStream stream = getApplicationContext().getResources().openRawResource(mask[0]);
+
+        ModelRenderable.builder()
+                .setSource(this, mask)
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            faceRegionsRenderable = modelRenderable;
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+        // Load the face mesh texture.
+        Texture.builder()
+                .setSource(this, R.drawable.sample)
+                .build()
+                .thenAccept(texture -> faceMeshTexture = texture);
+
+
+    }
+
+    private void recommendFilterHairstyle(int maskNumber)
+    {
+        int mask = new Random().nextInt(HAIRSTYLES[maskNumber].length);
+
+        //InputStream stream = getApplicationContext().getResources().openRawResource(mask[0]);
+
+        ModelRenderable.builder()
+                .setSource(this, mask)
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            faceRegionsRenderable = modelRenderable;
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+        // Load the face mesh texture.
+        Texture.builder()
+                .setSource(this, R.drawable.sample)
+                .build()
+                .thenAccept(texture -> faceMeshTexture = texture);
+
+
+    }
+
+    private void recommendFilterHat(int maskNumber)
+    {
+        int mask = new Random().nextInt(HATS[maskNumber].length);
+
+        //InputStream stream = getApplicationContext().getResources().openRawResource(mask[0]);
+
+        ModelRenderable.builder()
+                .setSource(this, mask)
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            faceRegionsRenderable = modelRenderable;
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+        // Load the face mesh texture.
+        Texture.builder()
+                .setSource(this, R.drawable.sample)
+                .build()
+                .thenAccept(texture -> faceMeshTexture = texture);
+
+
+    }
+
+    private void recommendFilterHelmet(int maskNumber)
+    {
+        int mask = new Random().nextInt(HELMETS[maskNumber].length);
+
+        //InputStream stream = getApplicationContext().getResources().openRawResource(mask[0]);
+
+        ModelRenderable.builder()
+                .setSource(this, mask)
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            faceRegionsRenderable = modelRenderable;
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+        // Load the face mesh texture.
+        Texture.builder()
+                .setSource(this, R.drawable.sample)
+                .build()
+                .thenAccept(texture -> faceMeshTexture = texture);
+
+
+    }
+
+    private void recommendFilterMoustache(int maskNumber)
+    {
+        int mask = new Random().nextInt(MOUSTACHES[maskNumber].length);
+
+        //InputStream stream = getApplicationContext().getResources().openRawResource(mask[0]);
+
+        ModelRenderable.builder()
+                .setSource(this, mask)
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            faceRegionsRenderable = modelRenderable;
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+        // Load the face mesh texture.
+        Texture.builder()
+                .setSource(this, R.drawable.sample)
+                .build()
+                .thenAccept(texture -> faceMeshTexture = texture);
+
+
+    }
+
 
   @Override
   public void onBackPressed() {
