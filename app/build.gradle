@@ -21,7 +21,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -123,12 +124,6 @@ sceneform.asset('sampledata/models/glasses1.fbx',
         'sampledata/models/glasses1.sfa',
         'src/main/res/raw/glasses1')
 
-
-sceneform.asset('sampledata/models/glasses3.fbx',
-        'default',
-        'sampledata/models/glasses3.sfa',
-        'src/main/res/raw/glasses3')
-
 sceneform.asset('sampledata/models/hairstyle1.fbx',
         'default',
         'sampledata/models/hairstyle1.sfa',
@@ -138,11 +133,6 @@ sceneform.asset('sampledata/models/hairstyle2.fbx',
         'default',
         'sampledata/models/hairstyle2.sfa',
         'src/main/res/raw/hairstyle2')
-
-sceneform.asset('sampledata/models/hairstyle3.fbx',
-        'default',
-        'sampledata/models/hairstyle3.sfa',
-        'src/main/res/raw/hairstyle3')
 
 sceneform.asset('sampledata/models/hairstyle4.fbx',
         'default',
