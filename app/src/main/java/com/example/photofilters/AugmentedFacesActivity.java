@@ -618,8 +618,6 @@ public class AugmentedFacesActivity extends AppCompatActivity {
 
     private void recommendFilterBeard(int maskNumber)
     {
-       // int mask = new Random().nextInt(BEARDS[maskNumber].length);
-
         int [] mask = BEARDS[maskNumber];
 
         //InputStream stream = getApplicationContext().getResources().openRawResource(mask[0]);
@@ -645,12 +643,12 @@ public class AugmentedFacesActivity extends AppCompatActivity {
 
     private void recommendFilterCap(int maskNumber)
     {
-        int mask = new Random().nextInt(CAPS[maskNumber].length);
+        int [] mask = CAPS[maskNumber];
 
         //InputStream stream = getApplicationContext().getResources().openRawResource(mask[0]);
 
         ModelRenderable.builder()
-                .setSource(this, mask)
+                .setSource(this, mask[0])
                 .build()
                 .thenAccept(
                         modelRenderable -> {
@@ -670,12 +668,10 @@ public class AugmentedFacesActivity extends AppCompatActivity {
 
     private void recommendFilterFace(int maskNumber)
     {
-        int mask = new Random().nextInt(FACES[maskNumber].length);
-
-        //InputStream stream = getApplicationContext().getResources().openRawResource(mask[0]);
+        int [] mask = FACES[maskNumber];
 
         ModelRenderable.builder()
-                .setSource(this, mask)
+                .setSource(this, mask[0])
                 .build()
                 .thenAccept(
                         modelRenderable -> {
@@ -695,12 +691,10 @@ public class AugmentedFacesActivity extends AppCompatActivity {
 
     private void recommendFilterGlasses(int maskNumber)
     {
-        int mask = new Random().nextInt(GLASSES[maskNumber].length);
-
-        //InputStream stream = getApplicationContext().getResources().openRawResource(mask[0]);
+        int [] mask = GLASSES[maskNumber];
 
         ModelRenderable.builder()
-                .setSource(this, mask)
+                .setSource(this, mask[0])
                 .build()
                 .thenAccept(
                         modelRenderable -> {
@@ -720,12 +714,10 @@ public class AugmentedFacesActivity extends AppCompatActivity {
 
     private void recommendFilterHairstyle(int maskNumber)
     {
-        int mask = new Random().nextInt(HAIRSTYLES[maskNumber].length);
-
-        //InputStream stream = getApplicationContext().getResources().openRawResource(mask[0]);
+        int [] mask = HAIRSTYLES[maskNumber];
 
         ModelRenderable.builder()
-                .setSource(this, mask)
+                .setSource(this, mask[0])
                 .build()
                 .thenAccept(
                         modelRenderable -> {
@@ -745,12 +737,10 @@ public class AugmentedFacesActivity extends AppCompatActivity {
 
     private void recommendFilterHat(int maskNumber)
     {
-        int mask = new Random().nextInt(HATS[maskNumber].length);
-
-        //InputStream stream = getApplicationContext().getResources().openRawResource(mask[0]);
+        int [] mask = HATS[maskNumber];
 
         ModelRenderable.builder()
-                .setSource(this, mask)
+                .setSource(this, mask[0])
                 .build()
                 .thenAccept(
                         modelRenderable -> {
@@ -770,12 +760,10 @@ public class AugmentedFacesActivity extends AppCompatActivity {
 
     private void recommendFilterHelmet(int maskNumber)
     {
-        int mask = new Random().nextInt(HELMETS[maskNumber].length);
-
-        //InputStream stream = getApplicationContext().getResources().openRawResource(mask[0]);
+        int [] mask = HELMETS[maskNumber];
 
         ModelRenderable.builder()
-                .setSource(this, mask)
+                .setSource(this, mask[0])
                 .build()
                 .thenAccept(
                         modelRenderable -> {
@@ -795,12 +783,10 @@ public class AugmentedFacesActivity extends AppCompatActivity {
 
     private void recommendFilterMoustache(int maskNumber)
     {
-        int mask = new Random().nextInt(MOUSTACHES[maskNumber].length);
-
-        //InputStream stream = getApplicationContext().getResources().openRawResource(mask[0]);
+        int [] mask = MOUSTACHES[maskNumber];
 
         ModelRenderable.builder()
-                .setSource(this, mask)
+                .setSource(this, mask[0])
                 .build()
                 .thenAccept(
                         modelRenderable -> {
