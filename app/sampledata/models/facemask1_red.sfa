@@ -1,0 +1,99 @@
+{
+  animations: [
+    {
+      path: 'sampledata/models/facemask1_red.fbx',
+    },
+  ],
+  materials: [
+    {
+      name: 'Girl1',
+      parameters: [
+        {
+          baseColor: [
+            0.41093800000000003,
+            0.00050799999999999999,
+            0,
+            1,
+          ],
+        },
+        {
+          baseColorMap: null,
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+    {
+      name: '_Black_',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            0.50729900000000006,
+            0.017427000000000002,
+            1,
+          ],
+        },
+        {
+          baseColorMap: null,
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+      'BoneIndices',
+      'BoneWeights',
+    ],
+    collision: {},
+    file: 'sampledata/models/facemask1_red.fbx',
+    name: 'facemask1_red',
+    recenter: 'root',
+  },
+  version: '0.54:2',
+}

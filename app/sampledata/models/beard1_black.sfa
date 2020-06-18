@@ -1,0 +1,68 @@
+{
+  animations: [
+    {
+      path: 'sampledata/models/beard1_black.fbx',
+    },
+  ],
+  materials: [
+    {
+      name: 'Material.003',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: 'hairstyle4 (3)',
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+      'BoneIndices',
+      'BoneWeights',
+    ],
+    collision: {},
+    file: 'sampledata/models/beard1_black.fbx',
+    name: 'beard1_black',
+    recenter: 'root',
+  },
+  samplers: [
+    {
+      file: 'F:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\beard + moustache\\hairstyle4 (3).png',
+      name: 'hairstyle4 (3)',
+      pipeline_name: 'F:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\beard + moustache\\hairstyle4 (3).png',
+    },
+  ],
+  version: '0.54:2',
+}

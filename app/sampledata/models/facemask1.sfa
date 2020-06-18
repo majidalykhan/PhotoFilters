@@ -6,13 +6,13 @@
   ],
   materials: [
     {
-      name: 'Material.002',
+      name: 'Girl1',
       parameters: [
         {
           baseColor: [
-            0.292715,
-            0,
-            0.80000000000000004,
+            1,
+            1,
+            1,
             1,
           ],
         },
@@ -44,13 +44,13 @@
       source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
     },
     {
-      name: 'lambert1.002',
+      name: '_Black_',
       parameters: [
         {
           baseColor: [
-            0.5,
+            0.92582600000000004,
             0,
-            0.053843000000000002,
+            0.0043290000000000004,
             1,
           ],
         },
@@ -85,7 +85,6 @@
   model: {
     attributes: [
       'Position',
-      'Color',
       'TexCoord',
       'Orientation',
       'BoneIndices',

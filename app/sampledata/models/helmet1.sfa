@@ -6,7 +6,7 @@
   ],
   materials: [
     {
-      name: 'Material.002',
+      name: 'Material.001',
       parameters: [
         {
           baseColor: [
@@ -17,7 +17,7 @@
           ],
         },
         {
-          baseColorMap: 'helmet3 (5)',
+          baseColorMap: 'helmet5 (1)',
         },
         {
           normalMap: null,
@@ -59,9 +59,9 @@
   },
   samplers: [
     {
-      file: 'F:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\helmet\\helmet3 (5).png',
-      name: 'helmet3 (5)',
-      pipeline_name: 'F:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\helmet\\helmet3 (5).png',
+      file: 'F:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\helmet\\helmet5 (1).jpg',
+      name: 'helmet5 (1)',
+      pipeline_name: 'F:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\helmet\\helmet5 (1).png',
     },
   ],
   version: '0.54:2',

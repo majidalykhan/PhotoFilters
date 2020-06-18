@@ -63,5 +63,20 @@
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_bias="0.895"></Button>
 
+  <ImageButton
+      android:id="@+id/changeInterest"
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      android:layout_gravity="start"
+      android:background="@drawable/ic_changeinterest"
+      android:textColor="@color/colorPrimary"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="@+id/recommend"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.492"
+      app:layout_constraintStart_toEndOf="@+id/recommend"
+      app:layout_constraintTop_toTopOf="@+id/recommend"
+      app:layout_constraintVertical_bias="0.466"></ImageButton>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

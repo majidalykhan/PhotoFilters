@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,6 +50,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ThreadLocalRandom;
+
+import javax.microedition.khronos.opengles.GL;
 
 /**
  * This is an example activity that uses the Sceneform UX package to make common Augmented Faces
@@ -63,64 +67,27 @@ public class AugmentedFacesActivity extends AppCompatActivity {
 
   private FaceArFragment arFragment;
 
-  private ModelRenderable faceRegionsRenderable;
-  private Texture faceMeshTexture;
+  private ModelRenderable faceRegionsRenderable = null;
+  private Texture faceMeshTexture = null;
 
   private Button recommend;
+  private ImageButton changeInterest;
 
   private String SpinnerselectedItem;
 
-
-  private final int [][] MASKS = new int[][]{
-          {R.raw.beard1}, {R.raw.beard2},
-          {R.raw.fox_face},
-          {R.raw.cap1}, {R.raw.cap3},
-          {R.raw.facemask1}, {R.raw.facemask2}, {R.raw.facemask3}, {R.raw.facemask4}, {R.raw.facemask5},
-          {R.raw.glasses1}, {R.raw.yellow_glasses},
-          {R.raw.hairstyle1}, {R.raw.hairstyle2}, {R.raw.hairstyle4},
-          {R.raw.hat1}, {R.raw.hat2},
-          {R.raw.helmet1}, {R.raw.helmet2}, {R.raw.helmet3},
-          {R.raw.moustache1}, {R.raw.moustache2},
-          //glasses3, hairstyle3,
-  };
-
-    private final int [][] BEARDS = new int[][]{
-            {R.raw.beard1}, {R.raw.beard2},
-    };
-
-    private final int [][] CAPS = new int[][]{
-            {R.raw.cap1}, {R.raw.cap3},
-    };
-
-    private final int [][] FACES = new int[][]{
-            {R.raw.facemask1}, {R.raw.facemask2}, {R.raw.facemask3}, {R.raw.facemask4}, {R.raw.facemask5},
-    };
-
-    private final int [][] GLASSES = new int[][]{
-            {R.raw.yellow_glasses}, {R.raw.glasses1},
-    };
-
-    private final int [][] HAIRSTYLES = new int[][]{
-            {R.raw.hairstyle1}, {R.raw.hairstyle2}, {R.raw.hairstyle4},
-    };
-
-    private final int [][] HATS = new int[][]{
-            {R.raw.hat1}, {R.raw.hat2},
-    };
-
-    private final int [][] HELMETS = new int[][]{
-            {R.raw.helmet1}, {R.raw.helmet2}, {R.raw.helmet3},
-    };
-
-    private final int [][] MOUSTACHES = new int[][]{
-            {R.raw.moustache1}, {R.raw.moustache2},
-    };
+    private ArrayList<ModelRenderable> MASKS = new ArrayList<ModelRenderable>();
+    private ArrayList<ModelRenderable> GLASSES = new ArrayList<ModelRenderable>();
+    private ArrayList<ModelRenderable> BEARDS = new ArrayList<ModelRenderable>();
+    private ArrayList<ModelRenderable> MOUSTACHES = new ArrayList<ModelRenderable>();
+    private ArrayList<ModelRenderable> FACES = new ArrayList<ModelRenderable>();
+    private ArrayList<ModelRenderable> HATS = new ArrayList<ModelRenderable>();
+    private ArrayList<ModelRenderable> OTHERS = new ArrayList<ModelRenderable>();
 
   private static int mMask = 0;
   private int mMaskLoaded = 0;
   private volatile boolean isMaskChanged = false;
 
-
+  private boolean changeModel = false;
 
   ImageButton back, next;
 
@@ -133,25 +100,199 @@ public class AugmentedFacesActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    if (!checkIsSupportedDeviceOrFinish(this)) {
+   /* if (!checkIsSupportedDeviceOrFinish(this)) {
       return;
-    }
+    } */
 
     setContentView(R.layout.activity_face_mesh);
-    arFragment = (FaceArFragment) getSupportFragmentManager().findFragmentById(R.id.face_fragment);
 
-    back = findViewById(R.id.back);
-    next = findViewById(R.id.next);
+      back = findViewById(R.id.back);
+      next = findViewById(R.id.next);
+      recommend = findViewById(R.id.recommend);
+      changeInterest = findViewById(R.id.changeInterest);
 
-    recommend = findViewById(R.id.recommend);
+      next.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
 
-    arscene();
+              changeModel = !changeModel;
 
-    changeFilter(0);
+              mMask = (mMask+1) % MASKS.size();
+              isMaskChanged = true;
 
-    userInterest();
+              faceRegionsRenderable = MASKS.get(mMask);
 
-    listeners();
+              Toast.makeText(AugmentedFacesActivity.this, "Next Pressed", Toast.LENGTH_LONG).show();
+          }
+      });
+
+      back.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+
+              changeModel = !changeModel;
+
+              --mMask;
+              if (mMask < 0) mMask = MASKS.size() - 1;
+              isMaskChanged = true;
+
+              faceRegionsRenderable = MASKS.get(mMask);
+
+              Toast.makeText(AugmentedFacesActivity.this, "Back Pressed", Toast.LENGTH_LONG).show();
+
+          }
+      });
+
+
+      recommend.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+
+              if(SpinnerselectedItem == "Glasses"){
+
+                  int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
+
+                  changeModel = !changeModel;
+
+                  faceRegionsRenderable = GLASSES.get(randomNum);
+
+                  changeInterest.setVisibility(View.VISIBLE);
+
+                  Toast.makeText(getApplication().getBaseContext(), "Glasses Recommended", Toast.LENGTH_SHORT).show();
+              }
+              else if(SpinnerselectedItem == "Beard"){
+
+                  int randomNum = ThreadLocalRandom.current().nextInt(0, 2 + 1);
+
+                  changeModel = !changeModel;
+
+                  faceRegionsRenderable = BEARDS.get(randomNum);
+
+                  changeInterest.setVisibility(View.VISIBLE);
+
+                  Toast.makeText(getApplication().getBaseContext(), "Beard Recommended", Toast.LENGTH_SHORT).show();
+              }
+              else if(SpinnerselectedItem == "Moustache"){
+
+                  int randomNum = ThreadLocalRandom.current().nextInt(0, 2 + 1);
+
+                  changeModel = !changeModel;
+
+                  faceRegionsRenderable = MOUSTACHES.get(randomNum);
+
+                  changeInterest.setVisibility(View.VISIBLE);
+
+                  Toast.makeText(getApplication().getBaseContext(), "Moustache Recommended", Toast.LENGTH_SHORT).show();
+              }
+              else if(SpinnerselectedItem == "Face"){
+
+                  int randomNum = ThreadLocalRandom.current().nextInt(0, 4 + 1);
+
+                  changeModel = !changeModel;
+
+                  faceRegionsRenderable = FACES.get(randomNum);
+
+                  changeInterest.setVisibility(View.VISIBLE);
+
+                  Toast.makeText(getApplication().getBaseContext(), "Face Mask Recommended", Toast.LENGTH_SHORT).show();
+              }
+              else if(SpinnerselectedItem == "Hat"){
+
+                  int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
+
+                  changeModel = !changeModel;
+
+                  faceRegionsRenderable = HATS.get(randomNum);
+
+                  changeInterest.setVisibility(View.VISIBLE);
+
+                  Toast.makeText(getApplication().getBaseContext(), "Hat Recommended", Toast.LENGTH_SHORT).show();
+              }
+              else if(SpinnerselectedItem == "Other"){
+
+                  int randomNum = ThreadLocalRandom.current().nextInt(0, 2 + 1);
+
+                  changeModel = !changeModel;
+
+                  faceRegionsRenderable = OTHERS.get(randomNum);
+
+                  changeInterest.setVisibility(View.VISIBLE);
+
+                  Toast.makeText(getApplication().getBaseContext(), "Other filter Recommended", Toast.LENGTH_SHORT).show();
+              }
+              else {
+                  userInterest();
+              }
+
+          }
+      });
+
+      changeInterest.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              changeInterest();
+          }
+      });
+
+
+      arFragment = (FaceArFragment) getSupportFragmentManager().findFragmentById(R.id.face_fragment);
+
+
+      Texture.builder()
+              .setSource(this, R.drawable.makeup)
+              .build()
+              .thenAccept(texture -> faceMeshTexture = texture);
+
+      InitModels();
+      initGlasses();
+      initBeards();
+      initMoustaches();
+      initFaces();
+      initHats();
+      initOthers();
+
+      ArSceneView sceneView = arFragment.getArSceneView();
+      sceneView.setCameraStreamRenderPriority(Renderable.RENDER_PRIORITY_FIRST);
+
+      Scene scene = sceneView.getScene();
+
+      scene.addOnUpdateListener(
+              (FrameTime frameTime) -> {
+                  if (faceRegionsRenderable == null) {
+                      return;
+                  }
+
+                  Collection<AugmentedFace> faceList =
+                          sceneView.getSession().getAllTrackables(AugmentedFace.class);
+
+                  // Make new AugmentedFaceNodes for any new faces.
+                  for (AugmentedFace face : faceList) {
+                      if (!faceNodeMap.containsKey(face)) {
+                          AugmentedFaceNode faceNode = new AugmentedFaceNode(face);
+                          faceNode.setParent(scene);
+                          faceNode.setFaceRegionsRenderable(faceRegionsRenderable);
+                          faceNodeMap.put(face, faceNode);
+                      }
+                      else if(changeModel) {
+                          faceNodeMap.get(face).setFaceRegionsRenderable(faceRegionsRenderable);
+                      }
+                  }
+
+                  changeModel = false;
+
+                  // Remove any AugmentedFaceNodes associated with an AugmentedFace that stopped tracking.
+                  Iterator<Map.Entry<AugmentedFace, AugmentedFaceNode>> iter =
+                          faceNodeMap.entrySet().iterator();
+                  while (iter.hasNext()) {
+                      Map.Entry<AugmentedFace, AugmentedFaceNode> entry = iter.next();
+                      AugmentedFace face = entry.getKey();
+                      if (face.getTrackingState() == TrackingState.STOPPED) {
+                          AugmentedFaceNode faceNode = entry.getValue();
+                          faceNode.setParent(null);
+                          iter.remove();
+                      }
+                  }
+              });
 
   }
 
@@ -177,634 +318,6 @@ public class AugmentedFacesActivity extends AppCompatActivity {
     return true;
   }
 
-  private void listeners(){
-
-    next.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-
-        mMask = (mMask+1) % MASKS.length;
-        isMaskChanged = true;
-
-        changeFilter(mMask);
-
-        Toast.makeText(AugmentedFacesActivity.this, "Next Pressed", Toast.LENGTH_LONG).show();
-      }
-    });
-
-    back.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-
-        --mMask;
-        if (mMask < 0) mMask = MASKS.length - 1;
-        isMaskChanged = true;
-
-        changeFilter(mMask);
-
-
-        Toast.makeText(AugmentedFacesActivity.this, "Back Pressed", Toast.LENGTH_LONG).show();
-
-      }
-    });
-
-
-    recommend.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-
-        if(SpinnerselectedItem == "Beard"){
-
-            Random rand = new Random();
-
-            recommendFilterBeard(rand.nextInt());
-
-
-          Toast.makeText(getApplication().getBaseContext(), "Beard Selected", Toast.LENGTH_SHORT).show();
-        }
-        else if(SpinnerselectedItem == "Cap"){
-
-            Random rand = new Random();
-
-            recommendFilterCap(rand.nextInt());
-
-          Toast.makeText(getApplication().getBaseContext(), "Cap Selected", Toast.LENGTH_SHORT).show();
-        }
-        else if(SpinnerselectedItem == "Face"){
-
-            Random rand = new Random();
-
-            recommendFilterFace(rand.nextInt());
-
-          Toast.makeText(getApplication().getBaseContext(), "Cap Selected", Toast.LENGTH_SHORT).show();
-        }
-        else if(SpinnerselectedItem == "Glasses"){
-
-            Random rand = new Random();
-
-            recommendFilterGlasses(rand.nextInt());
-
-          Toast.makeText(getApplication().getBaseContext(), "Cap Selected", Toast.LENGTH_SHORT).show();
-        }
-        else if(SpinnerselectedItem == "Hairstyle"){
-
-            Random rand = new Random();
-
-            recommendFilterHairstyle(rand.nextInt());
-
-          Toast.makeText(getApplication().getBaseContext(), "Cap Selected", Toast.LENGTH_SHORT).show();
-        }
-        else if(SpinnerselectedItem == "Hat"){
-
-            Random rand = new Random();
-
-            recommendFilterHat(rand.nextInt());
-
-          Toast.makeText(getApplication().getBaseContext(), "Cap Selected", Toast.LENGTH_SHORT).show();
-        }
-        else if(SpinnerselectedItem == "Helmet"){
-
-            Random rand = new Random();
-
-            recommendFilterHelmet(rand.nextInt());
-
-          Toast.makeText(getApplication().getBaseContext(), "Cap Selected", Toast.LENGTH_SHORT).show();
-        }
-        else if(SpinnerselectedItem == "Moustache"){
-
-            Random rand = new Random();
-
-            recommendFilterMoustache(rand.nextInt());
-
-          Toast.makeText(getApplication().getBaseContext(), "Cap Selected", Toast.LENGTH_SHORT).show();
-        }
-        else {
-          Toast.makeText(getApplication().getBaseContext(), "Select interest first", Toast.LENGTH_SHORT).show();
-          userInterest();
-        }
-
-      }
-    });
-
-  }
-
-  private void arscene() {
-
-
-    ArSceneView sceneView = arFragment.getArSceneView();
-
-    // This is important to make sure that the camera stream renders first so that
-    // the face mesh occlusion works correctly.
-    sceneView.setCameraStreamRenderPriority(Renderable.RENDER_PRIORITY_FIRST);
-
-    Scene scene = sceneView.getScene();
-
-    scene.addOnUpdateListener(
-            (FrameTime frameTime) -> {
-              if (faceRegionsRenderable == null || faceMeshTexture == null) {
-                return;
-              }
-
-              Collection<AugmentedFace> faceList =
-                      sceneView.getSession().getAllTrackables(AugmentedFace.class);
-
-              // Make new AugmentedFaceNodes for any new faces.
-              for (AugmentedFace face : faceList) {
-                if (!faceNodeMap.containsKey(face)) {
-                  AugmentedFaceNode faceNode = new AugmentedFaceNode(face);
-                  faceNode.setParent(scene);
-                  faceNode.setFaceRegionsRenderable(faceRegionsRenderable);
-                  faceNode.setFaceMeshTexture(faceMeshTexture);
-                  faceNodeMap.put(face, faceNode);
-                }
-              }
-
-              // Remove any AugmentedFaceNodes associated with an AugmentedFace that stopped tracking.
-              Iterator<Map.Entry<AugmentedFace, AugmentedFaceNode>> iter =
-                      faceNodeMap.entrySet().iterator();
-              while (iter.hasNext()) {
-                Map.Entry<AugmentedFace, AugmentedFaceNode> entry = iter.next();
-                AugmentedFace face = entry.getKey();
-                if (face.getTrackingState() == TrackingState.STOPPED) {
-                  AugmentedFaceNode faceNode = entry.getValue();
-                  faceNode.setParent(null);
-                  iter.remove();
-                }
-              }
-            });
-
-  }
-
-  private void changeFilter(int maskNumber){
-
-
-    int [] mask = MASKS[maskNumber];
-
-    InputStream stream = getApplicationContext().getResources().openRawResource(mask[0]);
-
-    ModelRenderable.builder()
-            .setSource(this, mask[0])
-            .build()
-            .thenAccept(
-                    modelRenderable -> {
-                      faceRegionsRenderable = modelRenderable;
-                      modelRenderable.setShadowCaster(false);
-                      modelRenderable.setShadowReceiver(false);
-                    });
-
-      ModelRenderable.builder()
-              .setSource(this, mask[1])
-              .build()
-              .thenAccept(
-                      modelRenderable -> {
-                          faceRegionsRenderable = modelRenderable;
-                          modelRenderable.setShadowCaster(false);
-                          modelRenderable.setShadowReceiver(false);
-                      });
-
-      ModelRenderable.builder()
-              .setSource(this, mask[2])
-              .build()
-              .thenAccept(
-                      modelRenderable -> {
-                          faceRegionsRenderable = modelRenderable;
-                          modelRenderable.setShadowCaster(false);
-                          modelRenderable.setShadowReceiver(false);
-                      });
-
-      ModelRenderable.builder()
-              .setSource(this, mask[3])
-              .build()
-              .thenAccept(
-                      modelRenderable -> {
-                          faceRegionsRenderable = modelRenderable;
-                          modelRenderable.setShadowCaster(false);
-                          modelRenderable.setShadowReceiver(false);
-                      });
-
-      ModelRenderable.builder()
-              .setSource(this, mask[4])
-              .build()
-              .thenAccept(
-                      modelRenderable -> {
-                          faceRegionsRenderable = modelRenderable;
-                          modelRenderable.setShadowCaster(false);
-                          modelRenderable.setShadowReceiver(false);
-                      });
-
-      ModelRenderable.builder()
-              .setSource(this, mask[5])
-              .build()
-              .thenAccept(
-                      modelRenderable -> {
-                          faceRegionsRenderable = modelRenderable;
-                          modelRenderable.setShadowCaster(false);
-                          modelRenderable.setShadowReceiver(false);
-                      });
-
-      ModelRenderable.builder()
-              .setSource(this, mask[6])
-              .build()
-              .thenAccept(
-                      modelRenderable -> {
-                          faceRegionsRenderable = modelRenderable;
-                          modelRenderable.setShadowCaster(false);
-                          modelRenderable.setShadowReceiver(false);
-                      });
-
-      ModelRenderable.builder()
-              .setSource(this, mask[7])
-              .build()
-              .thenAccept(
-                      modelRenderable -> {
-                          faceRegionsRenderable = modelRenderable;
-                          modelRenderable.setShadowCaster(false);
-                          modelRenderable.setShadowReceiver(false);
-                      });
-
-
-      ModelRenderable.builder()
-              .setSource(this, mask[8])
-              .build()
-              .thenAccept(
-                      modelRenderable -> {
-                          faceRegionsRenderable = modelRenderable;
-                          modelRenderable.setShadowCaster(false);
-                          modelRenderable.setShadowReceiver(false);
-                      });
-
-      ModelRenderable.builder()
-              .setSource(this, mask[9])
-              .build()
-              .thenAccept(
-                      modelRenderable -> {
-                          faceRegionsRenderable = modelRenderable;
-                          modelRenderable.setShadowCaster(false);
-                          modelRenderable.setShadowReceiver(false);
-                      });
-
-      ModelRenderable.builder()
-              .setSource(this, mask[10])
-              .build()
-              .thenAccept(
-                      modelRenderable -> {
-                          faceRegionsRenderable = modelRenderable;
-                          modelRenderable.setShadowCaster(false);
-                          modelRenderable.setShadowReceiver(false);
-                      });
-
-      ModelRenderable.builder()
-              .setSource(this, mask[11])
-              .build()
-              .thenAccept(
-                      modelRenderable -> {
-                          faceRegionsRenderable = modelRenderable;
-                          modelRenderable.setShadowCaster(false);
-                          modelRenderable.setShadowReceiver(false);
-                      });
-
-      ModelRenderable.builder()
-              .setSource(this, mask[12])
-              .build()
-              .thenAccept(
-                      modelRenderable -> {
-                          faceRegionsRenderable = modelRenderable;
-                          modelRenderable.setShadowCaster(false);
-                          modelRenderable.setShadowReceiver(false);
-                      });
-
-      ModelRenderable.builder()
-              .setSource(this, mask[13])
-              .build()
-              .thenAccept(
-                      modelRenderable -> {
-                          faceRegionsRenderable = modelRenderable;
-                          modelRenderable.setShadowCaster(false);
-                          modelRenderable.setShadowReceiver(false);
-                      });
-
-      ModelRenderable.builder()
-              .setSource(this, mask[14])
-              .build()
-              .thenAccept(
-                      modelRenderable -> {
-                          faceRegionsRenderable = modelRenderable;
-                          modelRenderable.setShadowCaster(false);
-                          modelRenderable.setShadowReceiver(false);
-                      });
-
-      ModelRenderable.builder()
-              .setSource(this, mask[15])
-              .build()
-              .thenAccept(
-                      modelRenderable -> {
-                          faceRegionsRenderable = modelRenderable;
-                          modelRenderable.setShadowCaster(false);
-                          modelRenderable.setShadowReceiver(false);
-                      });
-
-      ModelRenderable.builder()
-              .setSource(this, mask[16])
-              .build()
-              .thenAccept(
-                      modelRenderable -> {
-                          faceRegionsRenderable = modelRenderable;
-                          modelRenderable.setShadowCaster(false);
-                          modelRenderable.setShadowReceiver(false);
-                      });
-
-      ModelRenderable.builder()
-              .setSource(this, mask[17])
-              .build()
-              .thenAccept(
-                      modelRenderable -> {
-                          faceRegionsRenderable = modelRenderable;
-                          modelRenderable.setShadowCaster(false);
-                          modelRenderable.setShadowReceiver(false);
-                      });
-
-      ModelRenderable.builder()
-              .setSource(this, mask[18])
-              .build()
-              .thenAccept(
-                      modelRenderable -> {
-                          faceRegionsRenderable = modelRenderable;
-                          modelRenderable.setShadowCaster(false);
-                          modelRenderable.setShadowReceiver(false);
-                      });
-
-      ModelRenderable.builder()
-              .setSource(this, mask[19])
-              .build()
-              .thenAccept(
-                      modelRenderable -> {
-                          faceRegionsRenderable = modelRenderable;
-                          modelRenderable.setShadowCaster(false);
-                          modelRenderable.setShadowReceiver(false);
-                      });
-
-      ModelRenderable.builder()
-              .setSource(this, mask[20])
-              .build()
-              .thenAccept(
-                      modelRenderable -> {
-                          faceRegionsRenderable = modelRenderable;
-                          modelRenderable.setShadowCaster(false);
-                          modelRenderable.setShadowReceiver(false);
-                      });
-
-      ModelRenderable.builder()
-              .setSource(this, mask[21])
-              .build()
-              .thenAccept(
-                      modelRenderable -> {
-                          faceRegionsRenderable = modelRenderable;
-                          modelRenderable.setShadowCaster(false);
-                          modelRenderable.setShadowReceiver(false);
-                      });
-
-    // Load the face mesh texture.
-    Texture.builder()
-            .setSource(this, R.drawable.sample)
-            .build()
-            .thenAccept(texture -> faceMeshTexture = texture);
-
-  }
-
-  private void userInterest(){
-
-    String[] selectInterest = { "Beard", "Cap", "Face", "Glasses", "Hairstyle", "Hat", "Helmet", "Moustache"};
-
-    LayoutInflater inflater = getLayoutInflater();
-    View alertLayout = inflater.inflate(R.layout.spinner_layout, null);
-    final Spinner spSex = (Spinner) alertLayout.findViewById(R.id.spinner);
-
-    final List<String> interestList = new ArrayList<>(Arrays.asList(selectInterest));
-
-    // Initializing an ArrayAdapter
-    @SuppressLint({"NewApi", "LocalSuppress"}) final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
-            Objects.requireNonNull(this),R.layout.support_simple_spinner_dropdown_item,interestList);
-
-    spinnerArrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-    spSex.setAdapter(spinnerArrayAdapter);
-
-
-    AlertDialog.Builder alert = new AlertDialog.Builder(this);
-    alert.setTitle("Choose type of filter you are interested in");
-    alert.setView(alertLayout);
-    alert.setCancelable(false);
-    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-      @Override
-      public void onClick(DialogInterface dialog, int which) {
-        Toast.makeText(getApplication().getBaseContext(), "Recommendations will not be available", Toast.LENGTH_SHORT).show();
-
-      }
-    });
-
-    alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-      @Override
-      public void onClick(DialogInterface dialog, int which) {
-
-        SpinnerselectedItem = String.valueOf(spSex.getSelectedItem());
-
-        Toast.makeText(getBaseContext(), SpinnerselectedItem, Toast.LENGTH_SHORT).show();
-
-      }
-    });
-    AlertDialog dialog = alert.create();
-    dialog.show();
-  }
-
-
-    private void recommendFilterBeard(int maskNumber)
-    {
-        int [] mask = BEARDS[maskNumber];
-
-        //InputStream stream = getApplicationContext().getResources().openRawResource(mask[0]);
-
-        ModelRenderable.builder()
-                .setSource(this, mask[0])
-                .build()
-                .thenAccept(
-                        modelRenderable -> {
-                            faceRegionsRenderable = modelRenderable;
-                            modelRenderable.setShadowCaster(false);
-                            modelRenderable.setShadowReceiver(false);
-                        });
-
-        // Load the face mesh texture.
-        Texture.builder()
-                .setSource(this, R.drawable.sample)
-                .build()
-                .thenAccept(texture -> faceMeshTexture = texture);
-
-
-    }
-
-    private void recommendFilterCap(int maskNumber)
-    {
-        int [] mask = CAPS[maskNumber];
-
-        //InputStream stream = getApplicationContext().getResources().openRawResource(mask[0]);
-
-        ModelRenderable.builder()
-                .setSource(this, mask[0])
-                .build()
-                .thenAccept(
-                        modelRenderable -> {
-                            faceRegionsRenderable = modelRenderable;
-                            modelRenderable.setShadowCaster(false);
-                            modelRenderable.setShadowReceiver(false);
-                        });
-
-        // Load the face mesh texture.
-        Texture.builder()
-                .setSource(this, R.drawable.sample)
-                .build()
-                .thenAccept(texture -> faceMeshTexture = texture);
-
-
-    }
-
-    private void recommendFilterFace(int maskNumber)
-    {
-        int [] mask = FACES[maskNumber];
-
-        ModelRenderable.builder()
-                .setSource(this, mask[0])
-                .build()
-                .thenAccept(
-                        modelRenderable -> {
-                            faceRegionsRenderable = modelRenderable;
-                            modelRenderable.setShadowCaster(false);
-                            modelRenderable.setShadowReceiver(false);
-                        });
-
-        // Load the face mesh texture.
-        Texture.builder()
-                .setSource(this, R.drawable.sample)
-                .build()
-                .thenAccept(texture -> faceMeshTexture = texture);
-
-
-    }
-
-    private void recommendFilterGlasses(int maskNumber)
-    {
-        int [] mask = GLASSES[maskNumber];
-
-        ModelRenderable.builder()
-                .setSource(this, mask[0])
-                .build()
-                .thenAccept(
-                        modelRenderable -> {
-                            faceRegionsRenderable = modelRenderable;
-                            modelRenderable.setShadowCaster(false);
-                            modelRenderable.setShadowReceiver(false);
-                        });
-
-        // Load the face mesh texture.
-        Texture.builder()
-                .setSource(this, R.drawable.sample)
-                .build()
-                .thenAccept(texture -> faceMeshTexture = texture);
-
-
-    }
-
-    private void recommendFilterHairstyle(int maskNumber)
-    {
-        int [] mask = HAIRSTYLES[maskNumber];
-
-        ModelRenderable.builder()
-                .setSource(this, mask[0])
-                .build()
-                .thenAccept(
-                        modelRenderable -> {
-                            faceRegionsRenderable = modelRenderable;
-                            modelRenderable.setShadowCaster(false);
-                            modelRenderable.setShadowReceiver(false);
-                        });
-
-        // Load the face mesh texture.
-        Texture.builder()
-                .setSource(this, R.drawable.sample)
-                .build()
-                .thenAccept(texture -> faceMeshTexture = texture);
-
-
-    }
-
-    private void recommendFilterHat(int maskNumber)
-    {
-        int [] mask = HATS[maskNumber];
-
-        ModelRenderable.builder()
-                .setSource(this, mask[0])
-                .build()
-                .thenAccept(
-                        modelRenderable -> {
-                            faceRegionsRenderable = modelRenderable;
-                            modelRenderable.setShadowCaster(false);
-                            modelRenderable.setShadowReceiver(false);
-                        });
-
-        // Load the face mesh texture.
-        Texture.builder()
-                .setSource(this, R.drawable.sample)
-                .build()
-                .thenAccept(texture -> faceMeshTexture = texture);
-
-
-    }
-
-    private void recommendFilterHelmet(int maskNumber)
-    {
-        int [] mask = HELMETS[maskNumber];
-
-        ModelRenderable.builder()
-                .setSource(this, mask[0])
-                .build()
-                .thenAccept(
-                        modelRenderable -> {
-                            faceRegionsRenderable = modelRenderable;
-                            modelRenderable.setShadowCaster(false);
-                            modelRenderable.setShadowReceiver(false);
-                        });
-
-        // Load the face mesh texture.
-        Texture.builder()
-                .setSource(this, R.drawable.sample)
-                .build()
-                .thenAccept(texture -> faceMeshTexture = texture);
-
-
-    }
-
-    private void recommendFilterMoustache(int maskNumber)
-    {
-        int [] mask = MOUSTACHES[maskNumber];
-
-        ModelRenderable.builder()
-                .setSource(this, mask[0])
-                .build()
-                .thenAccept(
-                        modelRenderable -> {
-                            faceRegionsRenderable = modelRenderable;
-                            modelRenderable.setShadowCaster(false);
-                            modelRenderable.setShadowReceiver(false);
-                        });
-
-        // Load the face mesh texture.
-        Texture.builder()
-                .setSource(this, R.drawable.sample)
-                .build()
-                .thenAccept(texture -> faceMeshTexture = texture);
-
-
-    }
-
-
   @Override
   public void onBackPressed() {
     super.onBackPressed();
@@ -813,6 +326,593 @@ public class AugmentedFacesActivity extends AppCompatActivity {
     startActivity(i);
     finish();
   }
+
+  private void InitModels() {
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("crown.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          faceRegionsRenderable = modelRenderable;
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("graduate.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("pirateHat.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("sherifHat.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("longHat.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("glasses1.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("glasses2.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("glasses3.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("glasses4.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("beard1.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("beard1_black.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("beard1_white.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("mustache1.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("mustache1_brown.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("mustache1_white.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("helmet1.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("facemask1.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("facemask1_black.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("facemask1_red.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("facemask2.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("facemask3.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+
+      ModelRenderable.builder()
+              .setSource(this, Uri.parse("masquerade.sfb"))
+              .build()
+              .thenAccept(
+                      modelRenderable -> {
+                          MASKS.add(modelRenderable);
+                          modelRenderable.setShadowCaster(false);
+                          modelRenderable.setShadowReceiver(false);
+                      });
+
+      // CAPS
+
+
+  }
+
+  private void userInterest(){
+
+        String[] selectInterest = { "Glasses", "Beard", "Moustache",  "Face", "Hat", "Other"};
+
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayout = inflater.inflate(R.layout.spinner_layout, null);
+        final Spinner spSex = (Spinner) alertLayout.findViewById(R.id.spinner);
+
+        final List<String> interestList = new ArrayList<>(Arrays.asList(selectInterest));
+
+        // Initializing an ArrayAdapter
+        @SuppressLint({"NewApi", "LocalSuppress"}) final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
+                Objects.requireNonNull(this),R.layout.support_simple_spinner_dropdown_item,interestList);
+
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spSex.setAdapter(spinnerArrayAdapter);
+
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Choose type of filter you are interested in");
+        alert.setView(alertLayout);
+        alert.setCancelable(false);
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplication().getBaseContext(), "Recommendations will not be available", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                SpinnerselectedItem = String.valueOf(spSex.getSelectedItem());
+
+                Toast.makeText(getBaseContext(), SpinnerselectedItem + " Selected", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        AlertDialog dialog = alert.create();
+        dialog.show();
+    }
+
+    private void changeInterest(){
+
+        String[] selectInterest = { "Glasses", "Beard", "Moustache",  "Face", "Hat", "Other"};
+
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayout = inflater.inflate(R.layout.spinner_layout, null);
+        final Spinner spSex = (Spinner) alertLayout.findViewById(R.id.spinner);
+
+        final List<String> interestList = new ArrayList<>(Arrays.asList(selectInterest));
+
+        // Initializing an ArrayAdapter
+        @SuppressLint({"NewApi", "LocalSuppress"}) final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
+                Objects.requireNonNull(this),R.layout.support_simple_spinner_dropdown_item,interestList);
+
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spSex.setAdapter(spinnerArrayAdapter);
+
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Change interest for type of filter you are interested in");
+        alert.setView(alertLayout);
+        alert.setCancelable(false);
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplication().getBaseContext(), "Interest not changed", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                SpinnerselectedItem = String.valueOf(spSex.getSelectedItem());
+
+                Toast.makeText(getBaseContext(), "Changed to " +SpinnerselectedItem, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        AlertDialog dialog = alert.create();
+        dialog.show();
+    }
+
+    private void initGlasses(){
+
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("glasses1.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            GLASSES.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("glasses2.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            GLASSES.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("glasses3.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            GLASSES.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("glasses4.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            GLASSES.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+
+    }
+
+    private void initBeards(){
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("beard1.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            BEARDS.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("beard1_black.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            BEARDS.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("beard1_white.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            BEARDS.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+    }
+
+    private void initMoustaches(){
+
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("mustache1.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            MOUSTACHES.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("mustache1_brown.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            MOUSTACHES.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("mustache1_white.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            MOUSTACHES.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+    }
+
+    private void initFaces(){
+
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("facemask1.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            FACES.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("facemask1_black.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            FACES.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("facemask1_red.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            FACES.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("facemask2.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            FACES.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("facemask3.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            FACES.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+    }
+
+    private void initHats(){
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("graduate.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            HATS.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("pirateHat.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            HATS.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("sherifHat.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            HATS.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("longHat.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            HATS.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+    }
+
+    private void initOthers(){
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("masquerade.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            OTHERS.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("helmet1.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            OTHERS.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("crown.sfb"))
+                .build()
+                .thenAccept(
+                        modelRenderable -> {
+                            OTHERS.add(modelRenderable);
+                            modelRenderable.setShadowCaster(false);
+                            modelRenderable.setShadowReceiver(false);
+                        });
+
+    }
+    
+    public static int randInt(int min, int max) {
+
+      
+        Random rand = null;
+
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+
+        return randomNum;
+    }
+
 
 
 }
