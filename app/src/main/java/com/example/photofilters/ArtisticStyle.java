@@ -30,6 +30,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -48,7 +49,7 @@ import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 
 public class ArtisticStyle extends AppCompatActivity {
 
-    private static final String TAG = "NeuralStyleTransfer";
+    private static final String TAG = "PhotoFilters";
 
     public static final int CHOOSE_PHOTO = 2;
     public static final int TAKE_PHOTO = 1;
@@ -89,6 +90,8 @@ public class ArtisticStyle extends AppCompatActivity {
     ImageButton gallery;
     ImageButton save;
 
+    TextView chooseCapture;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +106,8 @@ public class ArtisticStyle extends AppCompatActivity {
         gallery = findViewById(R.id.gallery);
         save = findViewById(R.id.save);
 
+        chooseCapture = findViewById(R.id.chooseimagetext);
+
         save.setVisibility(View.GONE);
 
         // init style list
@@ -114,14 +119,16 @@ public class ArtisticStyle extends AppCompatActivity {
         StyleAdapter adapter = new StyleAdapter(styleList);
         recyclerView.setAdapter(adapter);
 
-        // callback function when choosing the style image
+
         adapter.setOnItemClickListener(new StyleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+
+                if(chosen_bitmap!=null){
                 Log.e(TAG, String.valueOf(position));
                 style_pos = position;
                 Log.e(TAG, String.valueOf(style_pos));
-                Toast.makeText(ArtisticStyle.this, "You have chosen style:" + pu_list[style_pos], Toast.LENGTH_SHORT).show();
+                Toast.makeText(ArtisticStyle.this, "Choosen Filter: " + pu_list[style_pos], Toast.LENGTH_SHORT).show();
                 if (style_pos > 8) {
                     INPUT_NODE = "X_inputs";
                     OUTPUT_NODE = "output";
@@ -143,6 +150,10 @@ public class ArtisticStyle extends AppCompatActivity {
                 Log.e(TAG, model_file);
                 StylizeTask stylizeTask = new StylizeTask();
                 stylizeTask.execute(style_pos);
+             }
+                else{
+                    Toast.makeText(ArtisticStyle.this, "Please choose a Picture first", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -315,18 +326,15 @@ public class ArtisticStyle extends AppCompatActivity {
         }
 
         // Add some notification events
-        ProgressDialog ringProgressDialog = new ProgressDialog(
+        ProgressDialog pd = new ProgressDialog(
                 ArtisticStyle.this);
 
         @Override
         protected void onPreExecute() {
 
-            ringProgressDialog.setTitle("Processing");
-            ringProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            ringProgressDialog.setProgress(0);
-            ringProgressDialog.setMax(100);
-            ringProgressDialog.setMessage("Loading Model");
-            ringProgressDialog.show();
+            pd.setTitle("Processing");
+            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pd.show();
 
         }
 
@@ -338,14 +346,12 @@ public class ArtisticStyle extends AppCompatActivity {
             if (chosen_bitmap != null) {
                 int target_width = chosen_bitmap.getWidth();
                 int target_height = chosen_bitmap.getHeight();
-                Log.e(TAG, "Stage 1, width:" + String.valueOf(width));
-                Log.e(TAG, "Stage 1, height:" + String.valueOf(height));
-                Log.e(TAG, "Start style transfer");
                 initTensorFlowAndLoadModel();
-                ringProgressDialog.setMessage("Applying Model");
+                pd.setCancelable(false);
+                pd.setMessage("Applying Filter");
                 Bitmap rawImage = Bitmap.createBitmap(chosen_bitmap);
                 Bitmap styledImage = stylizeImage(rawImage);
-                Bitmap scaledBitmap = scaleBitmap(styledImage, target_width, target_height); // desiredSize
+                Bitmap scaledBitmap = scaleBitmap(styledImage, target_width, target_height);
                 return scaledBitmap;
             } else {
                 return chosen_bitmap;
@@ -356,7 +362,7 @@ public class ArtisticStyle extends AppCompatActivity {
         @Override
         protected void onPostExecute(Bitmap bitmap) {
             super.onPostExecute(bitmap);
-            ringProgressDialog.dismiss();
+            pd.dismiss();
             save.setVisibility(View.VISIBLE);
             final_styled_bitmap = bitmap;
             ivPhoto.setImageBitmap(bitmap);
@@ -448,6 +454,7 @@ public class ArtisticStyle extends AppCompatActivity {
             if (requestCode == TAKE_PHOTO) {
                 try {
                     chosen_bitmap = handleSamplingAndRotationBitmap(ArtisticStyle.this, photoURI);
+                    chooseCapture.setVisibility(View.GONE);
                     ivPhoto.setImageBitmap(chosen_bitmap);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -487,6 +494,7 @@ public class ArtisticStyle extends AppCompatActivity {
         if (imagePath != null) {
             try {
                 chosen_bitmap = handleSamplingAndRotationBitmap(ArtisticStyle.this, uri);
+                chooseCapture.setVisibility(View.GONE);
                 ivPhoto.setImageBitmap(chosen_bitmap);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -504,6 +512,7 @@ public class ArtisticStyle extends AppCompatActivity {
         if (imagePath != null) {
             try {
                 chosen_bitmap = handleSamplingAndRotationBitmap(ArtisticStyle.this, uri);
+                chooseCapture.setVisibility(View.GONE);
                 ivPhoto.setImageBitmap(chosen_bitmap);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -609,23 +618,23 @@ public class ArtisticStyle extends AppCompatActivity {
     }
 
     private void initStyles() {
-        Style cubist = new Style("cubist", R.drawable.style_cubist);
+        Style cubist = new Style("Cubist", R.drawable.style_cubist);
         styleList.add(cubist);
-        Style denoised_starry = new Style("denoised_starry", R.drawable.style_denoised_starry);
+        Style denoised_starry = new Style("Starry Night", R.drawable.style_denoised_starry);
         styleList.add(denoised_starry);
-        Style feathers = new Style("feathers", R.drawable.style_feathers);
+        Style feathers = new Style("Feathers", R.drawable.style_feathers);
         styleList.add(feathers);
-        Style ink = new Style("ink", R.drawable.style_ink);
+        Style ink = new Style("Ink", R.drawable.style_ink);
         styleList.add(ink);
-        Style la_muse = new Style("la_muse", R.drawable.style_la_muse);
+        Style la_muse = new Style("La Muse", R.drawable.style_la_muse);
         styleList.add(la_muse);
-        Style mosaic = new Style("mosaic", R.drawable.style_mosaic);
+        Style mosaic = new Style("Mosaic", R.drawable.style_mosaic);
         styleList.add(mosaic);
-        Style scream = new Style("scream", R.drawable.style_scream);
+        Style scream = new Style("Scream", R.drawable.style_scream);
         styleList.add(scream);
-        Style udnie = new Style("udnie", R.drawable.style_udnie);
+        Style udnie = new Style("Udnie", R.drawable.style_udnie);
         styleList.add(udnie);
-        Style wave = new Style("wave", R.drawable.style_wave);
+        Style wave = new Style("Wave", R.drawable.style_wave);
         styleList.add(wave);
     }
 }

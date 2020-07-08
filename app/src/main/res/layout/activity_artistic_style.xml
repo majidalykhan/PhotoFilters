@@ -25,11 +25,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.7"
-        app:srcCompat="@drawable/ic_takepic" />
+        app:srcCompat="@drawable/ic_circlecamera" />
 
     <ImageButton
         android:id="@+id/gallery"
-        android:layout_width="50dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -38,11 +38,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.690"
-        app:srcCompat="@drawable/ic_gallery2" />
+        app:srcCompat="@drawable/ic_circlegallery" />
 
     <ImageButton
         android:id="@+id/save"
-        android:layout_width="50dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -51,7 +51,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.688"
-        app:srcCompat="@drawable/ic_save"
-        android:visibility="gone"/>
+        app:srcCompat="@drawable/ic_circle"
+     />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

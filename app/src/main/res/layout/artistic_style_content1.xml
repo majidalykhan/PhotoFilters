@@ -43,15 +43,27 @@
 
     </ImageView>
 
+    <TextView
+        android:id="@+id/chooseimagetext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:text="Choose or Capture an Image"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="@+id/imageview"
+        app:layout_constraintStart_toStartOf="@+id/imageview"
+        app:layout_constraintTop_toTopOf="@+id/imageview" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="415dp"
+        android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_gravity="bottom"
         android:orientation="vertical"
-        android:paddingLeft="20dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
         android:paddingTop="20dp"
-        android:paddingRight="20dp"
         android:background="@drawable/rounded_top"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,11 +71,11 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
-            android:layout_width="370dp"
+            android:layout_width="match_parent"
             android:layout_height="180dp"
             android:layout_below="@+id/imageView"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="10dp"
             >
         </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
