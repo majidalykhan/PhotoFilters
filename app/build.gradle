@@ -58,7 +58,11 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'com.android.support:support-annotations:+'
 
-    //implementation "androidx.recyclerview:recyclerview:1.1.0"
+
+    implementation files('libs/libandroid_tensorflow_inference_java.jar')
+    testImplementation 'junit:junit:4.12'
+
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
 }
 
@@ -73,12 +77,10 @@ sceneform.asset('sampledata/models/graduate.fbx',
         'src/main/assets/graduate')
 
 
-
 sceneform.asset('sampledata/models/sherifHat.fbx',
         'default',
         'sampledata/models/sherifHat.sfa',
         'src/main/assets/sherifHat')
-
 
 
 sceneform.asset('sampledata/models/pirateHat.fbx',
@@ -87,13 +89,10 @@ sceneform.asset('sampledata/models/pirateHat.fbx',
         'src/main/assets/pirateHat')
 
 
-
-
 sceneform.asset('sampledata/models/longHat.fbx',
         'default',
         'sampledata/models/longHat.sfa',
         'src/main/assets/longHat')
-
 
 
 sceneform.asset('sampledata/models/glasses1.fbx',
@@ -107,12 +106,10 @@ sceneform.asset('sampledata/models/glasses2.fbx',
         'src/main/assets/glasses2')
 
 
-
 sceneform.asset('sampledata/models/glasses3.fbx',
         'default',
         'sampledata/models/glasses3.sfa',
         'src/main/assets/glasses3')
-
 
 
 sceneform.asset('sampledata/models/glasses4.fbx',
@@ -121,20 +118,16 @@ sceneform.asset('sampledata/models/glasses4.fbx',
         'src/main/assets/glasses4')
 
 
-
 sceneform.asset('sampledata/models/beard1.fbx',
         'default',
         'sampledata/models/beard1.sfa',
         'src/main/assets/beard1')
 
 
-
-
 sceneform.asset('sampledata/models/mustache1.fbx',
         'default',
         'sampledata/models/mustache1.sfa',
         'src/main/assets/mustache1')
-
 
 
 sceneform.asset('sampledata/models/helmet1.fbx',
@@ -164,12 +157,10 @@ sceneform.asset('sampledata/models/facemask2.fbx',
         'src/main/assets/facemask2')
 
 
-
 sceneform.asset('sampledata/models/masquerade.fbx',
         'default',
         'sampledata/models/masquerade.sfa',
         'src/main/assets/masquerade')
-
 
 
 sceneform.asset('sampledata/models/facemask3.fbx',

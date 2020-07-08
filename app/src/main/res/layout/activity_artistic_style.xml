@@ -2,153 +2,56 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorLight"
     tools:context=".ArtisticStyle">
 
+    <include
+        android:id="@+id/include"
+        layout="@layout/artistic_style_content1"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="440dp"
-        android:background="@drawable/rounded_bottom"
-        android:orientation="vertical"
-        android:paddingTop="10dp"
+    <ImageButton
+        android:id="@+id/camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.149"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.7"
+        app:srcCompat="@drawable/ic_takepic" />
 
-
-    </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
+    <ImageButton
+        android:id="@+id/gallery"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        android:background="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.696"
+        app:layout_constraintHorizontal_bias="0.831"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="0.478" />
-
-    <TextView
-        android:id="@+id/statusText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/progressBar"
-        android:text="Status hint"
-        android:textSize="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toStartOf="@+id/progressBar"
-        app:layout_constraintHorizontal_bias="0.742"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="0.49" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.690"
+        app:srcCompat="@drawable/ic_gallery2" />
 
     <ImageButton
         android:id="@+id/save"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="116dp"
-        android:background="@drawable/ic_circle"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="0.5"></ImageButton>
-
-    <TextView
-        android:id="@+id/aaa"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/progressBar"
-        android:padding="5dp"
-        android:text="(Tap to choose)"
-        android:textColor="#63000000"
-        android:textSize="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/selectedImage"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/selectedImage"
-        app:layout_constraintTop_toBottomOf="@+id/selectedImage"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="70dp"
-        android:layout_height="0dp"
-        android:layout_centerHorizontal="true"
-        android:adjustViewBounds="true"
-        android:padding="15dp"
-        android:visibility="gone"
+        android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.552"
-        app:layout_constraintStart_toEndOf="@+id/selectedImage"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.228" />
-
-    <ImageView
-        android:id="@+id/selectedImage"
-        android:layout_width="345dp"
-        android:layout_height="362dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1">
-
-    </ImageView>
-
-    <ImageView
-        android:id="@+id/invisibleImage"
-        android:layout_width="345dp"
-        android:layout_height="362dp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/ic_photo"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1">
-
-    </ImageView>
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="415dp"
-        android:layout_height="220dp"
-        android:layout_gravity="bottom"
-        android:background="@drawable/rounded_top"
-        android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingTop="20dp"
-        android:paddingRight="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="370dp"
-            android:layout_height="180dp"
-            android:layout_below="@+id/imageView"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
-            android:scrollbars="vertical"
-            >
-        </androidx.recyclerview.widget.RecyclerView>
-    </LinearLayout>
+        app:layout_constraintVertical_bias="0.688"
+        app:srcCompat="@drawable/ic_save"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,57 +1,40 @@
 package com.example.photofilters;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.app.Application;
+import android.annotation.TargetApi;
+import android.app.ProgressDialog;
+import android.content.ContentUris;
 import android.content.Context;
-import android.content.ContextWrapper;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
-import android.os.Bundle;
-
-import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.view.View;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import android.util.Base64;
 import android.util.Log;
-import android.widget.Button;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.mobileconnectors.apigateway.ApiClientFactory;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.deeparteffects.sdk.android.DeepArtEffectsClient;
-import com.deeparteffects.sdk.android.model.Result;
-import com.deeparteffects.sdk.android.model.Styles;
-import com.deeparteffects.sdk.android.model.UploadRequest;
-import com.deeparteffects.sdk.android.model.UploadResponse;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.material.snackbar.Snackbar;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,321 +42,590 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Locale;
 
-import static com.amazonaws.regions.Regions.EU_WEST_1;
+import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 
 public class ArtisticStyle extends AppCompatActivity {
 
-    private static final String TAG = ArtisticStyle.class.getSimpleName();
+    private static final String TAG = "NeuralStyleTransfer";
 
-    private String API_KEY = "reH1y2wICx9m6AZVdXGeg2nPECCLDyWeac3GPTMv"; //Your key here
-    private String ACCESS_KEY = "AKIA3XE3HF7SRUFGBWWP"; //Your key here
-    private String SECRET_KEY = "TJWgmGqI2VW+wlig7X7zC01iK5ErjGr/2fi/uZkR"; //Your key here
+    public static final int CHOOSE_PHOTO = 2;
+    public static final int TAKE_PHOTO = 1;
 
-    private static final int REQUEST_GALLERY = 100;
-    private static final int CHECK_RESULT_INTERVAL_IN_MS = 2500;
-    private static final int IMAGE_MAX_SIDE_LENGTH = 800;
+    private ImageView ivPhoto;
+    private List<Style> styleList = new ArrayList<Style>();
+    private Uri photoURI;
 
-    private String selectedImagePath;
+    private String INPUT_NODE = "input";
+    private String OUTPUT_NODE = "output";
 
-    private Activity mActivity;
-    private Bitmap mImageBitmap;
-    private TextView mStatusText;
-    private ImageView mImageView;
-    private ImageView selectedImage;
-    private ImageView invisibleImage;
-    private ProgressBar mProgressbarView;
-    private ImageButton btnSave;
-    private boolean isProcessing = false;
+    private int[] intValues;
+    private float[] floatValues;
 
-    private String[] permissions = new String[]{
-            Manifest.permission.INTERNET,
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    private int width = 512;
+    private int height = 512;
+
+    private Bitmap chosen_bitmap = null;
+    private Bitmap final_styled_bitmap = null;
+
+    private TensorFlowInferenceInterface inferenceInterface;
+
+    private String model_file;
+    private int style_pos = 0;
+    private String[] pu_list = new String[]{
+            "cubist",
+            "starry",
+            "feathers",
+            "ink",
+            "la_muse",
+            "mosaic",
+            "scream",
+            "udnie",
+            "wave",
     };
 
-    private RecyclerView recyclerView;
-    private DeepArtEffectsClient deepArtEffectsClient;
+    ImageButton capture;
+    ImageButton gallery;
+    ImageButton save;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artistic_style);
 
-        mActivity = this;
-
-        ApiClientFactory factory = new ApiClientFactory()
-                .apiKey(API_KEY)
-                .credentialsProvider(new AWSCredentialsProvider() {
-                    @Override
-                    public AWSCredentials getCredentials() {
-                        return new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
-                    }
-
-                    @Override
-                    public void refresh() {
-                    }
-                }).region(EU_WEST_1.getName());
-        deepArtEffectsClient = factory.build(DeepArtEffectsClient.class);
-
-        mStatusText = (TextView) findViewById(R.id.statusText);
-        mProgressbarView = (ProgressBar) findViewById(R.id.progressBar);
-        selectedImage = (ImageView) findViewById(R.id.selectedImage);
-        mImageView = (ImageView) findViewById(R.id.imageView);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        invisibleImage= (ImageView) findViewById(R.id.invisibleImage);
-
-        btnSave = (ImageButton) findViewById(R.id.save);
-
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
+        // init image view and button
+        ivPhoto = findViewById(R.id.imageview);
+        capture = findViewById(R.id.camera);
+        gallery = findViewById(R.id.gallery);
+        save = findViewById(R.id.save);
 
-        selectedImage.setOnClickListener(new View.OnClickListener() {
+        save.setVisibility(View.GONE);
+
+        // init style list
+        initStyles();
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recyclerView.setLayoutManager(layoutManager);
+        StyleAdapter adapter = new StyleAdapter(styleList);
+        recyclerView.setAdapter(adapter);
+
+        // callback function when choosing the style image
+        adapter.setOnItemClickListener(new StyleAdapter.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(intent, REQUEST_GALLERY);
+            public void onItemClick(View view, int position) {
+                Log.e(TAG, String.valueOf(position));
+                style_pos = position;
+                Log.e(TAG, String.valueOf(style_pos));
+                Toast.makeText(ArtisticStyle.this, "You have chosen style:" + pu_list[style_pos], Toast.LENGTH_SHORT).show();
+                if (style_pos > 8) {
+                    INPUT_NODE = "X_inputs";
+                    OUTPUT_NODE = "output";
+                    width = 512;
+                    height = 512;
+                } else if (style_pos == 4) {
+                    INPUT_NODE = "input";
+                    OUTPUT_NODE = "output";
+                    width = 480;
+                    height = 640;
+                } else {
+                    INPUT_NODE = "input";
+                    OUTPUT_NODE = "output_new";
+                    width = 512;
+                    height = 512;
                 }
+                Log.e(TAG, "You have choose" + String.valueOf(style_pos));
+                model_file = "file:///android_asset/" + pu_list[style_pos] + ".pb";
+                Log.e(TAG, model_file);
+                StylizeTask stylizeTask = new StylizeTask();
+                stylizeTask.execute(style_pos);
             }
         });
 
-
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        // callback function when clicking then camera icon
+        capture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                galleryAddPic();
-                Toast.makeText(ArtisticStyle.this, "Picture Saved", Toast.LENGTH_LONG).show();
+                Snackbar.make(v, "Taking Photo", Snackbar.LENGTH_SHORT)
+                        .setAction("Action", null).show();
+
+                File outputImage = new File(getExternalCacheDir(), "output_image.jpg");
+                try {
+                    if (outputImage.exists()) {
+                        outputImage.delete();
+                    }
+                    outputImage.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (Build.VERSION.SDK_INT < 24) {
+                    photoURI = Uri.fromFile(outputImage);
+                } else {
+                    photoURI = FileProvider.getUriForFile(ArtisticStyle.this, "com.example.photofilters.fileprovider", outputImage);
+                }
+                Log.e(TAG, "prepare start camera");
+
+                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(intent, TAKE_PHOTO);
             }
         });
 
-        checkPermissions();
-
-        loadingStyles();
-    }
-
-    private void loadingStyles() {
-        mStatusText.setText("Loading styles...");
-        new Thread(new Runnable() {
+        // callback function when clicking then photo icon
+        gallery.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                Styles styles = deepArtEffectsClient.stylesGet();
-                final StyleAdapter styleAdapter = new StyleAdapter(
-                        getApplicationContext(),
-                        styles,
-                        new StyleAdapter.ClickListener() {
-                            @Override
-                            public void onClick(String styleId) {
-                                if (!isProcessing) {
-                                    if (mImageBitmap != null) {
-                                        Log.d(TAG, String.format("Style with ID %s clicked.", styleId));
-                                        isProcessing = true;
-                                        mProgressbarView.setVisibility(View.VISIBLE);
-                                        btnSave.setVisibility(View.GONE);
-                                        uploadImage(styleId);
-                                    } else {
-                                        Toast.makeText(mActivity, "Please choose a picture first",
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            }
-                        }
-                );
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        recyclerView.setAdapter(styleAdapter);
-                        mProgressbarView.setVisibility(View.GONE);
-                        mStatusText.setText("");
+            public void onClick(View view) {
+                Snackbar.make(view, "Selecting Photo", Snackbar.LENGTH_SHORT)
+                        .setAction("Action", null).show();
+                try {
+                    if (ContextCompat.checkSelfPermission(ArtisticStyle.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(ArtisticStyle.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                    } else {
+                        openAlbum();
                     }
-                });
-            }
-        }).start();
-    }
-
-    private class ImageReadyCheckTimer extends TimerTask {
-        private String mSubmissionId;
-
-        public ImageReadyCheckTimer(String submissionId) {
-            mSubmissionId = String.valueOf(submissionId);
-        }
-
-        @Override
-        public void run() {
-            try {
-                final Result result = deepArtEffectsClient.resultGet(mSubmissionId);
-                String submissionStatus = result.getStatus();
-                Log.d(TAG, String.format("Submission status is %s", submissionStatus));
-                if (submissionStatus.equals(SubmissionStatus.FINISHED)) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Glide.with(mActivity).load(result.getUrl()).fitCenter()
-                                    .transition(new DrawableTransitionOptions().crossFade()).into(selectedImage);
-                            mProgressbarView.setVisibility(View.GONE);
-                            invisibleImage.setVisibility(View.GONE);
-                            selectedImage.setVisibility(View.VISIBLE);
-                            btnSave.setVisibility(View.VISIBLE);
-                            mStatusText.setText("");
-
-                        }
-                    });
-                    isProcessing = false;
-                    cancel();
+                } catch (Exception e) {
                 }
-            } catch (Exception e) {
-                cancel();
             }
-        }
-    }
+        });
 
-    private void uploadImage(final String styleId) {
-        mStatusText.setText("Uploading picture...");
-        Log.d(TAG, String.format("Upload image with style id %s", styleId));
-        new Thread(new Runnable() {
+        save.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                UploadRequest uploadRequest = new UploadRequest();
-                uploadRequest.setStyleId(styleId);
-                uploadRequest.setImageBase64Encoded(convertBitmapToBase64(mImageBitmap));
-                UploadResponse response = deepArtEffectsClient.uploadPost(uploadRequest);
-                String submissionId = response.getSubmissionId();
-                Log.d(TAG, String.format("Upload complete. Got submissionId %s", response.getSubmissionId()));
-                Timer timer = new Timer();
-                timer.scheduleAtFixedRate(new ImageReadyCheckTimer(submissionId),
-                        CHECK_RESULT_INTERVAL_IN_MS, CHECK_RESULT_INTERVAL_IN_MS);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mStatusText.setText("Picture processing...");
+            public void onClick(View view) {
+                Snackbar.make(view, "Saving Photo", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                if (Build.VERSION.SDK_INT >= 23) {
+
+                    int hasReadContactsPermission = ArtisticStyle.this.checkSelfPermission(
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+                    if (hasReadContactsPermission != PackageManager.PERMISSION_GRANTED) {
+
+                        ArtisticStyle.this.requestPermissions(
+                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                1);
+
+                        return;
                     }
-                });
+                    if (final_styled_bitmap == null) {
+                        System.out.println("final_photo == null");
+                    }
+                    saveBitmap(final_styled_bitmap);
+
+                } else {
+                    saveBitmap(final_styled_bitmap);
+                }
+
             }
-        }).start();
+        });
+
+
     }
 
-    private String convertBitmapToBase64(Bitmap bitmap) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-        return Base64.encodeToString(byteArray, 0);
+    private void openAlbum() {
+        Intent intent = new Intent("android.intent.action.GET_CONTENT");
+        intent.setType("image/*");
+        startActivityForResult(intent, CHOOSE_PHOTO);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "onActivityResult");
-
-        //Handle own activity result
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
-            case REQUEST_GALLERY:
-                if (resultCode == RESULT_OK) {
-                    mImageBitmap = ImageHelper.loadSizeLimitedBitmapFromUri(data.getData(),
-                            this.getContentResolver(), IMAGE_MAX_SIDE_LENGTH);
-                    try {
-                        final Uri imageUri = data.getData();
-                        final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                        final Bitmap selected = BitmapFactory.decodeStream(imageStream);
-                        invisibleImage.setVisibility(View.GONE);
-                        selectedImage.setImageBitmap(mImageBitmap);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                        Toast.makeText(ArtisticStyle.this, "Something went wrong", Toast.LENGTH_LONG).show();
-                    }
-
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openAlbum();
+                } else {
+                    Toast.makeText(this, "You denied the permission", Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:
-                break;
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void galleryAddPic() {
-        selectedImage.buildDrawingCache();
-        Bitmap bm=selectedImage.getDrawingCache();
 
-        File pictureFile = getOutputMediaFile();
-        if (pictureFile == null) {
-            Log.d(TAG,
-                    "Error creating media file, check storage permissions: ");// e.getMessage());
-            return;
+    public static void saveBitmap(final Bitmap bitmap) {
+        String filename;
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA).format(new Date());
+        filename = timeStamp + ".jpg";
+
+        final String root =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                        .getAbsolutePath() + File.separator + "PhotoFilters";
+        Log.e(TAG, "Saving bitmap to " + root);
+        final File myDir = new File(root);
+
+        if (!myDir.mkdirs()) {
+            Log.e(TAG, "Make dir failed");
+        }
+
+        final String fname = filename;
+        final File file = new File(myDir, fname);
+        if (file.exists()) {
+            file.delete();
         }
         try {
-            FileOutputStream fos = new FileOutputStream(pictureFile);
-            bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            fos.close();
-        } catch (FileNotFoundException e) {
-            Log.d(TAG, "File not found: " + e.getMessage());
-        } catch (IOException e) {
-            Log.d(TAG, "Error accessing file: " + e.getMessage());
+            final FileOutputStream out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 99, out);
+            out.flush();
+            out.close();
+        } catch (final Exception e) {
+            e.printStackTrace();
         }
-
     }
 
-    private  File getOutputMediaFile(){
-        // To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
+    /**
+     * Init tensorflow interface and load model
+     */
+    private void initTensorFlowAndLoadModel() {
+        intValues = new int[height * width];
+        floatValues = new float[height * width * 3];
+        inferenceInterface = new TensorFlowInferenceInterface(getAssets(), model_file);
+    }
 
-        File mediaStorageDir = new File(Environment.getExternalStorageDirectory()
-                + "/Pictures/PhotoFilters/");
+    /**
+     * Rescale the bitmap to desired size
+     *
+     * @param origin
+     * @param newWidth
+     * @param newHeight
+     * @return
+     */
+    private Bitmap scaleBitmap(Bitmap origin, int newWidth, int newHeight) {
+        if (origin == null) {
+            return null;
+        }
+        int height = origin.getHeight();
+        int width = origin.getWidth();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        Bitmap newBM = Bitmap.createBitmap(origin, 0, 0, width, height, matrix, false);
+        return newBM;
+    }
 
-        // This location works best if you want the created images to be shared
-        // between applications and persist after your app has been uninstalled.
+    /**
+     * Do operation of style transfer in background
+     */
+    class StylizeTask extends AsyncTask<Integer, Void, Bitmap> {
+        private StylizeTask() {
+        }
 
-        // Create the storage directory if it does not exist
-        if (! mediaStorageDir.exists()){
-            if (! mediaStorageDir.mkdirs()){
-                return null;
+        // Add some notification events
+        ProgressDialog ringProgressDialog = new ProgressDialog(
+                ArtisticStyle.this);
+
+        @Override
+        protected void onPreExecute() {
+
+            ringProgressDialog.setTitle("Processing");
+            ringProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            ringProgressDialog.setProgress(0);
+            ringProgressDialog.setMax(100);
+            ringProgressDialog.setMessage("Loading Model");
+            ringProgressDialog.show();
+
+        }
+
+        // Do some calculation
+        @Override
+        protected Bitmap doInBackground(Integer... params) {
+
+            inferenceInterface = new TensorFlowInferenceInterface(getAssets(), model_file);
+            if (chosen_bitmap != null) {
+                int target_width = chosen_bitmap.getWidth();
+                int target_height = chosen_bitmap.getHeight();
+                Log.e(TAG, "Stage 1, width:" + String.valueOf(width));
+                Log.e(TAG, "Stage 1, height:" + String.valueOf(height));
+                Log.e(TAG, "Start style transfer");
+                initTensorFlowAndLoadModel();
+                ringProgressDialog.setMessage("Applying Model");
+                Bitmap rawImage = Bitmap.createBitmap(chosen_bitmap);
+                Bitmap styledImage = stylizeImage(rawImage);
+                Bitmap scaledBitmap = scaleBitmap(styledImage, target_width, target_height); // desiredSize
+                return scaledBitmap;
+            } else {
+                return chosen_bitmap;
             }
         }
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
-        File mediaFile;
-        String mImageName="MI_"+ timeStamp +".jpg";
-        mediaFile = new File(mediaStorageDir.getPath() + File.separator + mImageName);
-        return mediaFile;
+
+        // Represent the result
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+            ringProgressDialog.dismiss();
+            save.setVisibility(View.VISIBLE);
+            final_styled_bitmap = bitmap;
+            ivPhoto.setImageBitmap(bitmap);
+        }
     }
 
-    private boolean checkPermissions() {
-        int result;
-        List<String> listPermissionsNeeded = new ArrayList<>();
-        for (String p : permissions) {
-            result = ContextCompat.checkSelfPermission(this, p);
-            if (result != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(p);
+    /**
+     * Stylize the image using tensorflow model trained before.
+     *
+     * @param bitmap image to be styled
+     * @return styled image
+     */
+    private Bitmap stylizeImage(Bitmap bitmap) {
+        // Rescale image to fixed image size
+        Bitmap scaledBitmap = scaleBitmap(bitmap, width, height);
+        // Get image data from bitmap
+        scaledBitmap.getPixels(intValues, 0, scaledBitmap.getWidth(), 0, 0,
+                scaledBitmap.getWidth(), scaledBitmap.getHeight());
+
+        // Turn to 8bit format
+        for (int i = 0; i < intValues.length; ++i) {
+            final int val = intValues[i];
+            floatValues[i * 3] = ((val >> 16) & 0xFF) * 1.0f;
+            floatValues[i * 3 + 1] = ((val >> 8) & 0xFF) * 1.0f;
+            floatValues[i * 3 + 2] = (val & 0xFF) * 1.0f;
+        }
+
+        if (style_pos > 8) {
+
+            inferenceInterface.feed(INPUT_NODE, floatValues, 1, height, width, 3);
+        } else {
+
+            inferenceInterface.feed(INPUT_NODE, floatValues, height, width, 3);
+        }
+
+        inferenceInterface.run(new String[]{OUTPUT_NODE});
+
+        inferenceInterface.fetch(OUTPUT_NODE, floatValues);
+
+
+        float r_max = 0, g_max = 0, b_max = 0, r_min = 999, g_min = 999, b_min = 999;
+        for (int i = 0; i < intValues.length; ++i) {
+            if (floatValues[i * 3] > r_max) {
+                r_max = floatValues[i * 3];
+            }
+            if (floatValues[i * 3] < r_min) {
+                r_min = floatValues[i * 3];
+            }
+            if (floatValues[i * 3 + 1] > g_max) {
+                g_max = floatValues[i * 3 + 1];
+            }
+            if (floatValues[i * 3 + 1] < g_min) {
+                g_min = floatValues[i * 3 + 1];
+            }
+            if (floatValues[i * 3 + 2] > b_max) {
+                b_max = floatValues[i * 3 + 2];
+            }
+            if (floatValues[i * 3 + 2] < b_min) {
+                b_min = floatValues[i * 3 + 2];
             }
         }
-        if (!listPermissionsNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), 100);
-            return false;
+
+        for (int i = 0; i < intValues.length; ++i) {
+            floatValues[i * 3] = (floatValues[i * 3] - r_min) / (r_max - r_min) * 255;
+            floatValues[i * 3 + 1] = (floatValues[i * 3 + 1] - g_min) / (g_max - g_min) * 255;
+            floatValues[i * 3 + 2] = (floatValues[i * 3 + 2] - b_min) / (b_max - b_min) * 255;
         }
-        return true;
+
+        // Convert float type to Integer type
+        for (int i = 0; i < intValues.length; ++i) {
+            intValues[i] = 0xFF000000
+                    | (((int) (floatValues[i * 3])) << 16)
+                    | (((int) (floatValues[i * 3 + 1])) << 8)
+                    | ((int) (floatValues[i * 3 + 2]));
+        }
+
+
+        scaledBitmap.setPixels(intValues, 0, scaledBitmap.getWidth(), 0, 0,
+                scaledBitmap.getWidth(), scaledBitmap.getHeight());
+
+        return scaledBitmap;
     }
+
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        if (requestCode == 100) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // do something
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == TAKE_PHOTO) {
+                try {
+                    chosen_bitmap = handleSamplingAndRotationBitmap(ArtisticStyle.this, photoURI);
+                    ivPhoto.setImageBitmap(chosen_bitmap);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (requestCode == CHOOSE_PHOTO) {
+
+                if (Build.VERSION.SDK_INT >= 19) {
+                    handleImageOnKitKat(data);
+                } else {
+                    handleImageBeforeKitKat(data);
+                }
             }
-            return;
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent i = new Intent(ArtisticStyle.this, Dashboard.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(i);
-        finish();
+    @TargetApi(19)
+    private void handleImageOnKitKat(Intent data) {
+        String imagePath = null;
+        Uri uri = data.getData();
+        Log.d("TAG", "handleImageOnKitKat: uri is " + uri);
+        if (DocumentsContract.isDocumentUri(this, uri)) {
+
+            String docId = DocumentsContract.getDocumentId(uri);
+            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
+                String id = docId.split(":")[1];
+                String selection = MediaStore.Images.Media._ID + "=" + id;
+                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
+            } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
+                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
+                imagePath = getImagePath(contentUri, null);
+            }
+        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            imagePath = getImagePath(uri, null);
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            imagePath = uri.getPath();
+        }
+        if (imagePath != null) {
+            try {
+                chosen_bitmap = handleSamplingAndRotationBitmap(ArtisticStyle.this, uri);
+                ivPhoto.setImageBitmap(chosen_bitmap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(this, "failed to get image", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
+
+    private void handleImageBeforeKitKat(Intent data) {
+        Uri uri = data.getData();
+        String imagePath = getImagePath(uri, null);
+        if (imagePath != null) {
+            try {
+                chosen_bitmap = handleSamplingAndRotationBitmap(ArtisticStyle.this, uri);
+                ivPhoto.setImageBitmap(chosen_bitmap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(this, "failed to get image", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    private String getImagePath(Uri uri, String selection) {
+        String path = null;
+        Cursor cursor = getContentResolver().query(uri, null, selection, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            }
+            cursor.close();
+        }
+        return path;
+    }
+
+
+    public static Bitmap handleSamplingAndRotationBitmap(Context context, Uri selectedImage)
+            throws IOException {
+        int MAX_HEIGHT = 1024;
+        int MAX_WIDTH = 1024;
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        InputStream imageStream = context.getContentResolver().openInputStream(selectedImage);
+        BitmapFactory.decodeStream(imageStream, null, options);
+        imageStream.close();
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, MAX_WIDTH, MAX_HEIGHT);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        imageStream = context.getContentResolver().openInputStream(selectedImage);
+        Bitmap img = BitmapFactory.decodeStream(imageStream, null, options);
+
+        img = rotateImageIfRequired(context, img, selectedImage);
+        return img;
+    }
+
+
+    private static int calculateInSampleSize(BitmapFactory.Options options,
+                                             int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int heightRatio = Math.round((float) height / (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+
+            final float totalPixels = width * height;
+
+            final float totalReqPixelsCap = reqWidth * reqHeight * 2;
+
+            while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
+                inSampleSize++;
+            }
+        }
+        return inSampleSize;
+    }
+
+    private static Bitmap rotateImageIfRequired(Context context, Bitmap img, Uri selectedImage) throws IOException {
+
+        InputStream input = context.getContentResolver().openInputStream(selectedImage);
+        ExifInterface ei;
+        if (Build.VERSION.SDK_INT > 23)
+            ei = new ExifInterface(input);
+        else
+            ei = new ExifInterface(selectedImage.getPath());
+
+        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                return rotateImage(img, 90);
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                return rotateImage(img, 180);
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                return rotateImage(img, 270);
+            default:
+                return img;
+        }
+    }
+
+    private static Bitmap rotateImage(Bitmap img, int degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+        img.recycle();
+        return rotatedImg;
+    }
+
+    private void initStyles() {
+        Style cubist = new Style("cubist", R.drawable.style_cubist);
+        styleList.add(cubist);
+        Style denoised_starry = new Style("denoised_starry", R.drawable.style_denoised_starry);
+        styleList.add(denoised_starry);
+        Style feathers = new Style("feathers", R.drawable.style_feathers);
+        styleList.add(feathers);
+        Style ink = new Style("ink", R.drawable.style_ink);
+        styleList.add(ink);
+        Style la_muse = new Style("la_muse", R.drawable.style_la_muse);
+        styleList.add(la_muse);
+        Style mosaic = new Style("mosaic", R.drawable.style_mosaic);
+        styleList.add(mosaic);
+        Style scream = new Style("scream", R.drawable.style_scream);
+        styleList.add(scream);
+        Style udnie = new Style("udnie", R.drawable.style_udnie);
+        styleList.add(udnie);
+        Style wave = new Style("wave", R.drawable.style_wave);
+        styleList.add(wave);
+    }
 }
