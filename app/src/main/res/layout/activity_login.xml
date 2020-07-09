@@ -132,12 +132,12 @@
         android:layout_height="wrap_content"
         android:text="Forgot your password?"
         android:textSize="14dp"
-        app:layout_constraintBottom_toTopOf="@+id/loginbtn"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/passwordlogin"
-        app:layout_constraintVertical_bias="0.224" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="@+id/loginbtn"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/loginbtn"
+        app:layout_constraintTop_toBottomOf="@+id/loginbtn"
+        app:layout_constraintVertical_bias="0.25" />
 
     <ImageView
         android:id="@+id/imageView2"
@@ -241,5 +241,18 @@
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/ic_tick"
         tools:ignore="VectorDrawableCompat" />
+
+    <CheckBox
+        android:id="@+id/keeplogin_chkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Keep me logged in"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="@+id/passwordlogin"
+        app:layout_constraintHorizontal_bias="0.97"
+        app:layout_constraintStart_toStartOf="@+id/passwordlogin"
+        app:layout_constraintTop_toBottomOf="@+id/passwordlogin"
+        app:layout_constraintVertical_bias="0.07" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

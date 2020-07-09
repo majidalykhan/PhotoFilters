@@ -45,14 +45,24 @@ public class Login extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
 
     DatabaseReference databaseReference;
-    private ConstraintLayout constraintLayout;
+
+    private PrefManager pref;
+
+    String emailpref, passwordpref, typepref;
+
+    private CheckBox keep_loggedin;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        pref = new PrefManager(this);
+
         registerhere = (TextView) findViewById(R.id.registerhere);
+
+        keep_loggedin = findViewById(R.id.keeplogin_chkbox);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -97,17 +107,36 @@ public class Login extends AppCompatActivity {
 
     private void userLogin(){
 
+        if(pref.isDataSet()){
+            String[] loginData = pref.getLoginData();
+            emailpref = loginData[0];
+            passwordpref = loginData[1];
+        } else {
+            emailpref = email.getText().toString();
+            passwordpref = password.getText().toString();
+        }
+
+        if (emailpref.isEmpty()) {
+            Toast.makeText(this, "User Id cannot be empty!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (passwordpref.isEmpty()) {
+            Toast.makeText(this, "Password cannot be empty!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+
         pb.setVisibility(View.VISIBLE);
-        firebaseAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+        firebaseAuth.signInWithEmailAndPassword(emailpref,passwordpref)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 pb.setVisibility(View.GONE);
                 if(task.isSuccessful()){
                     if(firebaseAuth.getCurrentUser().isEmailVerified()){
-                        Intent intent = new Intent (Login.this, Dashboard.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
+                        String uid = firebaseAuth.getCurrentUser().getUid();
+                        checkUserType(uid);
                     }
                     else{
                         //Toast.makeText(Login.this, "Please verify your email address", Toast.LENGTH_LONG).show();
@@ -119,10 +148,55 @@ public class Login extends AppCompatActivity {
                 else{
                     //Toast.makeText(Login.this, "Email or Password Incorrect!",Toast.LENGTH_LONG).show();
                     Toasty.error(Login.this,"Email or Password Incorrect!",Toast.LENGTH_SHORT).show();
+                    pref.resetData();
                 }
             }
         });
     }
+
+
+    private void checkUserType(String uid)
+    {
+        final boolean result = false;
+        if(pref.isDataSet()){
+            String[] loginData = pref.getLoginData();
+            typepref = loginData[1];
+        }
+            typepref = "user";
+            Intent i = new Intent(this, Dashboard.class);
+            LoginAs("user", uid, i);
+
+    }
+
+
+    private void LoginAs(final String usertype, final String uid, final Intent i)
+    {
+
+        databaseReference.child(usertype).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild(uid)) {
+                    if(!pref.isDataSet() && keep_loggedin.isChecked()){
+                        pref.setLoginData(emailpref,passwordpref,typepref);
+                    }
+                    startActivity(i);
+                    finish();
+                }
+                else
+                {
+                    Toast.makeText(Login.this, "You do not have an account", Toast.LENGTH_LONG).show();
+                    FirebaseAuth.getInstance().signOut();
+                    pref.resetData();
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+
+
 
     private void validate(){
         if(!EmailValidator.getInstance().validate(email.getText().toString().trim())){

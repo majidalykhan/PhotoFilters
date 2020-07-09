@@ -36,6 +36,20 @@
       tools:ignore="VectorDrawableCompat" />
 
   <ImageButton
+      android:id="@+id/camswitches"
+      android:layout_width="73dp"
+      android:layout_height="67dp"
+      android:background="@null"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.965"
+      app:layout_constraintHorizontal_bias="0.9"
+      app:srcCompat="@drawable/ic_switch_camera_button"
+      tools:ignore="VectorDrawableCompat" />
+
+  <ImageButton
       android:id="@+id/next"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

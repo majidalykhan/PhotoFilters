@@ -103,11 +103,15 @@ public class Dashboard extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                PrefManager pref = new PrefManager(getApplicationContext());
+                pref.resetData();
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(Dashboard.this, Login.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                Intent i = new Intent(getApplicationContext(),Login.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+                finish();
             }
         });
 

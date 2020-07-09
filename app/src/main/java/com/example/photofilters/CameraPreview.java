@@ -1,23 +1,19 @@
 package com.example.photofilters;
 
 import android.content.Context;
-import android.content.res.Configuration;
-import android.graphics.Rect;
 import android.hardware.Camera;
 import android.util.Log;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-/** A basic Camera preview class */
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     private SurfaceHolder mHolder;
     private Camera mCamera;
+    int currentCameraId = 0;
 
     public CameraPreview(Context context, Camera camera) {
         super(context);
@@ -32,33 +28,16 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void surfaceCreated(SurfaceHolder holder) {
-        Camera.Parameters parameters = mCamera.getParameters();
-        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
-
-
-        if(this.getResources().getConfiguration().orientation!= Configuration.ORIENTATION_LANDSCAPE)
-        {
-            parameters.set("orientation","potrait");
-            mCamera.setDisplayOrientation(90);
-            parameters.setRotation(90);
-        }
-        else
-        {
-            parameters.set("orientation","landscape");
-            mCamera.setDisplayOrientation(0);
-            parameters.setRotation(0);
-        }
-
         // The Surface has been created, now tell the camera where to draw the preview.
+
         try {
-            mCamera.setParameters(parameters);
             mCamera.setPreviewDisplay(holder);
             mCamera.startPreview();
+            mCamera.setDisplayOrientation(90);
+
         } catch (IOException e) {
             Log.d(TAG, "Error setting camera preview: " + e.getMessage());
         }
-
     }
 
     public void surfaceDestroyed(SurfaceHolder holder) {
@@ -93,6 +72,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             Log.d(TAG, "Error starting camera preview: " + e.getMessage());
         }
     }
+
+
+
 
 
 }

@@ -18,6 +18,8 @@ import java.util.Set;
 /** Implements ArFragment and configures the session for using the augmented faces feature. */
 public class FaceArFragment extends ArFragment {
 
+  public FrameLayout fr;
+
   @Override
   protected Config getSessionConfiguration(Session session) {
     Config config = new Config(session);
@@ -34,12 +36,12 @@ public class FaceArFragment extends ArFragment {
   @Override
   public View onCreateView(
           LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    FrameLayout frameLayout =
+    fr =
         (FrameLayout) super.onCreateView(inflater, container, savedInstanceState);
 
     getPlaneDiscoveryController().hide();
     getPlaneDiscoveryController().setInstructionView(null);
 
-    return frameLayout;
+    return fr;
   }
 }

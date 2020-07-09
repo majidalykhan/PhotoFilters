@@ -28,11 +28,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ArtisticStyle">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Dashboard"
@@ -42,8 +38,16 @@
         <activity android:name=".AugmentedFacesActivity">
 
         </activity>
-        <activity android:name=".Login"></activity>
-        <activity android:name=".Reg" />
+        <activity android:name=".Login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Reg" >
+
+        </activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
