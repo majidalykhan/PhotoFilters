@@ -150,6 +150,7 @@ public class ArtisticStyle extends AppCompatActivity {
                 Log.e(TAG, model_file);
                 StylizeTask stylizeTask = new StylizeTask();
                 stylizeTask.execute(style_pos);
+
              }
                 else{
                     Toast.makeText(ArtisticStyle.this, "Please choose a Picture first", Toast.LENGTH_SHORT).show();
@@ -637,4 +638,5 @@ public class ArtisticStyle extends AppCompatActivity {
         Style wave = new Style("Wave", R.drawable.style_wave);
         styleList.add(wave);
     }
+
 }
