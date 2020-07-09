@@ -639,4 +639,13 @@ public class ArtisticStyle extends AppCompatActivity {
         styleList.add(wave);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(ArtisticStyle.this, Dashboard.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+        finish();
+    }
+
 }

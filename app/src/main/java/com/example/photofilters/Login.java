@@ -95,6 +95,8 @@ public class Login extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        if(pref.isDataSet()){userLogin();}
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,11 +162,11 @@ public class Login extends AppCompatActivity {
         final boolean result = false;
         if(pref.isDataSet()){
             String[] loginData = pref.getLoginData();
-            typepref = loginData[1];
+            typepref = loginData[2];
         }
-            typepref = "user";
+            typepref = "users";
             Intent i = new Intent(this, Dashboard.class);
-            LoginAs("user", uid, i);
+            LoginAs("users", uid, i);
 
     }
 

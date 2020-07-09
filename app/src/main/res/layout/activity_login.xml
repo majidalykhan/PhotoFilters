@@ -244,12 +244,13 @@
 
     <CheckBox
         android:id="@+id/keeplogin_chkbox"
-        android:layout_width="wrap_content"
+        android:layout_width="135dp"
         android:layout_height="wrap_content"
-        android:text="Keep me logged in"
+        android:text="Stay Logged in"
+        android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="@+id/passwordlogin"
-        app:layout_constraintHorizontal_bias="0.97"
+        app:layout_constraintHorizontal_bias="1.1"
         app:layout_constraintStart_toStartOf="@+id/passwordlogin"
         app:layout_constraintTop_toBottomOf="@+id/passwordlogin"
         app:layout_constraintVertical_bias="0.07" />

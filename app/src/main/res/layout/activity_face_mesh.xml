@@ -82,6 +82,7 @@
       android:layout_gravity="start"
       android:background="@drawable/ic_whitebtn"
       android:text="Recommend Filter"
+      android:textSize="12dp"
       android:textColor="@color/colorPrimary"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
