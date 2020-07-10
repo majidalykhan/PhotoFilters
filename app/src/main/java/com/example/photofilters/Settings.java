@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,17 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
 /**
@@ -104,6 +110,7 @@ public class Settings extends Fragment {
             @Override
             public void onClick(View v) {
                 validate();
+                updateEmail();
             }
         });
 
@@ -147,7 +154,7 @@ public class Settings extends Fragment {
         final String uid = firebaseAuth.getCurrentUser().getUid();
 
         databaseReference.child("users").child(uid).child("name").setValue(namesss);
-        databaseReference.child("users").child(uid).child("email").setValue(emails);
+       // databaseReference.child("users").child(uid).child("email").setValue(emails);
         databaseReference.child("users").child(uid).child("password").setValue(passwords);
 
 
@@ -171,6 +178,39 @@ public class Settings extends Fragment {
             UpdateData();
             Toast.makeText(getContext(), "Data updated successfully", Toast.LENGTH_LONG).show();
         }
+    }
+
+
+    private void updateEmail(){
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final String emails = email.getText().toString().trim();
+        final String uid = firebaseAuth.getCurrentUser().getUid();
+
+        user.updateEmail(emails)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getContext(), "Email Updated, Check Verification Email", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+        user.sendEmailVerification()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+
+                        }
+                    }
+                });
+
+        if(user.isEmailVerified()){
+            databaseReference.child("users").child(uid).child("email").setValue(emails);
+        }
+
     }
 
 }
