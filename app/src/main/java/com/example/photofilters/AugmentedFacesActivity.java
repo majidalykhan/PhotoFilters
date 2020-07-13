@@ -147,8 +147,6 @@ public class AugmentedFacesActivity extends AppCompatActivity {
               isMaskChanged = true;
 
               faceRegionsRenderable = MASKS.get(mMask);
-
-              Toast.makeText(AugmentedFacesActivity.this, "Next Pressed", Toast.LENGTH_LONG).show();
           }
       });
 
@@ -163,8 +161,6 @@ public class AugmentedFacesActivity extends AppCompatActivity {
               isMaskChanged = true;
 
               faceRegionsRenderable = MASKS.get(mMask);
-
-              Toast.makeText(AugmentedFacesActivity.this, "Back Pressed", Toast.LENGTH_LONG).show();
 
           }
       });
