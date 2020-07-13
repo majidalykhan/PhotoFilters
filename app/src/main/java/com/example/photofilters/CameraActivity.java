@@ -38,9 +38,6 @@ public class CameraActivity extends Activity {
         // Create an instance of Camera
         mCamera = getCameraInstance();
 
-        // Create our Preview view and set it as the content of our activity.
-        mPreview = new CameraPreview(this, mCamera);
-        arFragment.fr.addView(mPreview);
         // Add a listener to the Capture button
         ImageButton captureButton = (ImageButton) findViewById(R.id.capture);
         captureButton.setOnClickListener(
