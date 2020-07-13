@@ -137,8 +137,6 @@ public class AugmentedFacesActivity extends AppCompatActivity {
       changeInterest = findViewById(R.id.changeInterest);
       capture = findViewById(R.id.capture);
 
-      camswitch = findViewById(R.id.camswitches);
-
       next.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
