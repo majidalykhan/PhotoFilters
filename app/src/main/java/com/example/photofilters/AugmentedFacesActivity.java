@@ -260,7 +260,7 @@ public class AugmentedFacesActivity extends AppCompatActivity {
       capture.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-              /*
+
               next.setVisibility(View.GONE);
               back.setVisibility(View.GONE);
               recommend.setVisibility(View.GONE);
@@ -274,23 +274,14 @@ public class AugmentedFacesActivity extends AppCompatActivity {
               intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
               intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
               startActivity(intent);
-            */
 
-              mCamera.takePicture(null, null, mPicture);
+
 
               Toast.makeText(getApplicationContext(), "Picture saved in Gallery", Toast.LENGTH_LONG)
                       .show();
 
           }
       });
-
-      camswitch.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              CamSwitch();
-          }
-      });
-
 
       arFragment = (FaceArFragment) getSupportFragmentManager().findFragmentById(R.id.face_fragment);
 
@@ -350,14 +341,6 @@ public class AugmentedFacesActivity extends AppCompatActivity {
                       }
                   }
               });
-
-
-      // Create an instance of Camera
-      mCamera = getCameraInstance();
-
-      // Create our Preview view and set it as the content of our activity.
-      mPreview = new CameraPreview(this, mCamera);
-      arFragment.fr.addView(mPreview);
 
   }
 
@@ -1019,41 +1002,6 @@ public class AugmentedFacesActivity extends AppCompatActivity {
     }
 
 
-    /** A safe way to get an instance of the Camera object. */
-    public static Camera getCameraInstance(){
-        Camera c = null;
-        try {
-            c = Camera.open(); // attempt to get a Camera instance
-        }
-        catch (Exception e){
-            // Camera is not available (in use or does not exist)
-        }
-        return c; // returns null if camera is unavailable
-    }
-
-    private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
-
-        @Override
-        public void onPictureTaken(byte[] data, Camera camera) {
-
-            File pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
-            if (pictureFile == null){
-                Log.d(TAG, "Error creating media file, check storage permissions: ");
-                return;
-            }
-
-            try {
-                FileOutputStream fos = new FileOutputStream(pictureFile);
-                fos.write(data);
-                fos.close();
-            } catch (FileNotFoundException e) {
-                Log.d(TAG, "File not found: " + e.getMessage());
-            } catch (IOException e) {
-                Log.d(TAG, "Error accessing file: " + e.getMessage());
-            }
-        }
-    };
-
     private File getOutputMediaFile(int type) {
 
         // To be safe, you should check that the SDCard is mounted
@@ -1083,74 +1031,5 @@ public class AugmentedFacesActivity extends AppCompatActivity {
         return mediaFile;
     }
 
-
-    private void CamSwitch(){
-
-
-        if(currentCameraId == Camera.CameraInfo.CAMERA_FACING_BACK){
-            switchToFront();
-        }
-
-        else if (currentCameraId == Camera.CameraInfo.CAMERA_FACING_FRONT){
-            switchToBack();
-        }
-
-    }
-
-    private void switchToFront() {
-        mCamera.stopPreview();
-        mCamera.release();
-
-        currentCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;
-
-        mCamera = Camera.open(currentCameraId);
-        Camera.CameraInfo info = new Camera.CameraInfo();
-        Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_FRONT, info);
-        int rotation = this.getWindowManager().getDefaultDisplay().getRotation();
-        //STEP #2: Set the 'rotation' parameter
-        Camera.Parameters params = mCamera.getParameters();
-        try {
-            mCamera.setPreviewDisplay(mPreview.getHolder());
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        mCamera.setParameters(params);
-        mCamera.setDisplayOrientation(90);
-        mCamera.startPreview();
-    }
-
-    private void switchToBack() {
-        mCamera.stopPreview();
-        mCamera.release();
-
-        currentCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
-
-        mCamera = Camera.open(currentCameraId);
-        Camera.CameraInfo info = new Camera.CameraInfo();
-        Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_BACK, info);
-        int rotation = this.getWindowManager().getDefaultDisplay().getRotation();
-        int degrees = 0;
-        switch (rotation) {
-            case Surface.ROTATION_0: degrees = 0; break; //Natural orientation
-            case Surface.ROTATION_90: degrees = 90; break; //Landscape left
-            case Surface.ROTATION_180: degrees = 180; break;//Upside down
-            case Surface.ROTATION_270: degrees = 270; break;//Landscape right
-        }
-        int rotate = (info.orientation - degrees + 360) % 360;
-
-        //STEP #2: Set the 'rotation' parameter
-        Camera.Parameters params = mCamera.getParameters();
-        params.setRotation(rotate);
-        try {
-            mCamera.setPreviewDisplay(mPreview.getHolder());
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        mCamera.setParameters(params);
-        mCamera.setDisplayOrientation(90);
-        mCamera.startPreview();
-    }
 
 }
