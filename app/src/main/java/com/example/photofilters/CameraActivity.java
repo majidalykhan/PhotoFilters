@@ -28,8 +28,6 @@ public class CameraActivity extends Activity {
     private Camera mCamera;
     private CameraPreview mPreview;
 
-    FaceArFragment arFragment;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

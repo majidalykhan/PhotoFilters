@@ -265,7 +265,7 @@ public class ArtisticStyle extends AppCompatActivity {
 
         final String root =
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                        .getAbsolutePath() + File.separator + "PhotoFilters";
+                        .getAbsolutePath() + File.separator + "PhotoFilters/";
         Log.e(TAG, "Saving bitmap to " + root);
         final File myDir = new File(root);
 
