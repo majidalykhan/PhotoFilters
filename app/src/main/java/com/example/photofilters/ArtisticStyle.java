@@ -288,26 +288,19 @@ public class ArtisticStyle extends AppCompatActivity {
         }
     }
 
-    /**
-     * Init tensorflow interface and load model
-     */
+
+
+    //Init tensorflow interface and load model
     private void initTensorFlowAndLoadModel() {
         intValues = new int[height * width];
         floatValues = new float[height * width * 3];
         inferenceInterface = new TensorFlowInferenceInterface(getAssets(), model_file);
     }
 
-    /**
-     * Rescale the bitmap to desired size
-     *
-     * @param origin
-     * @param newWidth
-     * @param newHeight
-     * @return
-     */
+
+    //Rescale the bitmap to desired size
     private Bitmap scaleBitmap(Bitmap origin, int newWidth, int newHeight) {
-        if (origin == null) {
-            return null;
+        if (origin == null) { return null;
         }
         int height = origin.getHeight();
         int width = origin.getWidth();
@@ -319,9 +312,8 @@ public class ArtisticStyle extends AppCompatActivity {
         return newBM;
     }
 
-    /**
-     * Do operation of style transfer in background
-     */
+
+    //Do operation of style transfer in background
     class StylizeTask extends AsyncTask<Integer, Void, Bitmap> {
         private StylizeTask() {
         }
@@ -339,7 +331,6 @@ public class ArtisticStyle extends AppCompatActivity {
 
         }
 
-        // Do some calculation
         @Override
         protected Bitmap doInBackground(Integer... params) {
 
@@ -359,7 +350,6 @@ public class ArtisticStyle extends AppCompatActivity {
             }
         }
 
-        // Represent the result
         @Override
         protected void onPostExecute(Bitmap bitmap) {
             super.onPostExecute(bitmap);
@@ -370,12 +360,6 @@ public class ArtisticStyle extends AppCompatActivity {
         }
     }
 
-    /**
-     * Stylize the image using tensorflow model trained before.
-     *
-     * @param bitmap image to be styled
-     * @return styled image
-     */
     private Bitmap stylizeImage(Bitmap bitmap) {
         // Rescale image to fixed image size
         Bitmap scaledBitmap = scaleBitmap(bitmap, width, height);
@@ -383,7 +367,6 @@ public class ArtisticStyle extends AppCompatActivity {
         scaledBitmap.getPixels(intValues, 0, scaledBitmap.getWidth(), 0, 0,
                 scaledBitmap.getWidth(), scaledBitmap.getHeight());
 
-        // Turn to 8bit format
         for (int i = 0; i < intValues.length; ++i) {
             final int val = intValues[i];
             floatValues[i * 3] = ((val >> 16) & 0xFF) * 1.0f;
