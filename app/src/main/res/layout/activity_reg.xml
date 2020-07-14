@@ -153,29 +153,26 @@
         app:layout_constraintVertical_bias="0.723" />
 
     <ImageView
+        android:id="@+id/imageView14"
+        android:layout_width="172dp"
+        android:layout_height="155dp"
+        android:layout_marginTop="40dp"
+        android:background="#ffffff"
+        app:layout_constraintEnd_toEndOf="@+id/imageView3"
+        app:layout_constraintStart_toStartOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="@+id/imageView2"></ImageView>
+
+    <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="244dp"
-        android:layout_height="219dp"
+        android:layout_width="174dp"
+        android:layout_height="230dp"
         app:layout_constraintBottom_toBottomOf="@+id/photofiltersregister"
         app:layout_constraintEnd_toEndOf="@+id/photofiltersregister"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="@+id/photofiltersregister"
         app:layout_constraintTop_toTopOf="@+id/photofiltersregister"
         app:layout_constraintVertical_bias="0.526"
-        app:srcCompat="@drawable/ic_logoicons"
-        tools:ignore="VectorDrawableCompat" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="175dp"
-        android:layout_height="152dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/imageView3"
-        app:layout_constraintVertical_bias="0.01"
-        app:srcCompat="@drawable/ic_logo"
+        app:srcCompat="@drawable/ic_photofiltersicon"
         tools:ignore="VectorDrawableCompat" />
 
     <TextView
@@ -183,13 +180,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="Franklin Gothic Book"
-        android:text="PhotoFilters."
+        android:text=""
         android:textColor="#2195E0"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintEnd_toEndOf="@+id/imageView3"
+        app:layout_constraintEnd_toEndOf="@+id/imageView14"
         app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="@+id/imageView3"
+        app:layout_constraintStart_toStartOf="@+id/imageView14"
         app:layout_constraintTop_toTopOf="@+id/imageView3"
         app:layout_constraintVertical_bias="0.133" />
 

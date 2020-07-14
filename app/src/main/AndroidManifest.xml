@@ -21,33 +21,30 @@
     <uses-feature android:name="android.hardware.camera.ar" />
 
     <application
-        android:requestLegacyExternalStorage="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ArtisticStyle">
-
-        </activity>
+        <activity android:name=".Welcome"></activity>
+        <activity android:name=".ArtisticStyle"></activity>
         <activity
             android:name=".Dashboard"
             android:noHistory="true" />
         <activity android:name=".ForgotPass" />
-        <activity android:name=".Home"></activity>
-        <activity android:name=".AugmentedFacesActivity">
+        <activity android:name=".AugmentedFacesActivity"></activity>
+        <activity android:name=".Login">
 
         </activity>
-        <activity android:name=".Login">
+        <activity android:name=".Reg"></activity>
+        <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".Reg" >
-
         </activity>
 
         <provider

@@ -140,17 +140,13 @@
         app:layout_constraintVertical_bias="0.25" />
 
     <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="244dp"
-        android:layout_height="219dp"
-        app:layout_constraintBottom_toBottomOf="@+id/photofilterslogin"
-        app:layout_constraintEnd_toEndOf="@+id/photofilterslogin"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="@+id/photofilterslogin"
-        app:layout_constraintTop_toTopOf="@+id/photofilterslogin"
-        app:layout_constraintVertical_bias="0.526"
-        app:srcCompat="@drawable/ic_logoicons"
-        tools:ignore="VectorDrawableCompat" />
+        android:layout_width="172dp"
+        android:layout_height="155dp"
+        android:background="#ffffff"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView"></ImageView>
+
 
     <ImageView
         android:id="@+id/imageView4"
@@ -162,7 +158,7 @@
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/ic_logo"
+        app:srcCompat="@drawable/ic_photofiltersicon"
         tools:ignore="VectorDrawableCompat" />
 
     <TextView
@@ -170,7 +166,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="Franklin Gothic Book"
-        android:text="PhotoFilters."
+        android:text=""
         android:textColor="#2195E0"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
@@ -178,7 +174,7 @@
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.125" />
+        app:layout_constraintVertical_bias="0.304" />
 
     <ProgressBar
         android:id="@+id/progressBar2"

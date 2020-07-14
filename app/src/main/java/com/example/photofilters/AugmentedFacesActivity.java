@@ -112,12 +112,6 @@ public class AugmentedFacesActivity extends AppCompatActivity {
 
   private final HashMap<AugmentedFace, AugmentedFaceNode> faceNodeMap = new HashMap<>();
 
-
-    private Camera mCamera;
-    private CameraPreview mPreview;
-
-    int currentCameraId = 0;
-
   @Override
   @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
   // CompletableFuture requires api level 24
