@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@null"
         android:ems="10"
+        android:textSize="12dp"
         android:gravity="center"
         android:hint="Enter your email"
         android:inputType="textPersonName"
@@ -35,21 +36,6 @@
         app:srcCompat="@drawable/ic_fieldline"
         tools:ignore="VectorDrawableCompat" />
 
-    <TextView
-        android:id="@+id/photofiltersregister2"
-        android:layout_width="123dp"
-        android:layout_height="27dp"
-        android:fontFamily="Franklin Gothic Book"
-        android:text="PhotoFilters."
-        android:textColor="#2195E0"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-        app:layout_constraintEnd_toEndOf="@+id/imageView5"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="@+id/imageView5"
-        app:layout_constraintTop_toTopOf="@+id/imageView5"
-        app:layout_constraintVertical_bias="0.489" />
-
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="270dp"
@@ -60,7 +46,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.062"
-        app:srcCompat="@drawable/ic_logoicons"
+        app:srcCompat="@drawable/ic_photofiltersicon"
         tools:ignore="VectorDrawableCompat" />
 
     <ImageView
@@ -108,8 +94,9 @@
         android:id="@+id/logintext2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Send password"
+        android:text="Reset Password"
         android:textColor="#ffffff"
+        android:textSize="12dp"
         app:layout_constraintBottom_toBottomOf="@+id/forgotpassbtn"
         app:layout_constraintEnd_toEndOf="@+id/forgotpassbtn"
         app:layout_constraintHorizontal_bias="0.500"
