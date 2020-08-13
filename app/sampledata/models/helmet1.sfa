@@ -59,9 +59,9 @@
   },
   samplers: [
     {
-      file: 'F:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\helmet\\helmet5 (1).jpg',
+      file: 'D:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\helmet\\helmet5 (1).jpg',
       name: 'helmet5 (1)',
-      pipeline_name: 'F:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\helmet\\helmet5 (1).png',
+      pipeline_name: 'D:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\helmet\\helmet5 (1).png',
     },
   ],
   version: '0.54:2',

@@ -59,9 +59,9 @@
   },
   samplers: [
     {
-      file: 'F:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\B-nen-VMaskCol.jpg',
+      file: 'D:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\B-nen-VMaskCol.jpg',
       name: 'B-nen-VMaskCol',
-      pipeline_name: 'F:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\B-nen-VMaskCol.jpg',
+      pipeline_name: 'D:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\B-nen-VMaskCol.jpg',
     },
   ],
   version: '0.54:2',

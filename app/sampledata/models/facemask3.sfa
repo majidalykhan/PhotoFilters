@@ -97,9 +97,9 @@
   },
   samplers: [
     {
-      file: 'F:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\WU75053_butterflymardigras.jpg',
+      file: 'D:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\WU75053_butterflymardigras.jpg',
       name: 'WU75053_butterflymardigras',
-      pipeline_name: 'F:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\WU75053_butterflymardigras.jpg',
+      pipeline_name: 'D:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\WU75053_butterflymardigras.jpg',
     },
   ],
   version: '0.54:2',

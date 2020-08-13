@@ -59,9 +59,9 @@
   },
   samplers: [
     {
-      file: 'F:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\beard + moustache\\hairstyle4 (2).png',
+      file: 'D:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\beard + moustache\\hairstyle4 (2).png',
       name: 'hairstyle4 (2)',
-      pipeline_name: 'F:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\beard + moustache\\hairstyle4 (2).png',
+      pipeline_name: 'D:\\Bahria\\FYP\\Google Sceneform\\Face filters\\Downloaded\\beard + moustache\\hairstyle4 (2).png',
     },
   ],
   version: '0.54:2',
